@@ -6,494 +6,272 @@
   <title>Lichtbringer – Blackwing Lair Prio 0 Plus</title>
   <style>
     :root {
-      --bg: #090d19;
-      --bg-soft: #11182d;
-      --card: #151f38;
-      --card-hover: #1c2947;
-      --text: #f5f7fb;
-      --muted: #a9b4cc;
-      --gold: #facc15;
-      --blue: #7aa2ff;
-      --red: #ef4444;
-      --green: #22c55e;
-      --border: rgba(255, 255, 255, 0.12);
-      --shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      --bg: #151515;
+      --panel: #242424;
+      --panel-soft: #303030;
+      --text: #f2f2f2;
+      --muted: #c8c8c8;
+      --border: #454545;
+      --accent: #d63b3b;
+      --gold: #c89f6a;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(250, 204, 21, 0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(122, 162, 255, 0.14), transparent 28%),
-        var(--bg);
     }
 
     header {
-      padding: 42px 20px 30px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(17, 24, 45, 0.95), rgba(9, 13, 25, 0.65));
-    }
-
-    .topline {
-      display: inline-flex;
+      height: 72px;
+      display: grid;
+      grid-template-columns: 80px 1fr 80px;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.04);
-      font-size: 14px;
-      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      background: #111;
+      padding: 0 18px;
     }
 
-    h1 {
+    header h1 {
       margin: 0;
-      font-size: clamp(36px, 6vw, 72px);
-      letter-spacing: -1px;
-    }
-
-    h2 {
-      margin: 12px 0 0;
-      color: var(--gold);
-      font-size: clamp(20px, 3vw, 32px);
-      font-weight: 500;
-    }
-
-    .intro {
-      max-width: 820px;
-      margin: 18px auto 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 16px;
+      text-align: center;
+      font-size: 26px;
     }
 
     .back {
-      display: inline-block;
-      margin-top: 22px;
-      color: var(--gold);
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .back:hover {
-      text-decoration: underline;
-    }
-
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(9, 13, 25, 0.92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-    }
-
-    .nav-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .nav-inner a {
-      flex: 0 0 auto;
       color: var(--text);
       text-decoration: none;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.04);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-    }
-
-    .nav-inner a:hover {
-      border-color: rgba(250, 204, 21, 0.55);
-      color: var(--gold);
+      font-size: 34px;
+      line-height: 1;
     }
 
     main {
-      width: min(1200px, calc(100% - 32px));
-      margin: 30px auto 60px;
-    }
-
-    .notice-grid {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 28px 18px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 28px;
+      grid-template-columns: 300px 1fr 1.25fr;
+      gap: 28px;
+      min-height: calc(100vh - 72px);
     }
 
-    .notice {
+    .classes,
+    .items,
+    .details {
+      align-self: start;
+    }
+
+    .classes {
+      display: grid;
+      gap: 10px;
+      margin-top: 250px;
+    }
+
+    .class-btn,
+    .item-btn {
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,.35);
+    }
+
+    .class-btn {
+      padding: 13px 16px;
+      color: #111;
+      font-size: 16px;
+    }
+
+    .warrior { background: #c79c6e; }
+    .hunter { background: #abd473; }
+    .priest { background: #ffffff; }
+    .warlock { background: #9482c9; }
+    .paladin { background: #f58cba; }
+    .rogue { background: #fff569; }
+    .mage { background: #69ccf0; }
+    .druid { background: #ff7d0a; }
+
+    .items {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 10px 28px;
+      margin-top: 250px;
+    }
+
+    .item-btn {
+      position: relative;
+      padding: 13px 18px 13px 24px;
+      background: #333;
+      color: var(--text);
+      font-size: 15px;
+      text-align: center;
+      border-left: 5px solid var(--accent);
+    }
+
+    .item-btn:hover,
+    .item-btn.active {
+      background: #444;
+      outline: 2px solid rgba(214,59,59,.4);
+    }
+
+    .details {
+      background: var(--panel);
+      border-radius: 8px;
       padding: 18px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.045);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      min-height: 720px;
+      margin-top: 20px;
     }
 
-    .notice strong {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--gold);
-      font-size: 17px;
-    }
-
-    .notice span {
-      color: var(--muted);
-      line-height: 1.5;
-      font-size: 14px;
-    }
-
-    .boss {
-      margin-bottom: 26px;
-      padding: 22px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025)), var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
-
-    .boss-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 18px;
-      margin-bottom: 16px;
-    }
-
-    .boss h3 {
-      margin: 0 0 8px;
-      color: var(--gold);
-      font-size: 28px;
-    }
-
-    .boss p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: rgba(122, 162, 255, 0.12);
-      border: 1px solid rgba(122, 162, 255, 0.35);
-      color: var(--blue);
-      font-weight: bold;
-      font-size: 13px;
-      white-space: nowrap;
+    .details h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 16px;
-      background: rgba(0, 0, 0, 0.18);
+      font-size: 15px;
     }
 
     th {
-      background: rgba(122, 162, 255, 0.12);
-      color: var(--text);
-      padding: 13px 12px;
+      background: #454545;
       text-align: left;
-      font-size: 14px;
-      border-bottom: 1px solid var(--border);
+      padding: 11px 10px;
     }
 
     td {
-      padding: 13px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
       color: var(--muted);
-      vertical-align: top;
-      line-height: 1.4;
+      font-weight: 600;
     }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    tr:hover td {
-      background: rgba(255, 255, 255, 0.035);
-    }
-
-    .item {
-      color: var(--text);
-      font-weight: bold;
-    }
-
-    .prio0 {
-      color: var(--gold);
-      font-weight: bold;
-    }
-
-    .prio1 {
-      color: var(--blue);
-      font-weight: bold;
-    }
-
-    .prio2 {
-      color: var(--green);
-      font-weight: bold;
-    }
-
-    .note {
-      color: #d1d7e8;
-    }
-
-    footer {
-      padding: 28px 20px 42px;
-      text-align: center;
+    .empty {
       color: var(--muted);
-      border-top: 1px solid var(--border);
+      padding: 18px 0;
     }
 
-    @media (max-width: 900px) {
-      .notice-grid {
+    @media (max-width: 1050px) {
+      main {
         grid-template-columns: 1fr;
       }
 
-      .boss-header {
-        display: block;
+      .classes,
+      .items,
+      .details {
+        margin-top: 0;
       }
 
-      .tag {
-        margin-top: 12px;
+      .items {
+        grid-template-columns: 1fr;
       }
 
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-
-      thead {
-        display: none;
-      }
-
-      tr {
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-      }
-
-      tr:last-child {
-        border-bottom: none;
-      }
-
-      td {
-        border: none;
-        padding: 6px 0;
-      }
-
-      td::before {
-        content: attr(data-label) ": ";
-        color: var(--gold);
-        font-weight: bold;
+      .details {
+        min-height: auto;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="topline">✨ Lichtbringer · Prio 0 Plus</div>
-    <h1>Blackwing Lair</h1>
-    <h2>BWL Loot- und Prio-Übersicht</h2>
-    <p class="intro">
-      Diese Seite dient als transparente Übersicht für wichtige BWL-Items, Prioritäten und Hinweise zur Lootvergabe.
-      Die Einträge sind als Vorlage angelegt und können jederzeit an eure tatsächlichen Gildenregeln angepasst werden.
-    </p>
-    <a class="back" href="index.html">← Zurück zur Übersicht</a>
+    <a class="back" href="index.html">←</a>
+    <h1>Prio 0 Blackwing Lair</h1>
+    <div></div>
   </header>
 
-  <nav>
-    <div class="nav-inner">
-      <a href="#razorgore">Razorgore</a>
-      <a href="#vael">Vaelastrasz</a>
-      <a href="#broodlord">Broodlord</a>
-      <a href="#firemaw">Firemaw</a>
-      <a href="#ebonroc">Ebonroc</a>
-      <a href="#flamegor">Flamegor</a>
-      <a href="#chromaggus">Chromaggus</a>
-      <a href="#nefarian">Nefarian</a>
-    </div>
-  </nav>
-
   <main>
-    <section class="notice-grid">
-      <div class="notice">
-        <strong>P0-System</strong>
-        <span>Die folgende Übersicht zeigt ausschließlich relevante BWL-P0-Items der Lichtbringer. Zusätzlich wird angezeigt, welche Spieler aktuell auf dem jeweiligen Item geführt werden.</span>
-      </div>
+    <section class="classes" aria-label="Klassen">
+      <button class="class-btn warrior">Krieger</button>
+      <button class="class-btn hunter">Jäger</button>
+      <button class="class-btn priest">Priester</button>
+      <button class="class-btn warlock">Hexenmeister</button>
+      <button class="class-btn paladin">Paladin</button>
+      <button class="class-btn rogue">Schurke</button>
+      <button class="class-btn mage">Magier</button>
+      <button class="class-btn druid">Druide</button>
     </section>
 
-    <section class="boss" id="bwl-items">
-      <div class="boss-header">
-        <div>
-          <h3>Blackwing Lair – P0 Übersicht</h3>
-          <p>Aktuelle P0-Liste für wichtige BWL-Items der Lichtbringer.</p>
-        </div>
-        <span class="tag">BWL</span>
-      </div>
+    <section class="items" aria-label="BWL Items">
+      <button class="item-btn active" onclick="showItem('Drachenfangzahn')">Drachenfangzahn</button>
+      <button class="item-btn" onclick="showItem('Mantel der Pechschwingenkabale')">Mantel der Pechschwingenkabale</button>
+      <button class="item-btn" onclick="showItem('Chromatische Stiefel')">Chromatische Stiefel</button>
+      <button class="item-btn" onclick="showItem('Runenverzierte Klinge des schwarzen Drachenschwarms')">Runenverzierte Klinge des schwarzen Drachenschwarms</button>
+      <button class="item-btn" onclick="showItem('Edelstein des Gedankensprungs')">Edelstein des Gedankensprungs</button>
+      <button class="item-btn" onclick="showItem('Stiefel des reinen Gedankens')">Stiefel des reinen Gedankens</button>
+      <button class="item-btn" onclick="showItem('Neltharions Träne')">Neltharions Träne</button>
+      <button class="item-btn" onclick="showItem('Prestors Halskette')">Prestors Halskette</button>
+      <button class="item-btn" onclick="showItem('Edelstein der Verjüngung')">Edelstein der Verjüngung</button>
+      <button class="item-btn" onclick="showItem('Ebenholzfarbene Flammenhandschuhe')">Ebenholzfarbene Flammenhandschuhe</button>
+    </section>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Klasse / Rolle</th>
-            <th>P0 Spieler 1</th>
-            <th>P0 Spieler 2</th>
-            <th>P0 Spieler 3</th>
-            <th>Spieler 1</th>
-            <th>Spieler 2</th>
-            <th>Spieler 3</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td data-label="Item" class="item">Drachenfangzahn</td>
-            <td data-label="Klasse / Rolle">Melee DPS</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Mantel der Pechschwingenkabale</td>
-            <td data-label="Klasse / Rolle">Caster DPS</td>
-            <td data-label="P0 Spieler 1">1x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">Malamaus</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Chromatische Stiefel</td>
-            <td data-label="Klasse / Rolle">Tank / Melee</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Runenverzierte Klinge des schwarzen Drachenschwarms</td>
-            <td data-label="Klasse / Rolle">Melee DPS</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Edelstein des Gedankensprungs</td>
-            <td data-label="Klasse / Rolle">Caster DPS</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Stiefel des reinen Gedankens</td>
-            <td data-label="Klasse / Rolle">Heiler / Caster</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Neltharions Träne</td>
-            <td data-label="Klasse / Rolle">Caster DPS</td>
-            <td data-label="P0 Spieler 1">1x</td>
-            <td data-label="P0 Spieler 2">1x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">Jamera</td>
-            <td data-label="Spieler 2">Sindrael</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Prestors Halskette</td>
-            <td data-label="Klasse / Rolle">Caster / Heiler</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Edelstein der Verjüngung</td>
-            <td data-label="Klasse / Rolle">Heiler</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-
-          <tr>
-            <td data-label="Item" class="item">Ebenholzfarbene Flammenhandschuhe</td>
-            <td data-label="Klasse / Rolle">Caster DPS</td>
-            <td data-label="P0 Spieler 1">0x</td>
-            <td data-label="P0 Spieler 2">0x</td>
-            <td data-label="P0 Spieler 3">0x</td>
-            <td data-label="Spieler 1">—</td>
-            <td data-label="Spieler 2">—</td>
-            <td data-label="Spieler 3">—</td>
-            <td data-label="Status" class="prio0">P0</td>
-          </tr>
-        </tbody>
-      </table>
+    <section class="details" aria-label="P0 Details">
+      <h2 id="itemTitle">Drachenfangzahn</h2>
+      <div id="itemContent"></div>
     </section>
   </main>
 
-  <footer>
-    Lichtbringer · Blackwing Lair · Prio 0 Plus
-  </footer>
+  <script>
+    const p0Data = {
+      "Drachenfangzahn": [],
+      "Mantel der Pechschwingenkabale": [
+        { spieler: "Malamaus", klasse: "Magier", anzahl: 1 }
+      ],
+      "Chromatische Stiefel": [],
+      "Runenverzierte Klinge des schwarzen Drachenschwarms": [],
+      "Edelstein des Gedankensprungs": [],
+      "Stiefel des reinen Gedankens": [],
+      "Neltharions Träne": [
+        { spieler: "Jamera", klasse: "Magier", anzahl: 1 },
+        { spieler: "Sindrael", klasse: "Hexenmeister", anzahl: 1 }
+      ],
+      "Prestors Halskette": [],
+      "Edelstein der Verjüngung": [],
+      "Ebenholzfarbene Flammenhandschuhe": []
+    };
+
+    function showItem(itemName) {
+      document.getElementById("itemTitle").textContent = itemName;
+
+      document.querySelectorAll(".item-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent.trim() === itemName);
+      });
+
+      const entries = p0Data[itemName] || [];
+      const content = document.getElementById("itemContent");
+
+      if (entries.length === 0) {
+        content.innerHTML = '<div class="empty">Für dieses Item ist aktuell noch kein Spieler mit P0 eingetragen.</div>';
+        return;
+      }
+
+      content.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Spieler</th>
+              <th>Klasse</th>
+              <th>Anzahl</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entries.map(entry => `
+              <tr>
+                <td>${entry.spieler}</td>
+                <td>${entry.klasse}</td>
+                <td>${entry.anzahl}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    showItem("Drachenfangzahn");
+  </script>
 </body>
 </html>
