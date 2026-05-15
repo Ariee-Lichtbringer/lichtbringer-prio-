@@ -9,11 +9,8 @@
       --bg: #08111f;
       --bg2: #111c33;
       --panel: rgba(20, 32, 55, 0.92);
-      --panel-light: rgba(35, 53, 86, 0.94);
       --gold: #facc15;
-      --gold-soft: rgba(250, 204, 21, 0.18);
       --blue: #60a5fa;
-      --blue-soft: rgba(96, 165, 250, 0.18);
       --text: #f8fafc;
       --muted: #cbd5e1;
       --line: rgba(255, 255, 255, 0.13);
@@ -34,15 +31,13 @@
     }
 
     header {
-      position: relative;
       min-height: 110px;
       display: grid;
       grid-template-columns: 80px 1fr 80px;
       align-items: center;
       padding: 18px 24px;
-      background:
-        linear-gradient(90deg, rgba(8, 17, 31, 0.98), rgba(30, 64, 175, 0.88), rgba(8, 17, 31, 0.98));
-      border-bottom: 1px solid rgba(250, 204, 21, 0.32);
+      background: linear-gradient(90deg, rgba(8,17,31,.98), rgba(30,64,175,.88), rgba(8,17,31,.98));
+      border-bottom: 1px solid rgba(250,204,21,.32);
       box-shadow: var(--shadow);
     }
 
@@ -56,8 +51,8 @@
       color: var(--gold);
       text-decoration: none;
       font-size: 34px;
-      border: 1px solid rgba(250, 204, 21, 0.35);
-      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(250,204,21,.35);
+      background: rgba(255,255,255,.04);
     }
 
     .headline { text-align: center; }
@@ -66,15 +61,14 @@
       margin: 0;
       font-size: clamp(25px, 4vw, 42px);
       font-weight: 900;
-      letter-spacing: 0.3px;
-      text-shadow: 0 0 18px rgba(250, 204, 21, 0.25);
+      text-shadow: 0 0 18px rgba(250,204,21,.25);
     }
 
     .headline p {
       margin: 8px 0 0;
       color: #dbeafe;
       font-size: 13px;
-      letter-spacing: 0.18em;
+      letter-spacing: .18em;
       text-transform: uppercase;
     }
 
@@ -106,7 +100,7 @@
       color: var(--gold);
       font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: .12em;
     }
 
     .class-btn,
@@ -141,9 +135,7 @@
     .mage { background: #69ccf0; }
     .druid { background: #ff7d0a; }
 
-    .items-panel {
-      padding: 18px;
-    }
+    .items-panel { padding: 18px; }
 
     .items {
       display: grid;
@@ -156,8 +148,7 @@
       padding: 13px 16px;
       border-radius: 16px;
       color: var(--text);
-      background:
-        linear-gradient(180deg, rgba(37, 56, 91, 0.98), rgba(22, 34, 58, 0.98));
+      background: linear-gradient(180deg, rgba(37,56,91,.98), rgba(22,34,58,.98));
       border: 1px solid rgba(255,255,255,.11);
       border-left: 5px solid var(--gold);
       text-align: left;
@@ -173,8 +164,7 @@
 
     .item-btn:hover,
     .item-btn.active {
-      background:
-        linear-gradient(180deg, rgba(59, 86, 135, 0.98), rgba(30, 47, 79, 0.98));
+      background: linear-gradient(180deg, rgba(59,86,135,.98), rgba(30,47,79,.98));
       box-shadow: 0 0 0 2px rgba(250,204,21,.28), 0 13px 28px rgba(0,0,0,.30);
       transform: translateY(-2px);
     }
@@ -182,8 +172,7 @@
     .details {
       padding: 22px;
       min-height: 640px;
-      background:
-        linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.97));
+      background: linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.97));
     }
 
     .details-header {
@@ -217,8 +206,6 @@
       font-size: 14px;
       font-weight: 800;
     }
-
-    .wowhead-link:hover { background: rgba(250,204,21,.16); }
 
     table {
       width: 100%;
@@ -273,31 +260,6 @@
       .items { grid-template-columns: 1fr; }
       .details { min-height: auto; }
     }
-
-    @media (max-width: 620px) {
-      header {
-        grid-template-columns: 52px 1fr 20px;
-        padding: 14px;
-      }
-
-      .back {
-        width: 42px;
-        height: 42px;
-      }
-
-      main {
-        width: min(100% - 20px, 1580px);
-        gap: 16px;
-      }
-
-      .details-header {
-        display: block;
-      }
-
-      .wowhead-link {
-        margin-top: 12px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -311,9 +273,7 @@
   </header>
 
   <main>
-    <section class="panel classes" id="classButtons" aria-label="Klassen">
-      <h2 class="panel-title">Klasse wählen</h2>
-    </section>
+    <section class="panel classes" id="classButtons" aria-label="Klassen"></section>
 
     <section class="panel items-panel" aria-label="Items">
       <h2 class="panel-title" id="itemsTitle">Items</h2>
@@ -326,11 +286,13 @@
         <a id="wowheadLink" class="wowhead-link" href="#" target="_blank" rel="noopener">Wowhead</a>
       </div>
       <div id="itemContent"></div>
-      <div class="hint">Spieler und Anzahl können im Code im Bereich <strong>p0Data</strong> gepflegt werden. Die Itemlisten pro Klasse liegen im Bereich <strong>itemsByClass</strong>.</div>
+      <div class="hint">P0-Daten werden automatisch aus dem Google Sheet geladen. Wichtig: Im Sheet muss in der Spalte <strong>Raid</strong> der Wert <strong>BWL</strong> stehen.</div>
     </section>
   </main>
 
   <script>
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1t7P5T6t7OCWRY3kGCWIYHWDNXgXmdvpAM1xIj2U4TRw/export?format=csv&gid=0";
+
     const classes = [
       { key: "Krieger", css: "warrior" },
       { key: "Jäger", css: "hunter" },
@@ -343,92 +305,18 @@
     ];
 
     const itemsByClass = {
-      "Krieger": [
-        "Drachenfangzahn",
-        "Chromatische Stiefel",
-        "Runenverzierte Klinge des schwarzen Drachenschwarms",
-        "Elementiumverstärktes Bollwerk",
-        "Ashkandi, Großschwert der Bruderschaft",
-        "Klaue des schwarzen Drachen",
-        "Doom's Edge",
-        "Spineshatter",
-        "Cloak of Draconic Might",
-        "Prestor's Talisman of Connivery"
-      ],
-      "Jäger": [
-        "Drachenfangzahn",
-        "Ashjre'thul, Armbrust der Pein",
-        "Cloak of Draconic Might",
-        "Prestor's Talisman of Connivery",
-        "Chromatische Stiefel",
-        "Doom's Edge",
-        "Drake Talon Cleaver",
-        "Band of Forced Concentration"
-      ],
-      "Priester": [
-        "Stiefel des reinen Gedankens",
-        "Edelstein der Verjüngung",
-        "Lok'amir il Romathis",
-        "Mish'undare, Reif des Gedankenschinders",
-        "Mantel der Pechschwingenkabale",
-        "Ebenholzfarbene Flammenhandschuhe",
-        "Neltharions Träne",
-        "Band of Forced Concentration"
-      ],
-      "Hexenmeister": [
-        "Neltharions Träne",
-        "Edelstein des Gedankensprungs",
-        "Mantel der Pechschwingenkabale",
-        "Ebenholzfarbene Flammenhandschuhe",
-        "Mish'undare, Reif des Gedankenschinders",
-        "Stiefel des reinen Gedankens",
-        "Band of Forced Concentration",
-        "Shadow Wing Focus Staff"
-      ],
-      "Paladin": [
-        "Stiefel des reinen Gedankens",
-        "Edelstein der Verjüngung",
-        "Lok'amir il Romathis",
-        "Reines Elementiumband",
-        "Chromatische Stiefel",
-        "Elementiumverstärktes Bollwerk",
-        "Mish'undare, Reif des Gedankenschinders",
-        "Cloak of Draconic Might"
-      ],
-      "Schurke": [
-        "Drachenfangzahn",
-        "Runenverzierte Klinge des schwarzen Drachenschwarms",
-        "Chromatische Stiefel",
-        "Prestor's Talisman of Connivery",
-        "Cloak of Draconic Might",
-        "Doom's Edge",
-        "Klaue des schwarzen Drachen",
-        "Chromatically Tempered Sword"
-      ],
-      "Magier": [
-        "Neltharions Träne",
-        "Edelstein des Gedankensprungs",
-        "Mantel der Pechschwingenkabale",
-        "Ebenholzfarbene Flammenhandschuhe",
-        "Mish'undare, Reif des Gedankenschinders",
-        "Stiefel des reinen Gedankens",
-        "Band of Forced Concentration",
-        "Shadow Wing Focus Staff"
-      ],
-      "Druide": [
-        "Edelstein der Verjüngung",
-        "Stiefel des reinen Gedankens",
-        "Lok'amir il Romathis",
-        "Reines Elementiumband",
-        "Mish'undare, Reif des Gedankenschinders",
-        "Cloak of Draconic Might",
-        "Chromatische Stiefel",
-        "Ebenholzfarbene Flammenhandschuhe"
-      ]
+      "Krieger": ["Drachenfangzahn", "Chromatische Stiefel", "Runenverzierte Klinge des schwarzen Drachenschwarms", "Elementiumverstärktes Bollwerk", "Ashkandi, Großschwert der Bruderschaft", "Klaue des schwarzen Drachen", "Doom's Edge", "Spineshatter", "Cloak of Draconic Might", "Prestor's Talisman of Connivery"],
+      "Jäger": ["Drachenfangzahn", "Ashjre'thul, Armbrust der Pein", "Cloak of Draconic Might", "Prestor's Talisman of Connivery", "Chromatische Stiefel", "Doom's Edge", "Drake Talon Cleaver", "Band of Forced Concentration"],
+      "Priester": ["Stiefel des reinen Gedankens", "Edelstein der Verjüngung", "Lok'amir il Romathis", "Mish'undare, Reif des Gedankenschinders", "Mantel der Pechschwingenkabale", "Ebenholzfarbene Flammenhandschuhe", "Neltharions Träne", "Band of Forced Concentration"],
+      "Hexenmeister": ["Neltharions Träne", "Edelstein des Gedankensprungs", "Mantel der Pechschwingenkabale", "Ebenholzfarbene Flammenhandschuhe", "Mish'undare, Reif des Gedankenschinders", "Stiefel des reinen Gedankens", "Band of Forced Concentration", "Shadow Wing Focus Staff"],
+      "Paladin": ["Stiefel des reinen Gedankens", "Edelstein der Verjüngung", "Lok'amir il Romathis", "Reines Elementiumband", "Chromatische Stiefel", "Elementiumverstärktes Bollwerk", "Mish'undare, Reif des Gedankenschinders", "Cloak of Draconic Might"],
+      "Schurke": ["Drachenfangzahn", "Runenverzierte Klinge des schwarzen Drachenschwarms", "Chromatische Stiefel", "Prestor's Talisman of Connivery", "Cloak of Draconic Might", "Doom's Edge", "Klaue des schwarzen Drachen", "Chromatically Tempered Sword"],
+      "Magier": ["Neltharions Träne", "Edelstein des Gedankensprungs", "Mantel der Pechschwingenkabale", "Ebenholzfarbene Flammenhandschuhe", "Mish'undare, Reif des Gedankenschinders", "Stiefel des reinen Gedankens", "Band of Forced Concentration", "Shadow Wing Focus Staff"],
+      "Druide": ["Edelstein der Verjüngung", "Stiefel des reinen Gedankens", "Lok'amir il Romathis", "Reines Elementiumband", "Mish'undare, Reif des Gedankenschinders", "Cloak of Draconic Might", "Chromatische Stiefel", "Ebenholzfarbene Flammenhandschuhe"]
     };
 
     const wowheadLinks = {
-      "Drachenfangzahn": "https://www.wowhead.com/classic/item=19365/claw-of-the-black-drake",
+      "Drachenfangzahn": "https://www.wowhead.com/classic/item=19406/drake-fang-talisman",
       "Mantel der Pechschwingenkabale": "https://www.wowhead.com/classic/item=19370/mantle-of-the-blackwing-cabal",
       "Chromatische Stiefel": "https://www.wowhead.com/classic/item=19387/chromatic-boots",
       "Runenverzierte Klinge des schwarzen Drachenschwarms": "https://www.wowhead.com/classic/item=19351/maladath-runed-blade-of-the-black-flight",
@@ -454,25 +342,85 @@
       "Shadow Wing Focus Staff": "https://www.wowhead.com/classic/item=19355/shadow-wing-focus-staff"
     };
 
-    const p0Data = {
-      "Mantel der Pechschwingenkabale": [
-        { spieler: "Malamaus", klasse: "Magier", anzahl: 1 }
-      ],
-      "Neltharions Träne": [
-        { spieler: "Jamera", klasse: "Magier", anzahl: 1 },
-        { spieler: "Sindrael", klasse: "Hexenmeister", anzahl: 1 }
-      ]
-    };
-
+    let p0Data = {};
     let selectedClass = "Krieger";
     let selectedItem = itemsByClass[selectedClass][0];
+
+    async function loadP0DataFromSheet() {
+      try {
+        if (!SHEET_CSV_URL || SHEET_CSV_URL.includes("HIER_DEINEN")) return;
+        const response = await fetch(SHEET_CSV_URL);
+        const csvText = await response.text();
+        const rows = parseCSV(csvText);
+        const header = rows.shift().map(h => h.trim().toLowerCase());
+
+        const raidIndex = header.indexOf("raid");
+        const klasseIndex = header.indexOf("klasse");
+        const itemIndex = header.indexOf("item");
+        const spielerIndex = header.indexOf("spieler");
+        const anzahlIndex = header.indexOf("anzahl");
+
+        rows.forEach(row => {
+          const raid = row[raidIndex]?.trim();
+          const klasse = row[klasseIndex]?.trim();
+          const item = row[itemIndex]?.trim();
+          const spieler = row[spielerIndex]?.trim();
+          const anzahl = row[anzahlIndex]?.trim() || "1";
+
+          if (!raid || !klasse || !item || !spieler) return;
+          if (raid.toLowerCase() !== "bwl") return;
+
+          if (!p0Data[item]) p0Data[item] = [];
+          p0Data[item].push({ spieler, klasse, anzahl });
+        });
+      } catch (error) {
+        console.error("Fehler beim Laden der Google-Sheet-Daten:", error);
+      }
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let currentRow = [];
+      let currentValue = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"' && insideQuotes && nextChar === '"') {
+          currentValue += '"';
+          i++;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === "," && !insideQuotes) {
+          currentRow.push(currentValue);
+          currentValue = "";
+        } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+          if (currentValue || currentRow.length) {
+            currentRow.push(currentValue);
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentValue = "";
+          if (char === "\r" && nextChar === "\n") i++;
+        } else {
+          currentValue += char;
+        }
+      }
+
+      if (currentValue || currentRow.length) {
+        currentRow.push(currentValue);
+        rows.push(currentRow);
+      }
+
+      return rows;
+    }
 
     function renderClasses() {
       const wrapper = document.getElementById("classButtons");
       wrapper.innerHTML = '<h2 class="panel-title">Klasse wählen</h2>' + classes.map(cls => `
-        <button class="class-btn ${cls.css} ${cls.key === selectedClass ? "active" : ""}" onclick="selectClass('${cls.key}')">
-          ${cls.key}
-        </button>
+        <button class="class-btn ${cls.css} ${cls.key === selectedClass ? "active" : ""}" onclick="selectClass('${cls.key}')">${cls.key}</button>
       `).join("");
     }
 
@@ -480,21 +428,16 @@
       document.getElementById("itemsTitle").textContent = selectedClass + " · BWL Items";
       const wrapper = document.getElementById("itemButtons");
       const items = itemsByClass[selectedClass] || [];
-
       wrapper.innerHTML = items.map(item => `
-        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${item}\`)">
-          ${item}
-        </button>
+        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${item}\`)">${item}</button>
       `).join("");
     }
 
     function renderDetails() {
       document.getElementById("itemTitle").textContent = selectedItem;
-      const wowhead = wowheadLinks[selectedItem];
       const link = document.getElementById("wowheadLink");
-
-      if (wowhead) {
-        link.href = wowhead;
+      if (wowheadLinks[selectedItem]) {
+        link.href = wowheadLinks[selectedItem];
         link.style.display = "inline-flex";
       } else {
         link.style.display = "none";
@@ -510,20 +453,10 @@
 
       content.innerHTML = `
         <table>
-          <thead>
-            <tr>
-              <th>Spieler</th>
-              <th>Klasse</th>
-              <th>P0 gesetzt</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Spieler</th><th>Klasse</th><th>P0 gesetzt</th></tr></thead>
           <tbody>
             ${entries.map(entry => `
-              <tr>
-                <td>${entry.spieler}</td>
-                <td>${entry.klasse}</td>
-                <td>${entry.anzahl}x</td>
-              </tr>
+              <tr><td>${entry.spieler}</td><td>${entry.klasse}</td><td>${entry.anzahl}x</td></tr>
             `).join("")}
           </tbody>
         </table>
@@ -547,7 +480,7 @@
       renderDetails();
     }
 
-    renderAll();
+    loadP0DataFromSheet().then(() => renderAll());
   </script>
 </body>
 </html>
