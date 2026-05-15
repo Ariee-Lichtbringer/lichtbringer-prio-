@@ -9,7 +9,11 @@
       --bg: #08111f;
       --bg2: #111c33;
       --panel: rgba(20, 32, 55, 0.92);
+      --panel-light: rgba(35, 53, 86, 0.94);
       --gold: #facc15;
+      --gold-soft: rgba(250, 204, 21, 0.18);
+      --blue: #60a5fa;
+      --blue-soft: rgba(96, 165, 250, 0.18);
       --text: #f8fafc;
       --muted: #cbd5e1;
       --line: rgba(255, 255, 255, 0.13);
@@ -30,13 +34,15 @@
     }
 
     header {
+      position: relative;
       min-height: 110px;
       display: grid;
       grid-template-columns: 80px 1fr 80px;
       align-items: center;
       padding: 18px 24px;
-      background: linear-gradient(90deg, rgba(8,17,31,.98), rgba(30,64,175,.88), rgba(8,17,31,.98));
-      border-bottom: 1px solid rgba(250,204,21,.32);
+      background:
+        linear-gradient(90deg, rgba(8, 17, 31, 0.98), rgba(30, 64, 175, 0.88), rgba(8, 17, 31, 0.98));
+      border-bottom: 1px solid rgba(250, 204, 21, 0.32);
       box-shadow: var(--shadow);
     }
 
@@ -50,8 +56,8 @@
       color: var(--gold);
       text-decoration: none;
       font-size: 34px;
-      border: 1px solid rgba(250,204,21,.35);
-      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .headline { text-align: center; }
@@ -60,14 +66,15 @@
       margin: 0;
       font-size: clamp(25px, 4vw, 42px);
       font-weight: 900;
-      text-shadow: 0 0 18px rgba(250,204,21,.25);
+      letter-spacing: 0.3px;
+      text-shadow: 0 0 18px rgba(250, 204, 21, 0.25);
     }
 
     .headline p {
       margin: 8px 0 0;
       color: #dbeafe;
       font-size: 13px;
-      letter-spacing: .18em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
@@ -99,7 +106,7 @@
       color: var(--gold);
       font-size: 15px;
       text-transform: uppercase;
-      letter-spacing: .12em;
+      letter-spacing: 0.12em;
     }
 
     .class-btn,
@@ -107,7 +114,7 @@
       border: 0;
       cursor: pointer;
       font-weight: 800;
-      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, opacity 140ms ease;
+      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
     }
 
     .class-btn {
@@ -118,8 +125,6 @@
       text-align: left;
       box-shadow: 0 8px 18px rgba(0,0,0,.22);
     }
-
-    .class-btn.empty-class { opacity: .45; }
 
     .class-btn:hover,
     .class-btn.active {
@@ -136,7 +141,9 @@
     .mage { background: #69ccf0; }
     .druid { background: #ff7d0a; }
 
-    .items-panel { padding: 18px; }
+    .items-panel {
+      padding: 18px;
+    }
 
     .items {
       display: grid;
@@ -149,7 +156,8 @@
       padding: 13px 16px;
       border-radius: 16px;
       color: var(--text);
-      background: linear-gradient(180deg, rgba(37,56,91,.98), rgba(22,34,58,.98));
+      background:
+        linear-gradient(180deg, rgba(37, 56, 91, 0.98), rgba(22, 34, 58, 0.98));
       border: 1px solid rgba(255,255,255,.11);
       border-left: 5px solid var(--gold);
       text-align: left;
@@ -165,7 +173,8 @@
 
     .item-btn:hover,
     .item-btn.active {
-      background: linear-gradient(180deg, rgba(59,86,135,.98), rgba(30,47,79,.98));
+      background:
+        linear-gradient(180deg, rgba(59, 86, 135, 0.98), rgba(30, 47, 79, 0.98));
       box-shadow: 0 0 0 2px rgba(250,204,21,.28), 0 13px 28px rgba(0,0,0,.30);
       transform: translateY(-2px);
     }
@@ -173,7 +182,8 @@
     .details {
       padding: 22px;
       min-height: 640px;
-      background: linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.97));
+      background:
+        linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.97));
     }
 
     .details-header {
@@ -207,6 +217,8 @@
       font-size: 14px;
       font-weight: 800;
     }
+
+    .wowhead-link:hover { background: rgba(250,204,21,.16); }
 
     table {
       width: 100%;
@@ -261,6 +273,31 @@
       .items { grid-template-columns: 1fr; }
       .details { min-height: auto; }
     }
+
+    @media (max-width: 620px) {
+      header {
+        grid-template-columns: 52px 1fr 20px;
+        padding: 14px;
+      }
+
+      .back {
+        width: 42px;
+        height: 42px;
+      }
+
+      main {
+        width: min(100% - 20px, 1580px);
+        gap: 16px;
+      }
+
+      .details-header {
+        display: block;
+      }
+
+      .wowhead-link {
+        margin-top: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -274,10 +311,12 @@
   </header>
 
   <main>
-    <section class="panel classes" id="classButtons" aria-label="Klassen"></section>
+    <section class="panel classes" id="classButtons" aria-label="Klassen">
+      <h2 class="panel-title">Klasse wählen</h2>
+    </section>
 
     <section class="panel items-panel" aria-label="Items">
-      <h2 class="panel-title" id="itemsTitle">MC P0 Items</h2>
+      <h2 class="panel-title" id="itemsTitle">Items</h2>
       <div class="items" id="itemButtons"></div>
     </section>
 
@@ -287,162 +326,157 @@
         <a id="wowheadLink" class="wowhead-link" href="#" target="_blank" rel="noopener">Wowhead</a>
       </div>
       <div id="itemContent"></div>
-      <div class="hint">P0-Daten werden automatisch aus dem Google Sheet geladen. Im Sheet muss in der Spalte <strong>Raid</strong> der Wert <strong>MC</strong> stehen.</div>
+      <div class="hint">Spieler und Anzahl können im Code im Bereich <strong>p0Data</strong> gepflegt werden. Die Itemlisten pro Klasse liegen im Bereich <strong>itemsByClass</strong>.</div>
     </section>
   </main>
 
   <script>
-    const CURRENT_RAID = "MC";
-    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1t7P5T6t7OCWRY3kGCWIYHWDNXgXmdvpAM1xIj2U4TRw/gviz/tq?tqx=out:csv&gid=0";
+    const classes = [
+      { key: "Krieger", css: "warrior" },
+      { key: "Jäger", css: "hunter" },
+      { key: "Priester", css: "priest" },
+      { key: "Hexenmeister", css: "warlock" },
+      { key: "Paladin", css: "paladin" },
+      { key: "Schurke", css: "rogue" },
+      { key: "Magier", css: "mage" },
+      { key: "Druide", css: "druid" }
+    ];
 
-    const classOrder = ["Krieger", "Jäger", "Priester", "Hexenmeister", "Paladin", "Schurke", "Magier", "Druide"];
-
-    const classCss = {
-      "Krieger": "warrior",
-      "Jäger": "hunter",
-      "Priester": "priest",
-      "Hexenmeister": "warlock",
-      "Paladin": "paladin",
-      "Schurke": "rogue",
-      "Magier": "mage",
-      "Druide": "druid"
+    const itemsByClass = {
+      "Krieger": [
+        "Band der Akkuria",
+        "Gurt des Ansturms",
+        "Schnitter der dunklen Klinge",
+        "Spinal Reaper",
+        "Perditions Klinge",
+        "Kernhundzahn",
+        "Rechte Fessel des Windsuchers",
+        "Linke Fessel des Windsuchers",
+        "Auge von Sulfuras",
+        "Flammenwächterstulpen"
+      ],
+      "Jäger": [
+        "Uralter versteinerter Blatt",
+        "Band der Akkuria",
+        "Kernhundzahn",
+        "Siegelring des Archimagiers",
+        "Ring der Zaubermacht",
+        "Robe der flüchtigen Macht",
+        "Manazündende Kordel",
+        "Sabatons des Flammenwandlers"
+      ],
+      "Priester": [
+        "Auge der Offenbarung",
+        "Band der Sulfuras",
+        "Ring der Zaubermacht",
+        "Manazündende Kordel",
+        "Robe der flüchtigen Macht",
+        "Cauterizing Band",
+        "Azuresong Mageblade",
+        "Choker of the Fire Lord",
+        "Kreis der angewandten Kraft"
+      ],
+      "Hexenmeister": [
+        "Ring der Zaubermacht",
+        "Manazündende Kordel",
+        "Robe der flüchtigen Macht",
+        "Choker of the Fire Lord",
+        "Azuresong Mageblade",
+        "Kreis der angewandten Kraft",
+        "Talisman der ephemeren Macht",
+        "Fire Runed Grimoire"
+      ],
+      "Paladin": [
+        "Cauterizing Band",
+        "Band der Sulfuras",
+        "Azuresong Mageblade",
+        "Kreis der angewandten Kraft",
+        "Band der Akkuria",
+        "Gurt des Ansturms",
+        "Auge von Sulfuras",
+        "Sabatons des Flammenwandlers"
+      ],
+      "Schurke": [
+        "Perditions Klinge",
+        "Kernhundzahn",
+        "Band der Akkuria",
+        "Gurt des Ansturms",
+        "Wristguards of Stability",
+        "Flammenwächterstulpen",
+        "Schnitter der dunklen Klinge",
+        "Talisman der ephemeren Macht"
+      ],
+      "Magier": [
+        "Ring der Zaubermacht",
+        "Manazündende Kordel",
+        "Robe der flüchtigen Macht",
+        "Choker of the Fire Lord",
+        "Azuresong Mageblade",
+        "Kreis der angewandten Kraft",
+        "Talisman der ephemeren Macht",
+        "Fire Runed Grimoire"
+      ],
+      "Druide": [
+        "Cauterizing Band",
+        "Band der Sulfuras",
+        "Azuresong Mageblade",
+        "Kreis der angewandten Kraft",
+        "Robe der flüchtigen Macht",
+        "Manazündende Kordel",
+        "Sabatons des Flammenwandlers",
+        "Wristguards of Stability"
+      ]
     };
 
-    const wowheadLinks = {};
+    const wowheadLinks = {
+      "Band der Akkuria": "https://www.wowhead.com/classic/item=17063/band-of-accuria",
+      "Gurt des Ansturms": "https://www.wowhead.com/classic/item=19137/onslaught-girdle",
+      "Schnitter der dunklen Klinge": "https://www.wowhead.com/classic/item=17075/viskag-the-bloodletter",
+      "Spinal Reaper": "https://www.wowhead.com/classic/item=17104/spinal-reaper",
+      "Perditions Klinge": "https://www.wowhead.com/classic/item=18816/perditions-blade",
+      "Kernhundzahn": "https://www.wowhead.com/classic/item=18805/core-hound-tooth",
+      "Rechte Fessel des Windsuchers": "https://www.wowhead.com/classic/item=18564/bindings-of-the-windseeker",
+      "Linke Fessel des Windsuchers": "https://www.wowhead.com/classic/item=18563/bindings-of-the-windseeker",
+      "Auge von Sulfuras": "https://www.wowhead.com/classic/item=17204/eye-of-sulfuras",
+      "Flammenwächterstulpen": "https://www.wowhead.com/classic/item=19143/flameguard-gauntlets",
+      "Uralter versteinerter Blatt": "https://www.wowhead.com/classic/item=18703/ancient-petrified-leaf",
+      "Auge der Offenbarung": "https://www.wowhead.com/classic/item=18646/the-eye-of-divinity",
+      "Siegelring des Archimagiers": "https://www.wowhead.com/classic/item=17110/seal-of-the-archmagus",
+      "Ring der Zaubermacht": "https://www.wowhead.com/classic/item=19147/ring-of-spell-power",
+      "Robe der flüchtigen Macht": "https://www.wowhead.com/classic/item=19145/robe-of-volatile-power",
+      "Manazündende Kordel": "https://www.wowhead.com/classic/item=19136/mana-igniting-cord",
+      "Sabatons des Flammenwandlers": "https://www.wowhead.com/classic/item=19144/sabatons-of-the-flamewalker",
+      "Band der Sulfuras": "https://www.wowhead.com/classic/item=19138/band-of-sulfuras",
+      "Cauterizing Band": "https://www.wowhead.com/classic/item=19140/cauterizing-band",
+      "Azuresong Mageblade": "https://www.wowhead.com/classic/item=17103/azuresong-mageblade",
+      "Choker of the Fire Lord": "https://www.wowhead.com/classic/item=18814/choker-of-the-fire-lord",
+      "Kreis der angewandten Kraft": "https://www.wowhead.com/classic/item=19142/fire-runed-grimoire",
+      "Talisman der ephemeren Macht": "https://www.wowhead.com/classic/item=18820/talisman-of-ephemeral-power",
+      "Fire Runed Grimoire": "https://www.wowhead.com/classic/item=19142/fire-runed-grimoire",
+      "Wristguards of Stability": "https://www.wowhead.com/classic/item=19146/wristguards-of-stability"
+    };
+
+    const SHEET_CSV_URL = "HIER_DEINEN_GOOGLE_SHEET_CSV_LINK_EINFÜGEN";
 
     let p0Data = {};
-    let itemsByClass = {};
-    let selectedClass = "Krieger";
-    let selectedItem = "";
-
-    function renderAll() {
-      renderClasses();
-      renderItems();
-      renderDetails();
-    }
-
-    function renderClasses() {
-      const wrapper = document.getElementById("classButtons");
-      wrapper.innerHTML = '<h2 class="panel-title">Klasse wählen</h2>' + classOrder.map(className => {
-        const hasItems = Array.isArray(itemsByClass[className]) && itemsByClass[className].length > 0;
-        return `
-          <button class="class-btn ${classCss[className] || ""} ${className === selectedClass ? "active" : ""} ${hasItems ? "" : "empty-class"}" onclick="selectClass('${className}')">
-            ${className}
-          </button>
-        `;
-      }).join("");
-    }
-
-    function renderItems() {
-      const wrapper = document.getElementById("itemButtons");
-      const title = document.getElementById("itemsTitle");
-      title.textContent = selectedClass + " · MC P0 Items";
-
-      const items = itemsByClass[selectedClass] || [];
-
-      if (!items.length) {
-        wrapper.innerHTML = '<div class="empty">Für diese Klasse gibt es aktuell keine MC-P0-Einträge im Sheet.</div>';
-        return;
-      }
-
-      wrapper.innerHTML = items.map(item => `
-        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${safeText(item)}\`)">
-          ${item}
-        </button>
-      `).join("");
-    }
-
-    function renderDetails() {
-      const itemTitle = document.getElementById("itemTitle");
-      const content = document.getElementById("itemContent");
-      const link = document.getElementById("wowheadLink");
-
-      if (!selectedItem) {
-        itemTitle.textContent = "Kein Item ausgewählt";
-        content.innerHTML = '<div class="empty">Wähle links eine Klasse mit P0-Einträgen aus.</div>';
-        link.style.display = "none";
-        return;
-      }
-
-      itemTitle.textContent = selectedItem;
-
-      if (wowheadLinks[selectedItem]) {
-        link.href = wowheadLinks[selectedItem];
-        link.style.display = "inline-flex";
-      } else {
-        link.style.display = "none";
-      }
-
-      const entries = p0Data[selectedItem] || [];
-      content.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>Spieler</th>
-              <th>Klasse</th>
-              <th>P0 gesetzt</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${entries.map(entry => `
-              <tr>
-                <td>${entry.spieler}</td>
-                <td>${entry.klasse}</td>
-                <td>${entry.anzahl}x</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      `;
-    }
-
-    function selectClass(className) {
-      selectedClass = className;
-      selectedItem = itemsByClass[className]?.[0] || "";
-      renderAll();
-    }
-
-    function selectItem(itemName) {
-      selectedItem = itemName;
-      renderAll();
-    }
-
-    function safeText(text) {
-      return String(text).replace(/`/g, "\`");
-    }
 
     async function loadP0DataFromSheet() {
-      renderAll();
-
       try {
-        const response = await fetch(SHEET_CSV_URL);
-        const csvText = await response.text();
-
-        if (!csvText || csvText.toLowerCase().includes("<html") || csvText.toLowerCase().includes("<!doctype")) {
-          throw new Error("Sheet nicht als CSV lesbar. Bitte Freigabe prüfen.");
-        }
-
-        const delimiter = detectDelimiter(csvText);
-        const rows = parseCSV(csvText, delimiter);
-
-        if (!rows.length) {
-          renderAll();
+        if (!SHEET_CSV_URL || SHEET_CSV_URL.includes("HIER_DEINEN")) {
+          console.warn("Kein Google-Sheet-Link eingetragen. P0-Daten bleiben leer.");
           return;
         }
 
+        const response = await fetch(SHEET_CSV_URL);
+        const csvText = await response.text();
+        const rows = parseCSV(csvText);
         const header = rows.shift().map(h => h.trim().toLowerCase());
+
         const raidIndex = header.indexOf("raid");
         const klasseIndex = header.indexOf("klasse");
         const itemIndex = header.indexOf("item");
         const spielerIndex = header.indexOf("spieler");
         const anzahlIndex = header.indexOf("anzahl");
-
-        if ([raidIndex, klasseIndex, itemIndex, spielerIndex, anzahlIndex].includes(-1)) {
-          throw new Error("Spalten nicht gefunden. Benötigt: Raid, Klasse, Item, Spieler, Anzahl");
-        }
-
-        p0Data = {};
-        itemsByClass = {};
 
         rows.forEach(row => {
           const raid = row[raidIndex]?.trim();
@@ -452,40 +486,17 @@
           const anzahl = row[anzahlIndex]?.trim() || "1";
 
           if (!raid || !klasse || !item || !spieler) return;
-          if (raid.toLowerCase() !== CURRENT_RAID.toLowerCase()) return;
+          if (raid.toLowerCase() !== "mc") return;
 
           if (!p0Data[item]) p0Data[item] = [];
           p0Data[item].push({ spieler, klasse, anzahl });
-
-          if (!itemsByClass[klasse]) itemsByClass[klasse] = [];
-          if (!itemsByClass[klasse].includes(item)) {
-            itemsByClass[klasse].push(item);
-          }
         });
-
-        if (!itemsByClass[selectedClass]?.length) {
-          const firstClass = classOrder.find(className => itemsByClass[className]?.length);
-          selectedClass = firstClass || "Krieger";
-        }
-
-        selectedItem = itemsByClass[selectedClass]?.[0] || "";
-        renderAll();
       } catch (error) {
-        console.error(error);
-        document.getElementById("itemContent").innerHTML = '<div class="empty">Sheet konnte nicht geladen werden. Prüfe bitte: Freigabe auf „Jeder mit dem Link – Betrachter“ und Spalten: Raid, Klasse, Item, Spieler, Anzahl.</div>';
+        console.error("Fehler beim Laden der Google-Sheet-Daten:", error);
       }
     }
 
-    function detectDelimiter(text) {
-      const firstLine = text.split(/
-?
-/)[0] || "";
-      const commas = (firstLine.match(/,/g) || []).length;
-      const semicolons = (firstLine.match(/;/g) || []).length;
-      return semicolons > commas ? ";" : ",";
-    }
-
-    function parseCSV(text, delimiter) {
+    function parseCSV(text) {
       const rows = [];
       let currentRow = [];
       let currentValue = "";
@@ -500,7 +511,7 @@
           i++;
         } else if (char === '"') {
           insideQuotes = !insideQuotes;
-        } else if (char === delimiter && !insideQuotes) {
+        } else if (char === "," && !insideQuotes) {
           currentRow.push(currentValue);
           currentValue = "";
         } else if ((char === "
@@ -528,7 +539,90 @@
       return rows;
     }
 
-    loadP0DataFromSheet();
+    let selectedClass = "Krieger";
+    let selectedItem = itemsByClass[selectedClass][0];
+
+    function renderClasses() {
+      const wrapper = document.getElementById("classButtons");
+      wrapper.innerHTML = '<h2 class="panel-title">Klasse wählen</h2>' + classes.map(cls => `
+        <button class="class-btn ${cls.css} ${cls.key === selectedClass ? "active" : ""}" onclick="selectClass('${cls.key}')">
+          ${cls.key}
+        </button>
+      `).join("");
+    }
+
+    function renderItems() {
+      document.getElementById("itemsTitle").textContent = selectedClass + " · MC Items";
+      const wrapper = document.getElementById("itemButtons");
+      const items = itemsByClass[selectedClass] || [];
+
+      wrapper.innerHTML = items.map(item => `
+        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${item}\`)">
+          ${item}
+        </button>
+      `).join("");
+    }
+
+    function renderDetails() {
+      document.getElementById("itemTitle").textContent = selectedItem;
+      const wowhead = wowheadLinks[selectedItem];
+      const link = document.getElementById("wowheadLink");
+
+      if (wowhead) {
+        link.href = wowhead;
+        link.style.display = "inline-flex";
+      } else {
+        link.style.display = "none";
+      }
+
+      const entries = p0Data[selectedItem] || [];
+      const content = document.getElementById("itemContent");
+
+      if (entries.length === 0) {
+        content.innerHTML = '<div class="empty">Für dieses Item ist aktuell noch kein Spieler mit P0 eingetragen.</div>';
+        return;
+      }
+
+      content.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Spieler</th>
+              <th>Klasse</th>
+              <th>P0 gesetzt</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entries.map(entry => `
+              <tr>
+                <td>${entry.spieler}</td>
+                <td>${entry.klasse}</td>
+                <td>${entry.anzahl}x</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function selectClass(className) {
+      selectedClass = className;
+      selectedItem = itemsByClass[className][0];
+      renderAll();
+    }
+
+    function selectItem(itemName) {
+      selectedItem = itemName;
+      renderAll();
+    }
+
+    function renderAll() {
+      renderClasses();
+      renderItems();
+      renderDetails();
+    }
+
+    loadP0DataFromSheet().then(() => renderAll());
   </script>
 </body>
 </html>
