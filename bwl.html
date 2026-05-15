@@ -312,6 +312,19 @@
       ]
     };
 
+    const wowheadLinks = {
+      "Drachenfangzahn": "https://www.wowhead.com/classic/item=19365/claw-of-the-black-drake",
+      "Mantel der Pechschwingenkabale": "https://www.wowhead.com/classic/item=19370/mantle-of-the-blackwing-cabal",
+      "Chromatische Stiefel": "https://www.wowhead.com/classic/item=19387/chromatic-boots",
+      "Runenverzierte Klinge des schwarzen Drachenschwarms": "https://www.wowhead.com/classic/item=19351/maladath-runed-blade-of-the-black-flight",
+      "Edelstein des Gedankensprungs": "https://www.wowhead.com/classic/item=19339/mind-quickening-gem",
+      "Stiefel des reinen Gedankens": "https://www.wowhead.com/classic/item=19438/ringo-of-spell-power",
+      "Neltharions Träne": "https://www.wowhead.com/classic/item=19379/neltharions-tear",
+      "Prestor's Talisman of Connivery": "https://www.wowhead.com/classic/item=19377/prestors-talisman-of-connivery",
+      "Edelstein der Verjüngung": "https://www.wowhead.com/classic/item=19395/rejuvenating-gem",
+      "Ebenholzfarbene Flammenhandschuhe": "https://www.wowhead.com/classic/item=19407/ebony-flame-gloves"
+    };
+
     const p0Data = {
       "Mantel der Pechschwingenkabale": [
         { spieler: "Malamaus", klasse: "Magier", anzahl: 1 }
@@ -346,7 +359,10 @@
     }
 
     function renderDetails() {
-      document.getElementById("itemTitle").textContent = selectedItem;
+      const wowhead = wowheadLinks[selectedItem];
+      document.getElementById("itemTitle").innerHTML = wowhead
+        ? `${selectedItem} <a href="${wowhead}" target="_blank" style="font-size:14px;color:#facc15;text-decoration:none;margin-left:10px;">[Wowhead]</a>`
+        : selectedItem;
       const entries = p0Data[selectedItem] || [];
       const content = document.getElementById("itemContent");
 
