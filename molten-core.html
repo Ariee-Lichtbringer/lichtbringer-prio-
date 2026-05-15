@@ -119,9 +119,7 @@
       box-shadow: 0 8px 18px rgba(0,0,0,.22);
     }
 
-    .class-btn.empty-class {
-      opacity: .45;
-    }
+    .class-btn.empty-class { opacity: .45; }
 
     .class-btn:hover,
     .class-btn.active {
@@ -295,9 +293,7 @@
 
   <script>
     const CURRENT_RAID = "MC";
-    const SHEET_ID = "1t7P5T6t7OCWRY3kGCWIYHWDNXgXmdvpAM1xIj2U4TRw";
-    const SHEET_GID = "0";
-    const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${SHEET_GID}`;
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1t7P5T6t7OCWRY3kGCWIYHWDNXgXmdvpAM1xIj2U4TRw/gviz/tq?tqx=out:csv&gid=0";
 
     const classOrder = ["Krieger", "Jäger", "Priester", "Hexenmeister", "Paladin", "Schurke", "Magier", "Druide"];
 
@@ -312,149 +308,23 @@
       "Druide": "druid"
     };
 
-    const wowheadLinks = {
-      "Band der Akkuria": "https://www.wowhead.com/classic/item=17063/band-of-accuria",
-      "Gurt des Ansturms": "https://www.wowhead.com/classic/item=19137/onslaught-girdle",
-      "Perditions Klinge": "https://www.wowhead.com/classic/item=18816/perditions-blade",
-      "Kernhundzahn": "https://www.wowhead.com/classic/item=18805/core-hound-tooth",
-      "Rechte Fessel des Windsuchers": "https://www.wowhead.com/classic/item=18564/bindings-of-the-windseeker",
-      "Linke Fessel des Windsuchers": "https://www.wowhead.com/classic/item=18563/bindings-of-the-windseeker",
-      "Auge von Sulfuras": "https://www.wowhead.com/classic/item=17204/eye-of-sulfuras",
-      "Flammenwächterstulpen": "https://www.wowhead.com/classic/item=19143/flameguard-gauntlets",
-      "Uralter versteinerter Blatt": "https://www.wowhead.com/classic/item=18703/ancient-petrified-leaf",
-      "Auge der Offenbarung": "https://www.wowhead.com/classic/item=18646/the-eye-of-divinity",
-      "Ring der Zaubermacht": "https://www.wowhead.com/classic/item=19147/ring-of-spell-power",
-      "Robe der flüchtigen Macht": "https://www.wowhead.com/classic/item=19145/robe-of-volatile-power",
-      "Manazündende Kordel": "https://www.wowhead.com/classic/item=19136/mana-igniting-cord",
-      "Band der Sulfuras": "https://www.wowhead.com/classic/item=19138/band-of-sulfuras",
-      "Cauterizing Band": "https://www.wowhead.com/classic/item=19140/cauterizing-band",
-      "Azuresong Mageblade": "https://www.wowhead.com/classic/item=17103/azuresong-mageblade",
-      "Choker of the Fire Lord": "https://www.wowhead.com/classic/item=18814/choker-of-the-fire-lord",
-      "Talisman der ephemeren Macht": "https://www.wowhead.com/classic/item=18820/talisman-of-ephemeral-power",
-      "Sabatons des Flammenwandlers": "https://www.wowhead.com/classic/item=19144/sabatons-of-the-flamewalker",
-      "Wristguards of Stability": "https://www.wowhead.com/classic/item=19146/wristguards-of-stability",
-      "Siegelring des Archimagiers": "https://www.wowhead.com/classic/item=17110/seal-of-the-archmagus",
-      "Spinal Reaper": "https://www.wowhead.com/classic/item=17104/spinal-reaper",
-      "Fire Runed Grimoire": "https://www.wowhead.com/classic/item=19142/fire-runed-grimoire"
-    };
+    const wowheadLinks = {};
 
     let p0Data = {};
     let itemsByClass = {};
     let selectedClass = "Krieger";
     let selectedItem = "";
 
-    async function loadP0DataFromSheet() {
-      renderAll();
-
-      try {
-        const response = await fetch(SHEET_CSV_URL);
-        const csvText = await response.text();
-
-        if (csvText.toLowerCase().includes("<!doctype") || csvText.toLowerCase().includes("html")) {
-          throw new Error("Google Sheet wurde nicht als CSV geladen. Bitte Sheet öffentlich freigeben oder im Web veröffentlichen.");
-        }
-
-        const rows = parseCSV(csvText);
-
-        if (!rows.length) {
-          renderAll();
-          return;
-        }
-
-        const header = rows.shift().map(h => h.trim().toLowerCase());
-        const raidIndex = header.indexOf("raid");
-        const klasseIndex = header.indexOf("klasse");
-        const itemIndex = header.indexOf("item");
-        const spielerIndex = header.indexOf("spieler");
-        const anzahlIndex = header.indexOf("anzahl");
-
-        if ([raidIndex, klasseIndex, itemIndex, spielerIndex, anzahlIndex].includes(-1)) {
-          throw new Error("Die Spalten müssen exakt Raid, Klasse, Item, Spieler, Anzahl heißen.");
-        }
-
-        p0Data = {};
-        itemsByClass = {};
-
-        rows.forEach(row => {
-          const raid = row[raidIndex]?.trim();
-          const klasse = row[klasseIndex]?.trim();
-          const item = row[itemIndex]?.trim();
-          const spieler = row[spielerIndex]?.trim();
-          const anzahl = row[anzahlIndex]?.trim() || "1";
-
-          if (!raid || !klasse || !item || !spieler) return;
-          if (raid.toLowerCase() !== CURRENT_RAID.toLowerCase()) return;
-
-          if (!p0Data[item]) p0Data[item] = [];
-          p0Data[item].push({ spieler, klasse, anzahl });
-
-          if (!itemsByClass[klasse]) itemsByClass[klasse] = [];
-          if (!itemsByClass[klasse].includes(item)) {
-            itemsByClass[klasse].push(item);
-          }
-        });
-
-        if (!itemsByClass[selectedClass]?.length) {
-          const firstClassWithItems = classOrder.find(className => itemsByClass[className]?.length);
-          selectedClass = firstClassWithItems || "Krieger";
-        }
-
-        selectedItem = itemsByClass[selectedClass]?.[0] || "";
-        renderAll();
-      } catch (error) {
-        console.error("Fehler beim Laden der Sheet-Daten:", error);
-        document.getElementById("itemContent").innerHTML = '<div class="empty">Die Sheet-Daten konnten nicht geladen werden. Bitte prüfe, ob das Google Sheet öffentlich freigegeben oder im Web veröffentlicht ist.</div>';
-        renderAll();
-      }
-    }
-
-    function parseCSV(text) {
-      const rows = [];
-      let currentRow = [];
-      let currentValue = "";
-      let insideQuotes = false;
-
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const nextChar = text[i + 1];
-
-        if (char === '"' && insideQuotes && nextChar === '"') {
-          currentValue += '"';
-          i++;
-        } else if (char === '"') {
-          insideQuotes = !insideQuotes;
-        } else if (char === "," && !insideQuotes) {
-          currentRow.push(currentValue);
-          currentValue = "";
-        } else if ((char === "
-" || char === "
-") && !insideQuotes) {
-          if (currentValue || currentRow.length) {
-            currentRow.push(currentValue);
-            rows.push(currentRow);
-          }
-          currentRow = [];
-          currentValue = "";
-          if (char === "
-" && nextChar === "
-") i++;
-        } else {
-          currentValue += char;
-        }
-      }
-
-      if (currentValue || currentRow.length) {
-        currentRow.push(currentValue);
-        rows.push(currentRow);
-      }
-
-      return rows;
+    function renderAll() {
+      renderClasses();
+      renderItems();
+      renderDetails();
     }
 
     function renderClasses() {
       const wrapper = document.getElementById("classButtons");
       wrapper.innerHTML = '<h2 class="panel-title">Klasse wählen</h2>' + classOrder.map(className => {
-        const hasItems = !!itemsByClass[className]?.length;
+        const hasItems = Array.isArray(itemsByClass[className]) && itemsByClass[className].length > 0;
         return `
           <button class="class-btn ${classCss[className] || ""} ${className === selectedClass ? "active" : ""} ${hasItems ? "" : "empty-class"}" onclick="selectClass('${className}')">
             ${className}
@@ -476,7 +346,7 @@
       }
 
       wrapper.innerHTML = items.map(item => `
-        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${item}\`)">
+        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${safeText(item)}\`)">
           ${item}
         </button>
       `).join("");
@@ -489,7 +359,7 @@
 
       if (!selectedItem) {
         itemTitle.textContent = "Kein Item ausgewählt";
-        content.innerHTML = '<div class="empty">Wähle eine Klasse mit vorhandenen P0-Einträgen aus.</div>';
+        content.innerHTML = '<div class="empty">Wähle links eine Klasse mit P0-Einträgen aus.</div>';
         link.style.display = "none";
         return;
       }
@@ -537,14 +407,128 @@
       renderAll();
     }
 
-    function renderAll() {
-      renderClasses();
-      renderItems();
-      renderDetails();
+    function safeText(text) {
+      return String(text).replace(/`/g, "\`");
+    }
+
+    async function loadP0DataFromSheet() {
+      renderAll();
+
+      try {
+        const response = await fetch(SHEET_CSV_URL);
+        const csvText = await response.text();
+
+        if (!csvText || csvText.toLowerCase().includes("<html") || csvText.toLowerCase().includes("<!doctype")) {
+          throw new Error("Sheet nicht als CSV lesbar. Bitte Freigabe prüfen.");
+        }
+
+        const delimiter = detectDelimiter(csvText);
+        const rows = parseCSV(csvText, delimiter);
+
+        if (!rows.length) {
+          renderAll();
+          return;
+        }
+
+        const header = rows.shift().map(h => h.trim().toLowerCase());
+        const raidIndex = header.indexOf("raid");
+        const klasseIndex = header.indexOf("klasse");
+        const itemIndex = header.indexOf("item");
+        const spielerIndex = header.indexOf("spieler");
+        const anzahlIndex = header.indexOf("anzahl");
+
+        if ([raidIndex, klasseIndex, itemIndex, spielerIndex, anzahlIndex].includes(-1)) {
+          throw new Error("Spalten nicht gefunden. Benötigt: Raid, Klasse, Item, Spieler, Anzahl");
+        }
+
+        p0Data = {};
+        itemsByClass = {};
+
+        rows.forEach(row => {
+          const raid = row[raidIndex]?.trim();
+          const klasse = row[klasseIndex]?.trim();
+          const item = row[itemIndex]?.trim();
+          const spieler = row[spielerIndex]?.trim();
+          const anzahl = row[anzahlIndex]?.trim() || "1";
+
+          if (!raid || !klasse || !item || !spieler) return;
+          if (raid.toLowerCase() !== CURRENT_RAID.toLowerCase()) return;
+
+          if (!p0Data[item]) p0Data[item] = [];
+          p0Data[item].push({ spieler, klasse, anzahl });
+
+          if (!itemsByClass[klasse]) itemsByClass[klasse] = [];
+          if (!itemsByClass[klasse].includes(item)) {
+            itemsByClass[klasse].push(item);
+          }
+        });
+
+        if (!itemsByClass[selectedClass]?.length) {
+          const firstClass = classOrder.find(className => itemsByClass[className]?.length);
+          selectedClass = firstClass || "Krieger";
+        }
+
+        selectedItem = itemsByClass[selectedClass]?.[0] || "";
+        renderAll();
+      } catch (error) {
+        console.error(error);
+        document.getElementById("itemContent").innerHTML = '<div class="empty">Sheet konnte nicht geladen werden. Prüfe bitte: Freigabe auf „Jeder mit dem Link – Betrachter“ und Spalten: Raid, Klasse, Item, Spieler, Anzahl.</div>';
+      }
+    }
+
+    function detectDelimiter(text) {
+      const firstLine = text.split(/
+?
+/)[0] || "";
+      const commas = (firstLine.match(/,/g) || []).length;
+      const semicolons = (firstLine.match(/;/g) || []).length;
+      return semicolons > commas ? ";" : ",";
+    }
+
+    function parseCSV(text, delimiter) {
+      const rows = [];
+      let currentRow = [];
+      let currentValue = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"' && insideQuotes && nextChar === '"') {
+          currentValue += '"';
+          i++;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === delimiter && !insideQuotes) {
+          currentRow.push(currentValue);
+          currentValue = "";
+        } else if ((char === "
+" || char === "
+") && !insideQuotes) {
+          if (currentValue || currentRow.length) {
+            currentRow.push(currentValue);
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentValue = "";
+          if (char === "
+" && nextChar === "
+") i++;
+        } else {
+          currentValue += char;
+        }
+      }
+
+      if (currentValue || currentRow.length) {
+        currentRow.push(currentValue);
+        rows.push(currentRow);
+      }
+
+      return rows;
     }
 
     loadP0DataFromSheet();
   </script>
 </body>
 </html>
-
