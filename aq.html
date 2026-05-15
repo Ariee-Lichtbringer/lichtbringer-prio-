@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lichtbringer – Prio 0 AQ40</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg2: #111c33;
+      --panel: rgba(20, 32, 55, 0.92);
+      --panel-light: rgba(35, 53, 86, 0.94);
+      --gold: #facc15;
+      --gold-soft: rgba(250, 204, 21, 0.18);
+      --blue: #60a5fa;
+      --blue-soft: rgba(96, 165, 250, 0.18);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --line: rgba(255, 255, 255, 0.13);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(250, 204, 21, 0.22), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(96, 165, 250, 0.22), transparent 32%),
+        linear-gradient(135deg, var(--bg), var(--bg2));
+    }
+
+    header {
+      position: relative;
+      min-height: 110px;
+      display: grid;
+      grid-template-columns: 80px 1fr 80px;
+      align-items: center;
+      padding: 18px 24px;
+      background:
+        linear-gradient(90deg, rgba(8, 17, 31, 0.98), rgba(30, 64, 175, 0.88), rgba(8, 17, 31, 0.98));
+      border-bottom: 1px solid rgba(250, 204, 21, 0.32);
+      box-shadow: var(--shadow);
+    }
+
+    .back {
+      width: 48px;
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 34px;
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .headline { text-align: center; }
+
+    .headline h1 {
+      margin: 0;
+      font-size: clamp(25px, 4vw, 42px);
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      text-shadow: 0 0 18px rgba(250, 204, 21, 0.25);
+    }
+
+    .headline p {
+      margin: 8px 0 0;
+      color: #dbeafe;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    main {
+      width: min(1580px, calc(100% - 32px));
+      margin: 28px auto 52px;
+      display: grid;
+      grid-template-columns: 235px 1fr 1.05fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .classes {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .panel-title {
+      margin: 0 0 14px;
+      color: var(--gold);
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .class-btn,
+    .item-btn {
+      border: 0;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+    }
+
+    .class-btn {
+      padding: 13px 14px;
+      border-radius: 13px;
+      color: #111827;
+      font-size: 16px;
+      text-align: left;
+      box-shadow: 0 8px 18px rgba(0,0,0,.22);
+    }
+
+    .class-btn:hover,
+    .class-btn.active {
+      transform: translateX(5px);
+      box-shadow: 0 0 0 3px rgba(250,204,21,.25), 0 10px 22px rgba(0,0,0,.28);
+    }
+
+    .warrior { background: #c79c6e; }
+    .hunter { background: #abd473; }
+    .priest { background: #ffffff; }
+    .warlock { background: #9482c9; }
+    .paladin { background: #f58cba; }
+    .rogue { background: #fff569; }
+    .mage { background: #69ccf0; }
+    .druid { background: #ff7d0a; }
+
+    .items-panel { padding: 18px; }
+
+    .items {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .item-btn {
+      min-height: 60px;
+      padding: 13px 16px;
+      border-radius: 16px;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(37, 56, 91, 0.98), rgba(22, 34, 58, 0.98));
+      border: 1px solid rgba(255,255,255,.11);
+      border-left: 5px solid var(--gold);
+      text-align: left;
+      line-height: 1.25;
+      box-shadow: 0 10px 24px rgba(0,0,0,.22);
+    }
+
+    .item-btn::before {
+      content: "✦";
+      color: var(--gold);
+      margin-right: 8px;
+    }
+
+    .item-btn:hover,
+    .item-btn.active {
+      background:
+        linear-gradient(180deg, rgba(59, 86, 135, 0.98), rgba(30, 47, 79, 0.98));
+      box-shadow: 0 0 0 2px rgba(250,204,21,.28), 0 13px 28px rgba(0,0,0,.30);
+      transform: translateY(-2px);
+    }
+
+    .details {
+      padding: 22px;
+      min-height: 640px;
+      background:
+        linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.97));
+    }
+
+    .details-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid rgba(250,204,21,.18);
+    }
+
+    .details h2 {
+      margin: 0;
+      color: var(--gold);
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.15;
+    }
+
+    .wowhead-link {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid rgba(250,204,21,.35);
+      background: rgba(250,204,21,.08);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .wowhead-link:hover { background: rgba(250,204,21,.16); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+      background: rgba(255,255,255,.035);
+    }
+
+    th {
+      padding: 12px 11px;
+      background: linear-gradient(90deg, rgba(250,204,21,.28), rgba(96,165,250,.18));
+      color: var(--text);
+      text-align: left;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    td {
+      padding: 13px 11px;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .empty {
+      padding: 18px;
+      border: 1px dashed rgba(250,204,21,.32);
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(250,204,21,.055);
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .hint {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(96,165,250,.08);
+      color: #dbeafe;
+      font-size: 13px;
+      line-height: 1.45;
+      border: 1px solid rgba(96,165,250,.18);
+    }
+
+    @media (max-width: 1120px) {
+      main { grid-template-columns: 1fr; }
+      .items { grid-template-columns: 1fr; }
+      .details { min-height: auto; }
+    }
+
+    @media (max-width: 620px) {
+      header { grid-template-columns: 52px 1fr 20px; padding: 14px; }
+      .back { width: 42px; height: 42px; }
+      main { width: min(100% - 20px, 1580px); gap: 16px; }
+      .details-header { display: block; }
+      .wowhead-link { margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="back" href="index.html">←</a>
+    <div class="headline">
+      <h1>✨ Lichtbringer · Prio 0 AQ40</h1>
+      <p>Lootübersicht der Gilde Lichtbringer</p>
+    </div>
+    <div></div>
+  </header>
+
+  <main>
+    <section class="panel classes" id="classButtons" aria-label="Klassen">
+      <h2 class="panel-title">Klasse wählen</h2>
+    </section>
+
+    <section class="panel items-panel" aria-label="Items">
+      <h2 class="panel-title" id="itemsTitle">Items</h2>
+      <div class="items" id="itemButtons"></div>
+    </section>
+
+    <section class="panel details" aria-label="P0-Liste">
+      <div class="details-header">
+        <h2 id="itemTitle">Item auswählen</h2>
+        <a id="wowheadLink" class="wowhead-link" href="#" target="_blank" rel="noopener">Wowhead</a>
+      </div>
+      <div id="itemContent"></div>
+      <div class="hint">Die Itemlisten sind fest hinterlegt. Die P0-Spieler werden automatisch aus dem Google Sheet geladen. Im Sheet muss bei Raid <strong>AQ40</strong> stehen.</div>
+    </section>
+  </main>
+
+  <script>
+    const classes = [
+      { key: "Krieger", css: "warrior" },
+      { key: "Jäger", css: "hunter" },
+      { key: "Priester", css: "priest" },
+      { key: "Hexenmeister", css: "warlock" },
+      { key: "Paladin", css: "paladin" },
+      { key: "Schurke", css: "rogue" },
+      { key: "Magier", css: "mage" },
+      { key: "Druide", css: "druid" }
+    ];
+
+    const itemsByClass = {
+      "Krieger": [
+        "Death's Sting",
+        "Ancient Qiraji Ripper",
+        "Crul'shorukh, Edge of Chaos",
+        "Qiraji Execution Bracers",
+        "Badge of the Swarmguard",
+        "Gauntlets of Annihilation",
+        "Belt of Never-ending Agony",
+        "Ring of Emperor Vek'lor",
+        "Dark Edge of Insanity",
+        "Kalims Brustplatte"
+      ],
+      "Jäger": [
+        "Crossbow of Imminent Doom",
+        "Badge of the Swarmguard",
+        "Barb of the Sand Reaver",
+        "Belt of Never-ending Agony",
+        "Cloak of Concentrated Hatred",
+        "Ring of Emperor Vek'lor",
+        "Hive Defiler Wristguards",
+        "Qiraji Execution Bracers"
+      ],
+      "Priester": [
+        "Scepter of the False Prophet",
+        "Amulet of Vek'nilash",
+        "Ring of the Martyr",
+        "Cloak of Clarity",
+        "Robes of the Guardian Saint",
+        "Barrage Shoulders",
+        "Boots of the Redeemed Prophecy",
+        "Angelista's Charm"
+      ],
+      "Hexenmeister": [
+        "Royal Scepter of Vek'lor",
+        "Femur of the Great Sandworm",
+        "Eye of C'Thun",
+        "Dark Storm Gauntlets",
+        "Cloak of the Devoured",
+        "Ring of the Fallen God",
+        "Scepter of the False Prophet",
+        "Leggings of the Festering Swarm"
+      ],
+      "Paladin": [
+        "Scepter of the False Prophet",
+        "Ring of the Martyr",
+        "Cloak of Clarity",
+        "Robes of the Guardian Saint",
+        "Boots of the Redeemed Prophecy",
+        "Amulet of Vek'nilash",
+        "Dark Edge of Insanity",
+        "Gauntlets of Annihilation"
+      ],
+      "Schurke": [
+        "Death's Sting",
+        "Ancient Qiraji Ripper",
+        "Belt of Never-ending Agony",
+        "Badge of the Swarmguard",
+        "Cloak of Concentrated Hatred",
+        "Qiraji Execution Bracers",
+        "Hive Defiler Wristguards",
+        "Ring of Emperor Vek'lor"
+      ],
+      "Magier": [
+        "Royal Scepter of Vek'lor",
+        "Femur of the Great Sandworm",
+        "Eye of C'Thun",
+        "Dark Storm Gauntlets",
+        "Cloak of the Devoured",
+        "Ring of the Fallen God",
+        "Scepter of the False Prophet",
+        "Leggings of the Festering Swarm"
+      ],
+      "Druide": [
+        "Scepter of the False Prophet",
+        "Ring of the Martyr",
+        "Cloak of Clarity",
+        "Robes of the Guardian Saint",
+        "Boots of the Redeemed Prophecy",
+        "Amulet of Vek'nilash",
+        "Angelista's Charm",
+        "Belt of Never-ending Agony"
+      ]
+    };
+
+    const wowheadLinks = {
+      "Death's Sting": "https://www.wowhead.com/classic/item=21126/deaths-sting",
+      "Ancient Qiraji Ripper": "https://www.wowhead.com/classic/item=21650/ancient-qiraji-ripper",
+      "Crul'shorukh, Edge of Chaos": "https://www.wowhead.com/classic/item=19363/crulshorukh-edge-of-chaos",
+      "Qiraji Execution Bracers": "https://www.wowhead.com/classic/item=21602/qiraji-execution-bracers",
+      "Badge of the Swarmguard": "https://www.wowhead.com/classic/item=21670/badge-of-the-swarmguard",
+      "Gauntlets of Annihilation": "https://www.wowhead.com/classic/item=21581/gauntlets-of-annihilation",
+      "Belt of Never-ending Agony": "https://www.wowhead.com/classic/item=21586/belt-of-never-ending-agony",
+      "Ring of Emperor Vek'lor": "https://www.wowhead.com/classic/item=21601/ring-of-emperor-veklor",
+      "Dark Edge of Insanity": "https://www.wowhead.com/classic/item=21134/dark-edge-of-insanity",
+      "Crossbow of Imminent Doom": "https://www.wowhead.com/classic/item=21459/crossbow-of-imminent-doom",
+      "Barb of the Sand Reaver": "https://www.wowhead.com/classic/item=21635/barb-of-the-sand-reaver",
+      "Cloak of Concentrated Hatred": "https://www.wowhead.com/classic/item=21701/cloak-of-concentrated-hatred",
+      "Hive Defiler Wristguards": "https://www.wowhead.com/classic/item=21618/hive-defiler-wristguards",
+      "Scepter of the False Prophet": "https://www.wowhead.com/classic/item=21839/scepter-of-the-false-prophet",
+      "Amulet of Vek'nilash": "https://www.wowhead.com/classic/item=21608/amulet-of-veknilash",
+      "Ring of the Martyr": "https://www.wowhead.com/classic/item=21620/ring-of-the-martyr",
+      "Cloak of Clarity": "https://www.wowhead.com/classic/item=21583/cloak-of-clarity",
+      "Robes of the Guardian Saint": "https://www.wowhead.com/classic/item=21663/robes-of-the-guardian-saint",
+      "Boots of the Redeemed Prophecy": "https://www.wowhead.com/classic/item=21704/boots-of-the-redeemed-prophecy",
+      "Angelista's Charm": "https://www.wowhead.com/classic/item=21690/angelistas-charm",
+      "Royal Scepter of Vek'lor": "https://www.wowhead.com/classic/item=21597/royal-scepter-of-veklor",
+      "Femur of the Great Sandworm": "https://www.wowhead.com/classic/item=21679/femur-of-the-great-sandworm",
+      "Eye of C'Thun": "https://www.wowhead.com/classic/item=21221/eye-of-cthun",
+      "Dark Storm Gauntlets": "https://www.wowhead.com/classic/item=21585/dark-storm-gauntlets",
+      "Cloak of the Devoured": "https://www.wowhead.com/classic/item=22731/cloak-of-the-devoured",
+      "Ring of the Fallen God": "https://www.wowhead.com/classic/item=21709/ring-of-the-fallen-god",
+      "Leggings of the Festering Swarm": "https://www.wowhead.com/classic/item=21676/leggings-of-the-festering-swarm",
+      "Barrage Shoulders": "https://www.wowhead.com/classic/item=21665/barrage-shoulders"
+    };
+
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1t7P5T6t7OCWRY3kGCWIYHWDNXgXmdvpAM1xIj2U4TRw/export?format=csv&gid=0";
+
+    let p0Data = {};
+
+    async function loadP0DataFromSheet() {
+      try {
+        const response = await fetch(SHEET_CSV_URL);
+        const csvText = await response.text();
+        const rows = parseCSV(csvText);
+
+        if (!rows.length) return;
+
+        const header = rows.shift().map(h => h.trim().toLowerCase());
+        const raidIndex = header.indexOf("raid");
+        const klasseIndex = header.indexOf("klasse");
+        const itemIndex = header.indexOf("item");
+        const spielerIndex = header.indexOf("spieler");
+        const anzahlIndex = header.indexOf("anzahl");
+
+        rows.forEach(row => {
+          const raid = row[raidIndex]?.trim();
+          const klasse = row[klasseIndex]?.trim();
+          const item = row[itemIndex]?.trim();
+          const spieler = row[spielerIndex]?.trim();
+          const anzahl = row[anzahlIndex]?.trim() || "1";
+
+          if (!raid || !klasse || !item || !spieler) return;
+          if (raid.toLowerCase() !== "aq40") return;
+
+          if (!p0Data[item]) p0Data[item] = [];
+          p0Data[item].push({ spieler, klasse, anzahl });
+        });
+      } catch (error) {
+        console.error("Fehler beim Laden der Google-Sheet-Daten:", error);
+      }
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let currentRow = [];
+      let currentValue = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"' && insideQuotes && nextChar === '"') {
+          currentValue += '"';
+          i++;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === "," && !insideQuotes) {
+          currentRow.push(currentValue);
+          currentValue = "";
+        } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+          if (currentValue || currentRow.length) {
+            currentRow.push(currentValue);
+            rows.push(currentRow);
+          }
+          currentRow = [];
+          currentValue = "";
+          if (char === "\r" && nextChar === "\n") i++;
+        } else {
+          currentValue += char;
+        }
+      }
+
+      if (currentValue || currentRow.length) {
+        currentRow.push(currentValue);
+        rows.push(currentRow);
+      }
+
+      return rows;
+    }
+
+    let selectedClass = "Krieger";
+    let selectedItem = itemsByClass[selectedClass][0];
+
+    function renderClasses() {
+      const wrapper = document.getElementById("classButtons");
+      wrapper.innerHTML = '<h2 class="panel-title">Klasse wählen</h2>' + classes.map(cls => `
+        <button class="class-btn ${cls.css} ${cls.key === selectedClass ? "active" : ""}" onclick="selectClass('${cls.key}')">
+          ${cls.key}
+        </button>
+      `).join("");
+    }
+
+    function renderItems() {
+      document.getElementById("itemsTitle").textContent = selectedClass + " · AQ40 Items";
+      const wrapper = document.getElementById("itemButtons");
+      const items = itemsByClass[selectedClass] || [];
+
+      wrapper.innerHTML = items.map(item => `
+        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${item}\`)">
+          ${item}
+        </button>
+      `).join("");
+    }
+
+    function renderDetails() {
+      document.getElementById("itemTitle").textContent = selectedItem;
+      const wowhead = wowheadLinks[selectedItem];
+      const link = document.getElementById("wowheadLink");
+
+      if (wowhead) {
+        link.href = wowhead;
+        link.style.display = "inline-flex";
+      } else {
+        link.style.display = "none";
+      }
+
+      const entries = p0Data[selectedItem] || [];
+      const content = document.getElementById("itemContent");
+
+      if (entries.length === 0) {
+        content.innerHTML = '<div class="empty">Für dieses Item ist aktuell noch kein Spieler mit P0 eingetragen.</div>';
+        return;
+      }
+
+      content.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Spieler</th>
+              <th>Klasse</th>
+              <th>P0 gesetzt</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entries.map(entry => `
+              <tr>
+                <td>${entry.spieler}</td>
+                <td>${entry.klasse}</td>
+                <td>${entry.anzahl}x</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function selectClass(className) {
+      selectedClass = className;
+      selectedItem = itemsByClass[className][0];
+      renderAll();
+    }
+
+    function selectItem(itemName) {
+      selectedItem = itemName;
+      renderAll();
+    }
+
+    function renderAll() {
+      renderClasses();
+      renderItems();
+      renderDetails();
+    }
+
+    loadP0DataFromSheet().then(() => renderAll());
+  </script>
+</body>
+</html>
