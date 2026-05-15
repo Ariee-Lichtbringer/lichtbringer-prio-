@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lichtbringer – BWL Prio</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:#0b1020;
+      color:white;
+    }
+
+    header{
+      padding:40px 20px;
+      text-align:center;
+      background:linear-gradient(180deg,#11182d,#0b1020);
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+
+    h1{
+      margin:0;
+      font-size:52px;
+    }
+
+    h2{
+      color:#7aa2ff;
+      margin-top:10px;
+      font-weight:normal;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:20px;
+      color:#facc15;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    main{
+      max-width:1200px;
+      margin:auto;
+      padding:30px 20px;
+    }
+
+    .boss{
+      background:#151f38;
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:18px;
+      padding:20px;
+      margin-bottom:24px;
+    }
+
+    .boss h3{
+      margin-top:0;
+      color:#facc15;
+      font-size:28px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:15px;
+    }
+
+    th{
+      background:#1d2a47;
+      padding:14px;
+      text-align:left;
+    }
+
+    td{
+      padding:12px;
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    tr:hover{
+      background:rgba(255,255,255,0.04);
+    }
+
+    .prio{
+      color:#7aa2ff;
+      font-weight:bold;
+    }
+
+    footer{
+      text-align:center;
+      padding:30px;
+      color:#8b96b3;
+    }
+
+    @media(max-width:800px){
+
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr{
+        display:block;
+      }
+
+      th{
+        display:none;
+      }
+
+      td{
+        border:none;
+        padding:10px 0;
+      }
+
+      .boss{
+        padding:18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🐉 Blackwing Lair</h1>
+  <h2>Lichtbringer – Prio 0 Plus</h2>
+
+  <a class="back" href="index.html">
+    ← Zurück zur Übersicht
+  </a>
+</header>
+
+<main>
+
+  <section class="boss">
+    <h3>Razorgore</h3>
+
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Klasse</th>
+        <th>Priorität</th>
+      </tr>
+
+      <tr>
+        <td>Example Loot Item</td>
+        <td>Warrior</td>
+        <td class="prio">Prio 1</td>
+      </tr>
+
+      <tr>
+        <td>Example Healer Item</td>
+        <td>Priest / Paladin</td>
+        <td class="prio">Prio 2</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="boss">
+    <h3>Vaelastrasz</h3>
+
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Klasse</th>
+        <th>Priorität</th>
+      </tr>
+
+      <tr>
+        <td>Example DPS Item</td>
+        <td>Rogue / Fury</td>
+        <td class="prio">Prio 1</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="boss">
+    <h3>Broodlord Lashlayer</h3>
+
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Klasse</th>
+        <th>Priorität</th>
+      </tr>
+
+      <tr>
+        <td>Example Tank Item</td>
+        <td>Protection Warrior</td>
+        <td class="prio">Prio 1</td>
+      </tr>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  Lichtbringer · Blackwing Lair · Prio 0 Plus
+</footer>
+
+</body>
+</html>
