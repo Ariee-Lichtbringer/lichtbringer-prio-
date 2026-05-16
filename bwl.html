@@ -275,7 +275,7 @@
     <a class="back" href="index.html">←</a>
     <div class="headline">
       <h1>✨ Lichtbringer · Prio 0 Blackwing Lair</h1>
-      <p>Lootübersicht nach Ausrüstungsslots</p>
+      <p>vollautomatisch aus dem Google Sheet</p>
     </div>
     <div></div>
   </header>
@@ -295,67 +295,17 @@
       </div>
       <div class="eligible" id="eligibleClasses"></div>
       <div id="itemContent"></div>
-      <div class="hint">Die Items sind nach Ausrüstungsslot sortiert. P0-Spieler und Anzahl werden aus dem Google Sheet geladen.</div>
+      <div class="hint">Slots, Items, Klassen, Spieler und Anzahl werden vollständig aus dem Google Sheet geladen. Neue Einträge erscheinen automatisch nach dem Aktualisieren der Seite.</div>
     </section>
   </main>
 
   <script>
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1t7P5T6t7OCWRY3kGCWIYHWDNXgXmdvpAM1xIj2U4TRw/export?format=csv&gid=0";
+    const CURRENT_RAID = "BWL";
 
-    const slotOrder = ["Kopf", "Hals", "Schulter", "Rücken", "Brust", "Handgelenke", "Hände", "Taille", "Beine", "Füße", "Finger", "Schmuck", "Schmuckstück", "Waffe", "Distanzwaffe"];
-
-    const itemRows = [
-      { klasse: "Magier", item: "Neltharions Träne", slot: "Schmuck" },
-      { klasse: "Hexenmeister", item: "Neltharions Träne", slot: "Schmuck" },
-      { klasse: "Magier", item: "Mantel der Pechschwingenkabale", slot: "Schulter" },
-      { klasse: "Hexenmeister", item: "Mantel der Pechschwingenkabale", slot: "Schulter" },
-      { klasse: "Priester", item: "Stiefel des reinen Gedankens", slot: "Füße" },
-      { klasse: "Paladin", item: "Stiefel des reinen Gedankens", slot: "Füße" },
-      { klasse: "Druide", item: "Stiefel des reinen Gedankens", slot: "Füße" },
-      { klasse: "Magier", item: "Edelstein des Gedankensprungs", slot: "Schmuckstück" },
-      { klasse: "Krieger", item: "Maladath, Runenverzierte Klinge des schwarzen Drachenschwarms", slot: "Waffe" },
-      { klasse: "Schurke", item: "Maladath, Runenverzierte Klinge des schwarzen Drachenschwarms", slot: "Waffe" },
-      { klasse: "Magier", item: "Armschienen der arkanen Präzision", slot: "Handgelenke" },
-      { klasse: "Hexenmeister", item: "Armschienen der arkanen Präzision", slot: "Handgelenke" },
-      { klasse: "Hexenmeister", item: "Band der dunklen Herrschaft", slot: "Finger" },
-      { klasse: "Magier", item: "Ringos Blizzardstiefel", slot: "Füße" },
-      { klasse: "Hexenmeister", item: "Ebenholzfarbene Flammenhandschuhe", slot: "Hände" },
-      { klasse: "Priester", item: "Edelstein der Verjüngung", slot: "Schmuck" },
-      { klasse: "Paladin", item: "Edelstein der Verjüngung", slot: "Schmuck" },
-      { klasse: "Druide", item: "Edelstein der Verjüngung", slot: "Schmuck" },
-      { klasse: "Krieger", item: "Drachenfangzahn-Talisman", slot: "Schmuck" },
-      { klasse: "Schurke", item: "Drachenfangzahn-Talisman", slot: "Schmuck" },
-      { klasse: "Magier", item: "Band der erzwungenen Konzentration", slot: "Finger" },
-      { klasse: "Hexenmeister", item: "Band der erzwungenen Konzentration", slot: "Finger" },
-      { klasse: "Priester", item: "Schleier des reinen Gedankens", slot: "Rücken" },
-      { klasse: "Paladin", item: "Schleier des reinen Gedankens", slot: "Rücken" },
-      { klasse: "Druide", item: "Schleier des reinen Gedankens", slot: "Rücken" },
-      { klasse: "Druide", item: "Gehärteter Drachenledergürtel", slot: "Taille" },
-      { klasse: "Druide", item: "Malfurions gesegnetes Bollwerk", slot: "Brust" },
-      { klasse: "Hexenmeister", item: "Angelistas Gespür", slot: "Taille" },
-      { klasse: "Priester", item: "Energieerfüllte Gamaschen", slot: "Beine" },
-      { klasse: "Paladin", item: "Energieerfüllte Gamaschen", slot: "Beine" },
-      { klasse: "Druide", item: "Energieerfüllte Gamaschen", slot: "Beine" },
-      { klasse: "Krieger", item: "Chromatische Stiefel", slot: "Füße" },
-      { klasse: "Jäger", item: "Ashjre'thul, Armbrust der Pein", slot: "Distanzwaffe" },
-      { klasse: "Krieger", item: "Chromatisch gehärtetes Schwert", slot: "Waffe" },
-      { klasse: "Schurke", item: "Chromatisch gehärtetes Schwert", slot: "Waffe" },
-      { klasse: "Priester", item: "Lok'amir il Romathis", slot: "Waffe" },
-      { klasse: "Paladin", item: "Lok'amir il Romathis", slot: "Waffe" },
-      { klasse: "Druide", item: "Lok'amir il Romathis", slot: "Waffe" },
-      { klasse: "Magier", item: "Stab der Schattenflamme", slot: "Waffe" },
-      { klasse: "Hexenmeister", item: "Stab der Schattenflamme", slot: "Waffe" },
-      { klasse: "Magier", item: "Mish'undare, Reif des Gedankenschinders", slot: "Kopf" },
-      { klasse: "Hexenmeister", item: "Mish'undare, Reif des Gedankenschinders", slot: "Kopf" },
-      { klasse: "Jäger", item: "Prestors Talisman der Verschwörung", slot: "Hals" },
-      { klasse: "Schurke", item: "Prestors Talisman der Verschwörung", slot: "Hals" },
-      { klasse: "Druide", item: "Prestors Talisman der Verschwörung", slot: "Hals" },
-      { klasse: "Magier", item: "Umhang des Brutlords", slot: "Rücken" },
-      { klasse: "Hexenmeister", item: "Umhang des Brutlords", slot: "Rücken" },
-      { klasse: "Druide", item: "Stiefel der Schattenflamme", slot: "Füße" },
-      { klasse: "Priester", item: "Band aus reinem Elementium", slot: "Finger" },
-      { klasse: "Paladin", item: "Band aus reinem Elementium", slot: "Finger" },
-      { klasse: "Druide", item: "Band aus reinem Elementium", slot: "Finger" }
+    const preferredSlotOrder = [
+      "Kopf", "Hals", "Schulter", "Rücken", "Brust", "Handgelenke", "Hände",
+      "Taille", "Beine", "Füße", "Finger", "Schmuck", "Schmuckstück", "Waffe", "Distanzwaffe"
     ];
 
     const wowheadLinks = {
@@ -388,78 +338,101 @@
       "Band aus reinem Elementium": "https://www.wowhead.com/classic/item=19382/pure-elementium-band"
     };
 
-    let p0Data = {};
-    let selectedSlot = "Kopf";
-    let selectedItem = "Mish'undare, Reif des Gedankenschinders";
+    let rowsFromSheet = [];
+    let selectedSlot = "";
+    let selectedItem = "";
 
-    function normalizeText(text) {
+    function normalizeHeader(text) {
       return String(text || "")
         .toLowerCase()
         .replace(/ä/g, "ae")
         .replace(/ö/g, "oe")
         .replace(/ü/g, "ue")
         .replace(/ß/g, "ss")
-        .replace(/[’'`´]/g, "")
-        .replace(/[-–—]/g, " ")
-        .replace(/[^a-z0-9]+/g, " ")
-        .replace(/\s+/g, " ")
+        .replace(/\s+/g, "")
         .trim();
     }
 
-    function findCanonicalItemName(sheetItemName) {
-      const knownItems = [...new Set(itemRows.map(row => row.item))];
-      const normalizedSheetName = normalizeText(sheetItemName);
-      return knownItems.find(item => normalizeText(item) === normalizedSheetName) || sheetItemName;
+    function getField(row, names) {
+      for (const name of names) {
+        if (row[name] !== undefined) return row[name];
+      }
+      return "";
     }
 
-    function getItemsBySlot(slot) {
-      const items = [];
-      itemRows.filter(row => row.slot === slot).forEach(row => {
-        if (!items.includes(row.item)) items.push(row.item);
-      });
-      return items;
-    }
-
-    function getEligibleClasses(item) {
-      const classes = [];
-      itemRows.filter(row => row.item === item).forEach(row => {
-        if (!classes.includes(row.klasse)) classes.push(row.klasse);
-      });
-      return classes;
-    }
-
-    async function loadP0DataFromSheet() {
+    async function loadRowsFromSheet() {
       try {
         const separator = SHEET_CSV_URL.includes("?") ? "&" : "?";
         const response = await fetch(SHEET_CSV_URL + separator + "cachebust=" + Date.now());
         const csvText = await response.text();
-        const rows = parseCSV(csvText);
-        if (!rows.length) return;
+        const table = parseCSV(csvText);
 
-        const header = rows.shift().map(h => h.trim().toLowerCase());
-        const raidIndex = header.indexOf("raid");
-        const klasseIndex = header.indexOf("klasse");
-        const itemIndex = header.indexOf("item");
-        const spielerIndex = header.indexOf("spieler");
-        const anzahlIndex = header.indexOf("anzahl");
+        if (!table.length) return;
 
-        rows.forEach(row => {
-          const raid = raidIndex >= 0 ? row[raidIndex]?.trim() : "BWL";
-          const klasse = klasseIndex >= 0 ? row[klasseIndex]?.trim() : "";
-          const itemRaw = itemIndex >= 0 ? row[itemIndex]?.trim() : "";
-          const spieler = spielerIndex >= 0 ? row[spielerIndex]?.trim() : "";
-          const anzahl = anzahlIndex >= 0 ? row[anzahlIndex]?.trim() || "1" : "1";
+        const headers = table.shift().map(header => normalizeHeader(header));
 
-          if (!itemRaw || !spieler) return;
-          if (raid && raid.toLowerCase() !== "bwl") return;
-
-          const item = findCanonicalItemName(itemRaw);
-          if (!p0Data[item]) p0Data[item] = [];
-          p0Data[item].push({ spieler, klasse, anzahl });
+        rowsFromSheet = table.map(row => {
+          const obj = {};
+          headers.forEach((header, index) => {
+            obj[header] = (row[index] || "").trim();
+          });
+          return obj;
+        }).filter(row => {
+          const raid = getField(row, ["raid"]);
+          const item = getField(row, ["item"]);
+          const slot = getField(row, ["slot", "platz", "ausruestungsslot"]);
+          return item && slot && (!raid || raid.toLowerCase() === CURRENT_RAID.toLowerCase());
         });
+
+        const slots = getSlots();
+        selectedSlot = slots[0] || "";
+        selectedItem = selectedSlot ? getItemsBySlot(selectedSlot)[0] : "";
       } catch (error) {
         console.error("Fehler beim Laden der Google-Sheet-Daten:", error);
       }
+    }
+
+    function getSlots() {
+      const slots = [...new Set(rowsFromSheet.map(row => getField(row, ["slot", "platz", "ausruestungsslot"])))]
+        .filter(Boolean);
+
+      return slots.sort((a, b) => {
+        const aIndex = preferredSlotOrder.indexOf(a);
+        const bIndex = preferredSlotOrder.indexOf(b);
+        if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+      });
+    }
+
+    function getItemsBySlot(slot) {
+      return [...new Set(
+        rowsFromSheet
+          .filter(row => getField(row, ["slot", "platz", "ausruestungsslot"]) === slot)
+          .map(row => getField(row, ["item"]))
+          .filter(Boolean)
+      )];
+    }
+
+    function getEligibleClasses(item) {
+      return [...new Set(
+        rowsFromSheet
+          .filter(row => getField(row, ["item"]) === item)
+          .map(row => getField(row, ["klasse", "class"]))
+          .filter(Boolean)
+      )];
+    }
+
+    function getP0Entries(item) {
+      return rowsFromSheet
+        .filter(row => getField(row, ["item"]) === item)
+        .map(row => ({
+          spieler: getField(row, ["spieler", "player", "name"]),
+          klasse: getField(row, ["klasse", "class"]),
+          anzahl: getField(row, ["anzahl", "p0", "prio", "count"]) || "1"
+        }))
+        .filter(entry => entry.spieler);
     }
 
     function parseCSV(text) {
@@ -511,17 +484,30 @@
 
     function renderSlots() {
       const wrapper = document.getElementById("slotButtons");
-      wrapper.innerHTML = '<h2 class="panel-title">Slot wählen</h2>' + slotOrder.map(slot => `
+      const slots = getSlots();
+
+      if (!slots.length) {
+        wrapper.innerHTML = '<h2 class="panel-title">Slot wählen</h2><div class="empty">Keine BWL-Daten im Sheet gefunden.</div>';
+        return;
+      }
+
+      wrapper.innerHTML = '<h2 class="panel-title">Slot wählen</h2>' + slots.map(slot => `
         <button class="slot-btn ${slot === selectedSlot ? "active" : ""}" onclick="selectSlot('${slot}')">${slot}</button>
       `).join("");
     }
 
     function renderItems() {
-      document.getElementById("itemsTitle").textContent = selectedSlot + " · BWL Items";
+      document.getElementById("itemsTitle").textContent = selectedSlot ? selectedSlot + " · BWL Items" : "BWL Items";
       const wrapper = document.getElementById("itemButtons");
-      const items = getItemsBySlot(selectedSlot);
+      const items = selectedSlot ? getItemsBySlot(selectedSlot) : [];
+
+      if (!items.length) {
+        wrapper.innerHTML = '<div class="empty">Für diesen Slot gibt es aktuell keine Items im Sheet.</div>';
+        return;
+      }
+
       wrapper.innerHTML = items.map(item => `
-        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${item}\`)">
+        <button class="item-btn ${item === selectedItem ? "active" : ""}" onclick="selectItem(\`${String(item).replace(/`/g, "\\`")}\`)">
           ${item}
           <span class="item-meta">${getEligibleClasses(item).join(", ")}</span>
         </button>
@@ -529,10 +515,22 @@
     }
 
     function renderDetails() {
-      document.getElementById("itemTitle").textContent = selectedItem;
-      document.getElementById("eligibleClasses").innerHTML = `<strong>Klassen:</strong> ${getEligibleClasses(selectedItem).join(", ")}`;
-
+      const title = document.getElementById("itemTitle");
+      const eligible = document.getElementById("eligibleClasses");
+      const content = document.getElementById("itemContent");
       const link = document.getElementById("wowheadLink");
+
+      if (!selectedItem) {
+        title.textContent = "Item auswählen";
+        eligible.innerHTML = "";
+        content.innerHTML = '<div class="empty">Bitte wähle links einen Slot und anschließend ein Item aus.</div>';
+        link.style.display = "none";
+        return;
+      }
+
+      title.textContent = selectedItem;
+      eligible.innerHTML = `<strong>Klassen:</strong> ${getEligibleClasses(selectedItem).join(", ") || "—"}`;
+
       if (wowheadLinks[selectedItem]) {
         link.href = wowheadLinks[selectedItem];
         link.style.display = "inline-flex";
@@ -540,8 +538,7 @@
         link.style.display = "none";
       }
 
-      const entries = p0Data[selectedItem] || [];
-      const content = document.getElementById("itemContent");
+      const entries = getP0Entries(selectedItem);
 
       if (!entries.length) {
         content.innerHTML = '<div class="empty">Für dieses Item ist aktuell noch kein Spieler mit P0 eingetragen.</div>';
@@ -575,7 +572,7 @@
       renderDetails();
     }
 
-    loadP0DataFromSheet().then(() => renderAll());
+    loadRowsFromSheet().then(() => renderAll());
   </script>
 </body>
 </html>
