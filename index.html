@@ -2,11 +2,19 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Lichtbringer – Prio 0 Übersicht</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lichtbringer – Raid Übersicht</title>
 
   <style>
+    :root{
+      --gold:#facc15;
+      --bg:#08111f;
+      --panel:rgba(12,18,32,.82);
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --line:rgba(255,255,255,.10);
+      --shadow:0 20px 45px rgba(0,0,0,.45);
+    }
 
     *{
       margin:0;
@@ -15,258 +23,274 @@
     }
 
     body{
+      min-height:100vh;
       font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+
       background:
-        linear-gradient(rgba(5,10,20,.82), rgba(5,10,20,.92)),
+        linear-gradient(rgba(8,17,31,.78), rgba(8,17,31,.90)),
         url('https://cdn.discordapp.com/attachments/1470114311794987201/1505009929394851981/Screenshot_2026-03-04_231132.jpeg?ex=6a091138&is=6a07bfb8&hm=a1ec0a102aa2326db202409acb16c86f8cb9a702be6ef1507c8f420e0635c669');
+
       background-size:cover;
       background-position:center;
+      background-repeat:no-repeat;
       background-attachment:fixed;
-      color:white;
-      min-height:100vh;
     }
 
     .overlay{
-      width:100%;
       min-height:100vh;
-      padding:40px 30px 80px;
-      backdrop-filter:blur(2px);
+      backdrop-filter: blur(3px);
+      padding:40px 24px 70px;
     }
 
-    .hero{
-      max-width:1500px;
-      margin:auto;
+    .header{
+      text-align:center;
       margin-bottom:40px;
-      padding:50px;
-      border-radius:36px;
-      position:relative;
-      overflow:hidden;
 
-      background:
-        linear-gradient(135deg,
-          rgba(15,23,42,.92),
-          rgba(30,41,59,.82)
-        );
-
-      border:1px solid rgba(250,204,21,.15);
-      box-shadow:0 25px 60px rgba(0,0,0,.55);
-    }
-
-    .hero::before{
-      content:'';
-      position:absolute;
-      inset:0;
-
-      background:
-        radial-gradient(circle at top left,
-          rgba(250,204,21,.12),
-          transparent 28%),
-
-        radial-gradient(circle at bottom right,
-          rgba(96,165,250,.12),
-          transparent 25%);
-    }
-
-    .hero-content{
-      position:relative;
-      z-index:2;
-    }
-
-    .hero-badge{
-      display:inline-block;
-      padding:8px 16px;
-      border-radius:999px;
-      background:rgba(250,204,21,.12);
-      border:1px solid rgba(250,204,21,.22);
-      color:#facc15;
-      font-size:12px;
-      font-weight:900;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      margin-bottom:18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
     }
 
     h1{
-      font-size:clamp(40px,6vw,82px);
-      line-height:1;
-      margin-bottom:18px;
+      font-size:clamp(38px,5vw,72px);
       font-weight:900;
-      color:#f8fafc;
-      text-shadow:0 0 20px rgba(250,204,21,.18);
+      letter-spacing:1px;
+      text-shadow:0 0 18px rgba(250,204,21,.22);
+
+      width:100%;
+      text-align:center;
     }
 
-    .hero-text{
-      max-width:850px;
-      color:#cbd5e1;
+    .subtitle{
+      margin-top:12px;
+      color:#dbeafe;
+      font-size:14px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+
+      width:100%;
+      text-align:center;
+    }
+
+    .info-box{
+      width:min(1100px,100%);
+      margin:0 auto 40px;
+
+      padding:28px;
+
+      border-radius:24px;
+
+      background:rgba(12,18,32,.84);
+
+      border:1px solid rgba(250,204,21,.18);
+
+      backdrop-filter:blur(10px);
+
+      box-shadow:0 15px 40px rgba(0,0,0,.35);
+    }
+
+    .info-box h2{
+      color:#facc15;
+      margin-bottom:18px;
+      font-size:28px;
+    }
+
+    .info-box p{
+      color:#dbeafe;
       line-height:1.7;
-      font-size:17px;
-      font-weight:600;
+      margin-bottom:14px;
+      font-size:15px;
+    }
+
+    .info-box p:last-child{
+      margin-bottom:0;
     }
 
     .raid-grid{
-      max-width:1500px;
+      width:min(1500px,100%);
       margin:auto;
 
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-      gap:26px;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:28px;
     }
 
     .raid-card{
       position:relative;
       overflow:hidden;
 
-      border-radius:32px;
+      border-radius:28px;
+      border:1px solid var(--line);
 
-      background:
-        linear-gradient(180deg,
-          rgba(15,23,42,.96),
-          rgba(15,23,42,.86)
-        );
+      background:var(--panel);
 
-      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(12px);
 
-      box-shadow:
-        0 18px 40px rgba(0,0,0,.45);
+      box-shadow:var(--shadow);
 
-      transition:.22s ease;
+      transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border .22s ease;
     }
 
     .raid-card:hover{
-      transform:translateY(-6px);
+      transform:translateY(-8px);
+
+      border-color:rgba(250,204,21,.45);
+
       box-shadow:
-        0 28px 60px rgba(0,0,0,.55);
+        0 0 0 2px rgba(250,204,21,.14),
+        0 25px 55px rgba(0,0,0,.52);
     }
 
     .raid-banner{
-      height:180px;
+      height:230px;
       overflow:hidden;
       position:relative;
-    }
-
-    .raid-banner::after{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(to top,
-          rgba(15,23,42,.96),
-          rgba(15,23,42,.15));
     }
 
     .raid-banner img{
       width:100%;
       height:100%;
       object-fit:cover;
-      transition:transform .35s ease;
+      transition:transform .4s ease;
     }
 
     .raid-card:hover .raid-banner img{
-      transform:scale(1.05);
+      transform:scale(1.06);
+    }
+
+    .raid-banner::after{
+      content:'';
+      position:absolute;
+      inset:0;
+
+      background:
+        linear-gradient(
+          to top,
+          rgba(8,17,31,.98),
+          rgba(8,17,31,.15)
+        );
     }
 
     .raid-content{
-      padding:28px;
+      padding:24px;
       position:relative;
+      z-index:2;
     }
 
     .raid-icon{
-      width:92px;
-      height:92px;
-      border-radius:50%;
+      width:115px;
+      height:115px;
       object-fit:cover;
 
-      border:4px solid #facc15;
+      border-radius:50%;
 
-      margin-top:-72px;
+      border:3px solid var(--gold);
+
+      margin-top:-82px;
+      margin-bottom:18px;
+
       position:relative;
       z-index:5;
 
       background:#111827;
 
       box-shadow:
-        0 0 24px rgba(250,204,21,.25),
-        0 10px 24px rgba(0,0,0,.45);
+        0 0 25px rgba(250,204,21,.30),
+        0 10px 30px rgba(0,0,0,.45);
     }
 
     .raid-title{
-      margin-top:18px;
-      font-size:34px;
+      font-size:32px;
       font-weight:900;
-      color:#facc15;
-      line-height:1.1;
+      margin-bottom:10px;
+      color:var(--gold);
     }
 
     .raid-description{
-      margin-top:16px;
-      color:#cbd5e1;
-      line-height:1.7;
+      color:var(--muted);
+      line-height:1.6;
       font-size:15px;
-      min-height:88px;
-      font-weight:600;
+      margin-bottom:22px;
     }
 
     .raid-buttons{
-      margin-top:24px;
       display:flex;
       flex-wrap:wrap;
       gap:12px;
     }
 
     .raid-btn{
-      display:inline-flex;
+      flex:1;
+      min-width:130px;
+
+      display:flex;
       align-items:center;
       justify-content:center;
 
-      padding:13px 18px;
+      padding:14px 18px;
 
       border-radius:14px;
 
-      text-decoration:none;
-
-      font-weight:800;
-      font-size:14px;
-
-      transition:.18s ease;
-
       background:
-        linear-gradient(135deg,
-          rgba(250,204,21,.16),
-          rgba(250,204,21,.08));
+        linear-gradient(
+          135deg,
+          rgba(250,204,21,.22),
+          rgba(96,165,250,.15)
+        );
 
-      color:#facc15;
+      border:1px solid rgba(250,204,21,.20);
 
-      border:1px solid rgba(250,204,21,.22);
+      color:var(--text);
+
+      text-decoration:none;
+      font-weight:800;
+      letter-spacing:.02em;
+
+      transition:all .18s ease;
     }
 
     .raid-btn:hover{
       transform:translateY(-2px);
 
       background:
-        linear-gradient(135deg,
-          rgba(250,204,21,.24),
-          rgba(250,204,21,.14));
+        linear-gradient(
+          135deg,
+          rgba(250,204,21,.36),
+          rgba(96,165,250,.22)
+        );
 
-      box-shadow:
-        0 10px 24px rgba(250,204,21,.15);
+      border-color:rgba(250,204,21,.45);
+    }
+
+    .footer{
+      text-align:center;
+      margin-top:60px;
+      color:#cbd5e1;
+      font-size:13px;
+      opacity:.7;
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
 
     @media(max-width:700px){
 
-      .overlay{
-        padding:22px 16px 60px;
+      .raid-banner{
+        height:190px;
       }
 
-      .hero{
-        padding:32px 24px;
-      }
-
-      .raid-grid{
-        grid-template-columns:1fr;
+      .raid-icon{
+        width:95px;
+        height:95px;
+        margin-top:-70px;
       }
 
       .raid-title{
-        font-size:28px;
+        font-size:26px;
       }
 
     }
@@ -278,29 +302,80 @@
 
   <div class="overlay">
 
-    <section class="hero">
+    <div class="header">
 
-      <div class="hero-content">
+      <h1>Lichtbringer</h1>
 
-        <div class="hero-badge">
-          Lichtbringer · World of Warcraft Classic
-        </div>
-
-        <h1>
-          Prio 0 Übersicht
-        </h1>
-
-        <p class="hero-text">
-          Übersicht aller Prio-0-Listen der Lichtbringer inklusive
-          automatischer Synchronisierung mit den Google-Sheets,
-          Suchfunktionen sowie aktuellen Loot- und Raidregeln.
-        </p>
-
+      <div class="subtitle">
+        Prio 0 Plus
       </div>
 
-    </section>
+    </div>
 
-    <section class="raid-grid">
+    <div class="info-box">
+      <h2>📜 P0+ Regelung</h2>
+
+      <p>
+        Die P0 muss spätestens <strong>30 Minuten vor Raidbeginn</strong>
+        im Discord im Channel <strong>„Raidanmeldung“</strong> gepostet werden.
+      </p>
+
+      <p>
+        Für jede erfolgreiche Raidteilnahme erhält der Spieler
+        auf das gesetzte Item einen <strong>P0+ Punkt</strong>.
+      </p>
+
+      <p>
+        Die Vergabe der Items im <strong>P0+ System</strong>
+        richtet sich nach der Anzahl der gesammelten Pluspunkte.
+      </p>
+
+      <p>
+        Ein P0+ Punkt kann erst gesammelt werden,
+        wenn eine gültige <strong>P0-Freigabe</strong> vorliegt.
+        Die Voraussetzungen hierfür stehen in den
+        <strong>Raidregeln der Lichtbringer</strong> im Discord.
+      </p>
+    </div>
+
+    <div class="raid-grid">
+
+      <!-- BWL -->
+      <div class="raid-card">
+
+        <div class="raid-banner">
+          <img
+            src="https://cdn.discordapp.com/attachments/1499098348865720360/1505187637038682184/bwl.jpg?ex=6a09b6b9&is=6a086539&hm=5b32e3c77ee26a60418ae1e7c2597e6bf465e2b323813fe896751a0d8f85b439"
+            alt="BWL"
+          />
+        </div>
+
+        <div class="raid-content">
+
+          <img
+            class="raid-icon"
+            src="https://cdn.discordapp.com/attachments/1499098348865720360/1505187637038682184/bwl.jpg?ex=6a09b6b9&is=6a086539&hm=5b32e3c77ee26a60418ae1e7c2597e6bf465e2b323813fe896751a0d8f85b439"
+            alt="BWL Icon"
+          />
+
+          <div class="raid-title">
+            Blackwing Lair
+          </div>
+
+          <div class="raid-description">
+            Vollautomatische Prio-0 Übersicht für Blackwing Lair.
+            Alle Items, Slots und Spieler werden direkt aus dem Google Sheet geladen.
+          </div>
+
+          <div class="raid-buttons">
+            <a class="raid-btn" href="bwl.html">
+              BWL öffnen
+            </a>
+          </div>
+
+        </div>
+
+      </div>
 
       <!-- MC -->
       <div class="raid-card">
@@ -325,50 +400,13 @@
           </div>
 
           <div class="raid-description">
-            Vollständige Übersicht aller MC-Prio0-Items inklusive
-            Spielerlisten, Klassenfilter und Suchfunktion.
+            Übersicht aller Prio-0 Items aus Molten Core inklusive automatischer
+            Synchronisierung mit dem Loot-Sheet.
           </div>
 
           <div class="raid-buttons">
-            <a class="raid-btn" href="mc.html">
+            <a class="raid-btn" href="molten-core.html">
               MC öffnen
-            </a>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- BWL -->
-      <div class="raid-card">
-
-        <div class="raid-banner">
-          <img
-            src="https://cdn.discordapp.com/attachments/1499098348865720360/1505188424296941598/bwl.jpg?ex=6a09b774&is=6a0865f4&hm=0e9b0c5e9dddcaf3e7dfcb1f847b90ddc25d9c79b5eab6d83f0f82fdc6e0cc14"
-            alt="BWL"
-          />
-        </div>
-
-        <div class="raid-content">
-
-          <img
-            class="raid-icon"
-            src="https://cdn.discordapp.com/attachments/1499098348865720360/1505188424296941598/bwl.jpg?ex=6a09b774&is=6a0865f4&hm=0e9b0c5e9dddcaf3e7dfcb1f847b90ddc25d9c79b5eab6d83f0f82fdc6e0cc14"
-            alt="BWL Icon"
-          />
-
-          <div class="raid-title">
-            Blackwing Lair
-          </div>
-
-          <div class="raid-description">
-            BWL-Prio0-Liste mit Itemsuche, Spielerübersicht
-            und automatischer Synchronisierung mit dem Sheet.
-          </div>
-
-          <div class="raid-buttons">
-            <a class="raid-btn" href="bwl.html">
-              BWL öffnen
             </a>
           </div>
 
@@ -381,30 +419,24 @@
 
         <div class="raid-banner">
           <img
-            src="https://cdn.discordapp.com/attachments/1499098348865720360/1505188498036731974/aq40.jpg?ex=6a09b786&is=6a086606&hm=10e43a7d8a21d4a56bce0b8c65315d62c4ff8bb983ad2f62c35ff7c62c60fd5f"
+            src="https://images5.alphacoders.com/593/593473.jpg"
             alt="AQ40"
           />
         </div>
 
         <div class="raid-content">
 
-          <img
-            class="raid-icon"
-            src="https://cdn.discordapp.com/attachments/1499098348865720360/1505188498036731974/aq40.jpg?ex=6a09b786&is=6a086606&hm=10e43a7d8a21d4a56bce0b8c65315d62c4ff8bb983ad2f62c35ff7c62c60fd5f"
-            alt="AQ40 Icon"
-          />
-
           <div class="raid-title">
             Ahn'Qiraj 40
           </div>
 
           <div class="raid-description">
-            AQ40-Prio0-Liste inklusive Suchfunktion,
-            Klassenübersicht und direkter Sheet-Synchronisierung.
+            Dynamische AQ40 Lootübersicht mit automatischer Anzeige aller
+            gesetzten P0s aus dem Google Sheet.
           </div>
 
           <div class="raid-buttons">
-            <a class="raid-btn" href="aq40.html">
+            <a class="raid-btn" href="aq.html">
               AQ40 öffnen
             </a>
           </div>
@@ -413,7 +445,7 @@
 
       </div>
 
-      <!-- NAXX -->
+      <!-- Naxx -->
       <div class="raid-card">
 
         <div class="raid-banner">
@@ -436,12 +468,12 @@
           </div>
 
           <div class="raid-description">
-            Vollständige Naxx-Prio0-Liste mit
-            Suchfunktion, Klassenfilter und Live-Sync.
+            Raidübersicht für Naxxramas mit vollständiger
+            Sheet-Integration und automatischer P0-Auswertung.
           </div>
 
           <div class="raid-buttons">
-            <a class="raid-btn" href="naxx.html">
+            <a class="raid-btn" href="naxxramas.html">
               Naxx öffnen
             </a>
           </div>
@@ -450,45 +482,11 @@
 
       </div>
 
-      <!-- RAIDREGELN -->
-      <div class="raid-card">
+    </div>
 
-        <div class="raid-banner">
-          <img
-            src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1600&q=80"
-            alt="Raidregeln"
-          />
-        </div>
-
-        <div class="raid-content">
-
-          <img
-            class="raid-icon"
-            src="https://cdn.discordapp.com/attachments/1494701087763075222/1505571044684206192/loot.jpg?ex=6a0b1bcd&is=6a09ca4d&hm=9307058f220ca607f4cf99e3bedb04485d8923923585aa891ff210e21c1bad22"
-            alt="Lootregeln Icon"
-          />
-
-          <div class="raid-title">
-            Loot- & Raidregeln
-          </div>
-
-          <div class="raid-description">
-            Vollständige Übersicht aller Loot-, Raid-,
-            Consumable- und Verzauberungsregeln
-            der Lichtbringer.
-          </div>
-
-          <div class="raid-buttons">
-            <a class="raid-btn" href="raidregeln.html">
-              Regelwerk öffnen
-            </a>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
+    <div class="footer">
+      Lichtbringer Guild Interface · World of Warcraft Classic
+    </div>
 
   </div>
 
