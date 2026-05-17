@@ -8,9 +8,7 @@
   <style>
     :root{
       --gold:#facc15;
-      --gold-soft:rgba(250,204,21,.18);
       --blue:#60a5fa;
-      --blue-soft:rgba(96,165,250,.18);
       --bg:#08111f;
       --panel:rgba(12,18,32,.82);
       --panel-strong:rgba(15,23,42,.92);
@@ -28,7 +26,7 @@
       color:var(--text);
       background:
         linear-gradient(rgba(8,17,31,.78), rgba(8,17,31,.92)),
-        url('https://cdn.discordapp.com/attachments/1470114311794987201/1505009929394851981/Screenshot_2026-03-04_231132.jpeg?ex=6a091138&is=6a07bfb8&hm=a1ec0a102aa2326db202409acb16c86f8cb9a702be6ef1507c8f420e0635c669');
+        url('./images/back.jpeg');
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
@@ -88,7 +86,7 @@
       border:1px solid rgba(250,204,21,.22);
       background:
         linear-gradient(120deg, rgba(8,17,31,.88), rgba(180,55,12,.38)),
-        url('https://cdn.discordapp.com/attachments/1499098348865720360/1505188221129068584/mc.jpg?ex=6a09b744&is=6a0865c4&hm=9e1120e06fd93978329025582144ee766c6544a95ff25641622c0ca70da3b358');
+        url('./images/mc.jpg');
       background-size:cover;
       background-position:center;
       box-shadow:var(--shadow);
@@ -265,7 +263,7 @@
     .items{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
 
     .item-card{
-      min-height:118px;
+      min-height:92px;
       padding:18px;
       border:0;
       cursor:pointer;
@@ -289,7 +287,6 @@
     }
 
     .item-name{ display:block; padding-right:24px; font-size:17px; font-weight:950; line-height:1.28; }
-    .item-meta{ display:block; margin-top:12px; color:#dbeafe; font-size:12px; font-weight:800; line-height:1.45; opacity:.9; }
 
     .details{ padding:24px; min-height:610px; background:radial-gradient(circle at top left, rgba(250,204,21,.10), transparent 30%), var(--panel-strong); }
 
@@ -314,8 +311,6 @@
     }
 
     .wowhead-link:hover{ background:rgba(250,204,21,.16); transform:translateY(-2px); }
-
-    .eligible{ margin-bottom:18px; padding:14px 16px; border-radius:18px; color:#dbeafe; font-size:14px; line-height:1.45; background:rgba(96,165,250,.09); border:1px solid rgba(96,165,250,.16); }
 
     table{ width:100%; border-collapse:collapse; overflow:hidden; border-radius:18px; background:rgba(255,255,255,.035); }
 
@@ -360,7 +355,7 @@
       <div class="hero-content">
         <img
           class="hero-icon"
-          src="https://cdn.discordapp.com/attachments/1499098348865720360/1505188221129068584/mc.jpg?ex=6a09b744&is=6a0865c4&hm=9e1120e06fd93978329025582144ee766c6544a95ff25641622c0ca70da3b358"
+          src="./images/mc.jpg"
           alt="MC Icon"
         />
 
@@ -401,7 +396,6 @@
           <h2 id="itemTitle">Item auswählen</h2>
           <a id="wowheadLink" class="wowhead-link" href="#" target="_blank" rel="noopener">Wowhead</a>
         </div>
-        <div class="eligible" id="eligibleClasses"></div>
         <div id="itemContent"></div>
       </section>
     </main>
@@ -514,21 +508,11 @@
       )];
     }
 
-    function getEligibleClasses(item){
-      return [...new Set(
-        rowsFromSheet
-          .filter(row => getField(row,["item"]) === item)
-          .map(row => getField(row,["klasse","class"]))
-          .filter(Boolean)
-      )];
-    }
-
     function getP0Entries(item){
       return rowsFromSheet
         .filter(row => getField(row,["item"]) === item)
         .map(row => ({
           spieler:getField(row,["spieler","player","name"]),
-          klasse:getField(row,["klasse","class"]),
           anzahl:getField(row,["anzahl","p0","prio","count"]) || "1"
         }))
         .filter(entry => entry.spieler);
@@ -610,27 +594,23 @@
       wrapper.innerHTML = items.map(item => `
         <button class="item-card ${item === selectedItem ? "active" : ""}" onclick="selectItemByValue(this.dataset.item)" data-item="${escapeHTML(item)}">
           <span class="item-name">${escapeHTML(item)}</span>
-          <span class="item-meta">${escapeHTML(getEligibleClasses(item).join(", "))}</span>
         </button>
       `).join("");
     }
 
     function renderDetails(){
       const title = document.getElementById("itemTitle");
-      const eligible = document.getElementById("eligibleClasses");
       const content = document.getElementById("itemContent");
       const link = document.getElementById("wowheadLink");
 
       if(!selectedItem){
         title.textContent = "Item auswählen";
-        eligible.innerHTML = "";
         content.innerHTML = '<div class="empty">Bitte wähle links einen Slot und anschließend ein Item aus.</div>';
         link.style.display = "none";
         return;
       }
 
       title.textContent = selectedItem;
-      eligible.innerHTML = `<strong>Klassen:</strong> ${escapeHTML(getEligibleClasses(selectedItem).join(", ") || "—")}`;
 
       if(wowheadLinks[selectedItem]){
         link.href = wowheadLinks[selectedItem];
@@ -651,7 +631,6 @@
           <thead>
             <tr>
               <th>Spieler</th>
-              <th>Klasse</th>
               <th>P0+</th>
             </tr>
           </thead>
@@ -659,7 +638,6 @@
             ${entries.map(entry => `
               <tr>
                 <td>${escapeHTML(entry.spieler)}</td>
-                <td>${escapeHTML(entry.klasse)}</td>
                 <td><span class="prio-badge">${escapeHTML(entry.anzahl)}x</span></td>
               </tr>
             `).join("")}
@@ -709,27 +687,23 @@
           .map(row => getField(row,["item"]))
           .filter(Boolean)
       )].map(item => ({
-        type:"item",
         label:item,
         item:item,
-        meta:"Item auswählen · " + (getEligibleClasses(item).join(", ") || "Klassen offen")
+        meta:"Item auswählen"
       }));
 
       const playerEntries = rowsFromSheet
         .map(row => ({
-          type:"player",
           spieler:getField(row,["spieler","player","name"]),
-          klasse:getField(row,["klasse","class"]),
           item:getField(row,["item"]),
           slot:getField(row,["slot","platz","ausruestungsslot"]),
           anzahl:getField(row,["anzahl","p0","prio","count"]) || "1"
         }))
         .filter(entry => entry.spieler && entry.item)
         .map(entry => ({
-          type:"player",
           label:entry.spieler + " → " + entry.item,
           item:entry.item,
-          meta:[entry.klasse, entry.slot, "P0+ " + entry.anzahl + "x"].filter(Boolean).join(" · ")
+          meta:[entry.slot, "P0+ " + entry.anzahl + "x"].filter(Boolean).join(" · ")
         }));
 
       return [...itemEntries, ...playerEntries];
@@ -815,5 +789,3 @@
   </script>
 </body>
 </html>
-
-
