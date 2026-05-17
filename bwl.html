@@ -8,9 +8,7 @@
   <style>
     :root{
       --gold:#facc15;
-      --gold-soft:rgba(250,204,21,.18);
       --blue:#60a5fa;
-      --blue-soft:rgba(96,165,250,.18);
       --bg:#08111f;
       --panel:rgba(12,18,32,.82);
       --panel-strong:rgba(15,23,42,.92);
@@ -20,11 +18,7 @@
       --shadow:0 22px 55px rgba(0,0,0,.48);
     }
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+    *{ margin:0; padding:0; box-sizing:border-box; }
 
     body{
       min-height:100vh;
@@ -32,7 +26,7 @@
       color:var(--text);
       background:
         linear-gradient(rgba(8,17,31,.78), rgba(8,17,31,.92)),
-        url('https://cdn.discordapp.com/attachments/1470114311794987201/1505009929394851981/Screenshot_2026-03-04_231132.jpeg?ex=6a091138&is=6a07bfb8&hm=a1ec0a102aa2326db202409acb16c86f8cb9a702be6ef1507c8f420e0635c669');
+        url('./images/back.jpeg');
       background-size:cover;
       background-position:center;
       background-repeat:no-repeat;
@@ -100,7 +94,7 @@
       border:1px solid rgba(250,204,21,.22);
       background:
         linear-gradient(120deg, rgba(8,17,31,.88), rgba(30,64,175,.42)),
-        url('https://cdn.discordapp.com/attachments/1499098348865720360/1505187637038682184/bwl.jpg?ex=6a09b6b9&is=6a086539&hm=5b32e3c77ee26a60418ae1e7c2597e6bf465e2b323813fe896751a0d8f85b439');
+        url('./images/bwl.jpg');
       background-size:cover;
       background-position:center;
       box-shadow:var(--shadow);
@@ -148,15 +142,6 @@
       font-weight:950;
       letter-spacing:.4px;
       text-shadow:0 0 24px rgba(250,204,21,.28);
-    }
-
-    .hero-text p{
-      margin-top:14px;
-      max-width:780px;
-      color:#dbeafe;
-      line-height:1.65;
-      font-size:16px;
-      font-weight:650;
     }
 
     .hero-tags{
@@ -276,9 +261,7 @@
       backdrop-filter:blur(14px);
     }
 
-    .panel-head{
-      padding:20px 20px 0;
-    }
+    .panel-head{ padding:20px 20px 0; }
 
     .panel-title{
       color:var(--gold);
@@ -317,9 +300,7 @@
       box-shadow:0 0 0 3px rgba(250,204,21,.20), 0 12px 28px rgba(0,0,0,.32);
     }
 
-    .items-panel{
-      padding:20px;
-    }
+    .items-panel{ padding:20px; }
 
     .items-title-row{
       display:flex;
@@ -349,7 +330,7 @@
     }
 
     .item-card{
-      min-height:118px;
+      min-height:92px;
       padding:18px;
       border:0;
       cursor:pointer;
@@ -389,16 +370,6 @@
       font-size:17px;
       font-weight:950;
       line-height:1.28;
-    }
-
-    .item-meta{
-      display:block;
-      margin-top:12px;
-      color:#dbeafe;
-      font-size:12px;
-      font-weight:800;
-      line-height:1.45;
-      opacity:.9;
     }
 
     .details{
@@ -447,17 +418,6 @@
       transform:translateY(-2px);
     }
 
-    .eligible{
-      margin-bottom:18px;
-      padding:14px 16px;
-      border-radius:18px;
-      color:#dbeafe;
-      font-size:14px;
-      line-height:1.45;
-      background:rgba(96,165,250,.09);
-      border:1px solid rgba(96,165,250,.16);
-    }
-
     table{
       width:100%;
       border-collapse:collapse;
@@ -483,9 +443,7 @@
       font-weight:800;
     }
 
-    tr:last-child td{
-      border-bottom:0;
-    }
+    tr:last-child td{ border-bottom:0; }
 
     .prio-badge{
       display:inline-flex;
@@ -511,61 +469,21 @@
     }
 
     @media(max-width:1180px){
-      .layout{
-        grid-template-columns:1fr;
-      }
-
-      .hero-content{
-        align-items:center;
-      }
+      .layout{ grid-template-columns:1fr; }
+      .hero-content{ align-items:center; }
     }
 
     @media(max-width:700px){
-      .page{
-        padding:18px 14px 50px;
-      }
-
-      .topbar{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .hero{
-        min-height:460px;
-        border-radius:26px;
-      }
-
-      .hero::after{
-        border-radius:26px;
-      }
-
-      .hero-content{
-        flex-direction:column;
-        align-items:flex-start;
-        padding:26px;
-      }
-
-      .hero-icon{
-        width:116px;
-        height:116px;
-      }
-
-      .search-results{
-        position:relative;
-        top:auto;
-      }
-
-      .items{
-        grid-template-columns:1fr;
-      }
-
-      .details-header{
-        display:block;
-      }
-
-      .wowhead-link{
-        margin-top:14px;
-      }
+      .page{ padding:18px 14px 50px; }
+      .topbar{ flex-direction:column; align-items:stretch; }
+      .hero{ min-height:460px; border-radius:26px; }
+      .hero::after{ border-radius:26px; }
+      .hero-content{ flex-direction:column; align-items:flex-start; padding:26px; }
+      .hero-icon{ width:116px; height:116px; }
+      .search-results{ position:relative; top:auto; }
+      .items{ grid-template-columns:1fr; }
+      .details-header{ display:block; }
+      .wowhead-link{ margin-top:14px; }
     }
   </style>
 </head>
@@ -582,7 +500,7 @@
       <div class="hero-content">
         <img
           class="hero-icon"
-          src="https://cdn.discordapp.com/attachments/1499098348865720360/1505187637038682184/bwl.jpg?ex=6a09b6b9&is=6a086539&hm=5b32e3c77ee26a60418ae1e7c2597e6bf465e2b323813fe896751a0d8f85b439"
+          src="./images/bwl.jpg"
           alt="BWL Icon"
         />
 
@@ -624,7 +542,6 @@
           <h2 id="itemTitle">Item auswählen</h2>
           <a id="wowheadLink" class="wowhead-link" href="#" target="_blank" rel="noopener">Wowhead</a>
         </div>
-        <div class="eligible" id="eligibleClasses"></div>
         <div id="itemContent"></div>
       </section>
     </main>
@@ -642,32 +559,11 @@
 
     const wowheadLinks = {
       "Neltharions Träne": "https://www.wowhead.com/classic/item=19379/neltharions-tear",
-      "Mantel der Pechschwingenkabale": "https://www.wowhead.com/classic/item=19370/mantle-of-the-blackwing-cabal",
-      "Stiefel des reinen Gedankens": "https://www.wowhead.com/classic/item=19437/boots-of-pure-thought",
-      "Edelstein des Gedankensprungs": "https://www.wowhead.com/classic/item=19339/mind-quickening-gem",
-      "Maladath, Runenverzierte Klinge des schwarzen Drachenschwarms": "https://www.wowhead.com/classic/item=19351/maladath-runed-blade-of-the-black-flight",
-      "Armschienen der arkanen Präzision": "https://www.wowhead.com/classic/item=19374/bracers-of-arcane-accuracy",
-      "Band der dunklen Herrschaft": "https://www.wowhead.com/classic/item=19434/band-of-dark-dominion",
-      "Ringos Blizzardstiefel": "https://www.wowhead.com/classic/item=19438/ringos-blizzard-boots",
-      "Ebenholzfarbene Flammenhandschuhe": "https://www.wowhead.com/classic/item=19407/ebony-flame-gloves",
-      "Edelstein der Verjüngung": "https://www.wowhead.com/classic/item=19395/rejuvenating-gem",
       "Drachenfangzahn-Talisman": "https://www.wowhead.com/classic/item=19406/drake-fang-talisman",
-      "Band der erzwungenen Konzentration": "https://www.wowhead.com/classic/item=19403/band-of-forced-concentration",
-      "Schleier des reinen Gedankens": "https://www.wowhead.com/classic/item=19430/shroud-of-pure-thought",
-      "Gehärteter Drachenledergürtel": "https://www.wowhead.com/classic/item=19396/taut-dragonhide-belt",
-      "Malfurions gesegnetes Bollwerk": "https://www.wowhead.com/classic/item=19405/malfurions-blessed-bulwark",
-      "Angelistas Gespür": "https://www.wowhead.com/classic/item=19388/angelistas-grasp",
-      "Energieerfüllte Gamaschen": "https://www.wowhead.com/classic/item=19385/empowered-leggings",
-      "Chromatische Stiefel": "https://www.wowhead.com/classic/item=19387/chromatic-boots",
       "Ashjre'thul, Armbrust der Pein": "https://www.wowhead.com/classic/item=19361/ashjrethul-crossbow-of-smiting",
       "Chromatisch gehärtetes Schwert": "https://www.wowhead.com/classic/item=19352/chromatically-tempered-sword",
       "Lok'amir il Romathis": "https://www.wowhead.com/classic/item=19360/lokamir-il-romathis",
-      "Stab der Schattenflamme": "https://www.wowhead.com/classic/item=19356/staff-of-the-shadow-flame",
-      "Mish'undare, Reif des Gedankenschinders": "https://www.wowhead.com/classic/item=19375/mishundare-circlet-of-the-mind-flayer",
-      "Prestors Talisman der Verschwörung": "https://www.wowhead.com/classic/item=19377/prestors-talisman-of-connivery",
-      "Umhang des Brutlords": "https://www.wowhead.com/classic/item=19378/cloak-of-the-brood-lord",
-      "Stiefel der Schattenflamme": "https://www.wowhead.com/classic/item=19381/boots-of-the-shadow-flame",
-      "Band aus reinem Elementium": "https://www.wowhead.com/classic/item=19382/pure-elementium-band"
+      "Stab der Schattenflamme": "https://www.wowhead.com/classic/item=19356/staff-of-the-shadow-flame"
     };
 
     let rowsFromSheet = [];
@@ -765,21 +661,11 @@
       )];
     }
 
-    function getEligibleClasses(item){
-      return [...new Set(
-        rowsFromSheet
-          .filter(row => getField(row,["item"]) === item)
-          .map(row => getField(row,["klasse","class"]))
-          .filter(Boolean)
-      )];
-    }
-
     function getP0Entries(item){
       return rowsFromSheet
         .filter(row => getField(row,["item"]) === item)
         .map(row => ({
           spieler:getField(row,["spieler","player","name"]),
-          klasse:getField(row,["klasse","class"]),
           anzahl:getField(row,["anzahl","p0","prio","count"]) || "1"
         }))
         .filter(entry => entry.spieler);
@@ -861,27 +747,23 @@
       wrapper.innerHTML = items.map(item => `
         <button class="item-card ${item === selectedItem ? "active" : ""}" onclick="selectItemByValue(this.dataset.item)" data-item="${escapeHTML(item)}">
           <span class="item-name">${escapeHTML(item)}</span>
-          <span class="item-meta">${escapeHTML(getEligibleClasses(item).join(", "))}</span>
         </button>
       `).join("");
     }
 
     function renderDetails(){
       const title = document.getElementById("itemTitle");
-      const eligible = document.getElementById("eligibleClasses");
       const content = document.getElementById("itemContent");
       const link = document.getElementById("wowheadLink");
 
       if(!selectedItem){
         title.textContent = "Item auswählen";
-        eligible.innerHTML = "";
         content.innerHTML = '<div class="empty">Bitte wähle links einen Slot und anschließend ein Item aus.</div>';
         link.style.display = "none";
         return;
       }
 
       title.textContent = selectedItem;
-      eligible.innerHTML = `<strong>Klassen:</strong> ${escapeHTML(getEligibleClasses(selectedItem).join(", ") || "—")}`;
 
       if(wowheadLinks[selectedItem]){
         link.href = wowheadLinks[selectedItem];
@@ -902,7 +784,6 @@
           <thead>
             <tr>
               <th>Spieler</th>
-              <th>Klasse</th>
               <th>P0+</th>
             </tr>
           </thead>
@@ -910,7 +791,6 @@
             ${entries.map(entry => `
               <tr>
                 <td>${escapeHTML(entry.spieler)}</td>
-                <td>${escapeHTML(entry.klasse)}</td>
                 <td><span class="prio-badge">${escapeHTML(entry.anzahl)}x</span></td>
               </tr>
             `).join("")}
@@ -960,27 +840,23 @@
           .map(row => getField(row,["item"]))
           .filter(Boolean)
       )].map(item => ({
-        type:"item",
         label:item,
         item:item,
-        meta:"Item auswählen · " + (getEligibleClasses(item).join(", ") || "Klassen offen")
+        meta:"Item auswählen"
       }));
 
       const playerEntries = rowsFromSheet
         .map(row => ({
-          type:"player",
           spieler:getField(row,["spieler","player","name"]),
-          klasse:getField(row,["klasse","class"]),
           item:getField(row,["item"]),
           slot:getField(row,["slot","platz","ausruestungsslot"]),
           anzahl:getField(row,["anzahl","p0","prio","count"]) || "1"
         }))
         .filter(entry => entry.spieler && entry.item)
         .map(entry => ({
-          type:"player",
           label:entry.spieler + " → " + entry.item,
           item:entry.item,
-          meta:[entry.klasse, entry.slot, "P0+ " + entry.anzahl + "x"].filter(Boolean).join(" · ")
+          meta:[entry.slot, "P0+ " + entry.anzahl + "x"].filter(Boolean).join(" · ")
         }));
 
       return [...itemEntries, ...playerEntries];
