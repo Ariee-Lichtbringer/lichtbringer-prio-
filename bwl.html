@@ -8,6 +8,7 @@
   <style>
     :root{
       --gold:#facc15;
+      --gold-strong:#f59e0b;
       --blue:#60a5fa;
       --bg:#08111f;
       --panel:rgba(12,18,32,.82);
@@ -293,11 +294,24 @@
       transition:.16s ease;
     }
 
-    .slot-btn:hover,
-    .slot-btn.active{
+    .slot-btn:hover{
       transform:translateX(5px);
       background:linear-gradient(135deg, rgba(59,86,135,.98), rgba(25,39,68,.98));
       box-shadow:0 0 0 3px rgba(250,204,21,.20), 0 12px 28px rgba(0,0,0,.32);
+    }
+
+    .slot-btn.active{
+      transform:translateX(5px);
+      color:#1f1300;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.42), transparent 34%),
+        linear-gradient(135deg, var(--gold), var(--gold-strong));
+      border-left:5px solid #fff7ad;
+      border:1px solid rgba(255,247,173,.88);
+      box-shadow:
+        0 0 0 3px rgba(250,204,21,.34),
+        0 0 28px rgba(250,204,21,.65),
+        0 16px 34px rgba(0,0,0,.42);
     }
 
     .items-panel{ padding:20px; }
@@ -357,11 +371,29 @@
       opacity:.9;
     }
 
-    .item-card:hover,
-    .item-card.active{
+    .item-card:hover{
       transform:translateY(-4px);
       border-color:rgba(250,204,21,.42);
       box-shadow:0 0 0 2px rgba(250,204,21,.18), 0 18px 38px rgba(0,0,0,.42);
+    }
+
+    .item-card.active{
+      transform:translateY(-4px);
+      color:#1f1300;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.52), transparent 38%),
+        linear-gradient(180deg, var(--gold), var(--gold-strong));
+      border:1px solid rgba(255,247,173,.95);
+      box-shadow:
+        0 0 0 3px rgba(250,204,21,.35),
+        0 0 34px rgba(250,204,21,.72),
+        0 18px 42px rgba(0,0,0,.48);
+    }
+
+    .item-card.active::before{
+      color:#1f1300;
+      opacity:1;
+      text-shadow:0 0 8px rgba(255,255,255,.55);
     }
 
     .item-name{
