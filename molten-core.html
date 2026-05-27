@@ -8,7 +8,9 @@
   <style>
     :root{
       --gold:#facc15;
+      --gold-soft:rgba(250,204,21,.18);
       --blue:#60a5fa;
+      --blue-soft:rgba(96,165,250,.18);
       --bg:#08111f;
       --panel:rgba(12,18,32,.82);
       --panel-strong:rgba(15,23,42,.92);
@@ -237,10 +239,21 @@
       transition:.16s ease;
     }
 
-    .slot-btn:hover,.slot-btn.active{
+    .slot-btn:hover,
+    .slot-btn.active{
       transform:translateX(5px);
-      background:linear-gradient(135deg, rgba(59,86,135,.98), rgba(25,39,68,.98));
-      box-shadow:0 0 0 3px rgba(250,204,21,.20), 0 12px 28px rgba(0,0,0,.32);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(250,204,21,.38),
+          rgba(120,80,10,.88)
+        );
+      border-left:5px solid #facc15;
+      color:#fff7cc;
+      box-shadow:
+        0 0 0 3px rgba(250,204,21,.25),
+        0 0 22px rgba(250,204,21,.35),
+        0 12px 28px rgba(0,0,0,.32);
     }
 
     .items-panel{ padding:20px; }
@@ -270,7 +283,9 @@
       border-radius:22px;
       color:var(--text);
       text-align:left;
-      background:radial-gradient(circle at top left, rgba(250,204,21,.13), transparent 35%), linear-gradient(180deg, rgba(37,56,91,.98), rgba(16,25,45,.98));
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,.13), transparent 35%),
+        linear-gradient(180deg, rgba(37,56,91,.98), rgba(16,25,45,.98));
       border:1px solid rgba(255,255,255,.11);
       box-shadow:0 12px 28px rgba(0,0,0,.28);
       transition:.18s ease;
@@ -278,12 +293,36 @@
       overflow:hidden;
     }
 
-    .item-card::before{ content:'✦'; color:var(--gold); font-size:18px; position:absolute; right:16px; top:14px; opacity:.9; }
+    .item-card::before{
+      content:'✦';
+      color:var(--gold);
+      font-size:18px;
+      position:absolute;
+      right:16px;
+      top:14px;
+      opacity:.9;
+    }
 
-    .item-card:hover,.item-card.active{
+    .item-card:hover,
+    .item-card.active{
       transform:translateY(-4px);
-      border-color:rgba(250,204,21,.42);
-      box-shadow:0 0 0 2px rgba(250,204,21,.18), 0 18px 38px rgba(0,0,0,.42);
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(255,220,120,.35),
+          transparent 35%
+        ),
+        linear-gradient(
+          180deg,
+          rgba(180,120,20,.95),
+          rgba(90,55,5,.96)
+        );
+      border-color:rgba(250,204,21,.85);
+      color:#fff7cc;
+      box-shadow:
+        0 0 0 2px rgba(250,204,21,.30),
+        0 0 28px rgba(250,204,21,.28),
+        0 18px 38px rgba(0,0,0,.42);
     }
 
     .item-name{ display:block; padding-right:24px; font-size:17px; font-weight:950; line-height:1.28; }
