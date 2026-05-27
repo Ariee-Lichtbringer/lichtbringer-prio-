@@ -243,18 +243,42 @@
       box-shadow:0 12px 28px rgba(0,0,0,.34);
     }
 
-    #globalSearch::placeholder{
-      color:rgba(203,213,225,.78);
+    .search-results{
+      display:none;
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(100% + 10px);
+      z-index:30;
+      max-height:360px;
+      overflow:auto;
+      padding:10px;
+      border-radius:18px;
+      background:rgba(12,18,32,.98);
+      border:1px solid rgba(255,255,255,.13);
+      box-shadow:0 22px 45px rgba(0,0,0,.58);
     }
 
-    #globalSearch:focus{
-      outline:none;
+    .search-result-btn{
+      width:100%;
+      display:block;
+      margin:6px 0;
+      padding:12px 14px;
+      border:0;
+      border-radius:14px;
+      cursor:pointer;
+      text-align:left;
+      color:var(--text);
+      background:rgba(255,255,255,.06);
+      font-weight:950;
+    }
 
-      border-color:rgba(250,204,21,.78);
-
-      box-shadow:
-        0 0 0 3px rgba(250,204,21,.18),
-        0 12px 28px rgba(0,0,0,.42);
+    .search-small{
+      display:block;
+      margin-top:4px;
+      color:#cbd5e1;
+      font-size:12px;
+      font-weight:750;
     }
 
     .layout{
@@ -527,6 +551,8 @@
               autocomplete="off"
             />
 
+            <div id="searchResults" class="search-results"></div>
+
           </div>
 
         </div>
@@ -535,9 +561,33 @@
 
     </section>
 
-  </div>
+    <main class="layout">
 
+      <section class="panel slots" id="slotButtons"></section>
+
+      <section class="panel items-panel">
+
+        <div class="items-title-row">
+          <h2 class="panel-title" id="itemsTitle">Items</h2>
+          <div class="item-count" id="itemCount">0 Items</div>
+        </div>
+
+        <div class="items" id="itemButtons"></div>
+
+      </section>
+
+      <section class="panel details">
+
+        <div class="details-header">
+          <h2 id="itemTitle">Item auswählen</h2>
+        </div>
+
+        <div id="itemContent"></div>
+
+      </section>
+
+    </main>
+
+  </div>
 </body>
 </html>
-
-
