@@ -191,13 +191,12 @@
 
     .raid-buttons{
       display:flex;
-      flex-wrap:wrap;
+      flex-direction:column;
       gap:10px;
     }
 
     .raid-btn{
-      flex:1;
-      min-width:120px;
+      width:100%;
 
       display:flex;
       align-items:center;
@@ -239,6 +238,24 @@
       border-color:rgba(250,204,21,.45);
     }
 
+    .loot-btn{
+      background:
+        linear-gradient(
+          135deg,
+          rgba(96,165,250,.22),
+          rgba(250,204,21,.12)
+        );
+    }
+
+    .loot-btn:hover{
+      background:
+        linear-gradient(
+          135deg,
+          rgba(96,165,250,.34),
+          rgba(250,204,21,.20)
+        );
+    }
+
     .info-box{
       width:min(1100px,100%);
       margin:0 auto 40px;
@@ -269,10 +286,6 @@
       font-size:14px;
     }
 
-    .info-box p:last-child{
-      margin-bottom:0;
-    }
-
     .footer{
       text-align:center;
       margin-top:60px;
@@ -281,24 +294,6 @@
       opacity:.7;
       letter-spacing:.12em;
       text-transform:uppercase;
-    }
-
-    @media(max-width:700px){
-
-      .raid-banner{
-        height:150px;
-      }
-
-      .raid-icon{
-        width:75px;
-        height:75px;
-        margin-top:-52px;
-      }
-
-      .raid-title{
-        font-size:22px;
-      }
-
     }
 
   </style>
@@ -313,7 +308,7 @@
       <h1>Lichtbringer</h1>
 
       <div class="subtitle">
-        Prio 0 Plus
+        Prio 0 Plus & Lootsystem
       </div>
 
     </div>
@@ -338,13 +333,20 @@
           </div>
 
           <div class="raid-description">
-            Vollautomatische Prio-0 Übersicht für Blackwing Lair.
+            P0+ Übersicht und neue Prio-Auswahl
+            für Blackwing Lair.
           </div>
 
           <div class="raid-buttons">
+
             <a class="raid-btn" href="bwl.html">
-              BWL öffnen
+              P0+ Übersicht öffnen
             </a>
+
+            <a class="raid-btn loot-btn" href="loot/bwl-loot.html">
+              Prio-Auswahl öffnen
+            </a>
+
           </div>
 
         </div>
@@ -367,13 +369,20 @@
           </div>
 
           <div class="raid-description">
-            Übersicht aller Prio-0 Items aus Molten Core.
+            P0+ Übersicht und neue Prio-Auswahl
+            für Molten Core.
           </div>
 
           <div class="raid-buttons">
+
             <a class="raid-btn" href="molten-core.html">
-              MC öffnen
+              P0+ Übersicht öffnen
             </a>
+
+            <a class="raid-btn loot-btn" href="loot/mc-loot.html">
+              Prio-Auswahl öffnen
+            </a>
+
           </div>
 
         </div>
@@ -396,13 +405,20 @@
           </div>
 
           <div class="raid-description">
-            Dynamische AQ40 Lootübersicht.
+            P0+ Übersicht und neue Prio-Auswahl
+            für AQ40.
           </div>
 
           <div class="raid-buttons">
+
             <a class="raid-btn" href="aq.html">
-              AQ40 öffnen
+              P0+ Übersicht öffnen
             </a>
+
+            <a class="raid-btn loot-btn" href="loot/aq40-loot.html">
+              Prio-Auswahl öffnen
+            </a>
+
           </div>
 
         </div>
@@ -425,97 +441,19 @@
           </div>
 
           <div class="raid-description">
-            Raidübersicht für Naxxramas.
+            P0+ Übersicht und neue Prio-Auswahl
+            für Naxxramas.
           </div>
 
           <div class="raid-buttons">
+
             <a class="raid-btn" href="naxxramas.html">
-              Naxx öffnen
+              P0+ Übersicht öffnen
             </a>
-          </div>
 
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- LOOTSYSTEM -->
-
-    <div class="info-box" style="margin-bottom:50px;">
-
-      <h2>⚔️ Lichtbringer Lootsystem</h2>
-
-      <p>
-        Das neue Lichtbringer Lootsystem ermöglicht die Verwaltung
-        von P1-, P2- und P3-Prioritäten für alle Classic-Raids.
-      </p>
-
-      <p>
-        Spieler können ihre Prioritäten über einen Raid-PIN eintragen.
-        Die Priolisten bleiben bis zur Freigabe durch den Raidlead verborgen.
-      </p>
-
-      <p>
-        Nach der Veröffentlichung stehen automatische Exporte
-        für CSV, CSV SHORT, TXT und LUA zur Verfügung.
-      </p>
-
-      <div class="raid-grid" style="margin-top:30px; margin-bottom:0;">
-
-        <!-- BWL LOOT -->
-        <div class="raid-card">
-
-          <div class="raid-banner">
-            <img src="./images/bwl.jpg" alt="BWL Loot"/>
-          </div>
-
-          <div class="raid-content">
-
-            <img class="raid-icon" src="./images/bwl.jpg" alt="BWL Loot Icon"/>
-
-            <div class="raid-title">
-              BWL Lootsystem
-            </div>
-
-            <div class="raid-description">
-              P1-, P2- und P3-Verwaltung für Blackwing Lair.
-            </div>
-
-            <div class="raid-buttons">
-              <a class="raid-btn" href="loot/bwl-loot.html">
-                Lootsystem öffnen
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- MC LOOT -->
-        <div class="raid-card">
-
-          <div class="raid-banner">
-            <img src="./images/mc.jpg" alt="MC Loot"/>
-          </div>
-
-          <div class="raid-content">
-
-            <img class="raid-icon" src="./images/mc.jpg" alt="MC Loot Icon"/>
-
-            <div class="raid-title">
-              MC Lootsystem
-            </div>
-
-            <div class="raid-description">
-              Prioritätenverwaltung für Molten Core.
-            </div>
-
-            <div class="raid-buttons">
-              <a class="raid-btn" href="loot/mc-loot.html">
-                Lootsystem öffnen
-              </a>
-            </div>
+            <a class="raid-btn loot-btn" href="loot/naxx-loot.html">
+              Prio-Auswahl öffnen
+            </a>
 
           </div>
 
