@@ -271,7 +271,7 @@
     .tooltip{
       position:fixed;
       z-index:9999;
-      width:300px;
+      width:330px;
       padding:12px;
       border-radius:8px;
       background:linear-gradient(rgba(7,12,31,.96), rgba(2,6,23,.98));
@@ -286,7 +286,7 @@
     }
 
     .tooltip-title{
-      font-size:15px;
+      font-size:16px;
       font-weight:900;
       margin-bottom:3px;
     }
@@ -298,7 +298,7 @@
 
     .tooltip-ilvl{
       color:#ffd100;
-      font-size:11px;
+      font-size:12px;
       font-weight:900;
       margin-bottom:6px;
     }
@@ -322,6 +322,13 @@
       color:#1eff00;
       font-size:11px;
       font-weight:900;
+      margin-top:6px;
+    }
+
+    .tooltip-price{
+      color:#ffffff;
+      font-size:11px;
+      font-weight:800;
       margin-top:6px;
     }
 
@@ -450,7 +457,7 @@
   <div class="header">
     <h1>Blackwing Lair – Prio-Auswahl</h1>
     <div class="subtitle">
-      Die Lootdaten werden direkt aus dem Lichtbringer-Google-Sheet geladen.
+      Die Lootdaten und Tooltip-Werte werden direkt aus dem Lichtbringer-Google-Sheet geladen.
     </div>
   </div>
 
@@ -541,12 +548,11 @@
         </div>
 
         <button class="btn secondary" onclick="refreshLeadStatus()">Status aktualisieren</button>
-
         <button class="btn" onclick="showFullPrioList()">Vollständige Prioliste anzeigen</button>
 
         <div class="status">
           <span class="warn">Raidlead-Status:</span><br>
-          Der Status zeigt nur, wer fertig ist. Die vollständige Prioliste wird erst nach Klick auf „Vollständige Prioliste anzeigen“ sichtbar.
+          Der Status zeigt nur, wer fertig ist. Die vollständige Prioliste wird erst nach Klick sichtbar.
         </div>
 
         <div class="lead-scroll">
@@ -689,13 +695,46 @@ function getFirstFilled(obj, names){
   return "";
 }
 
-function splitPropertyText(text){
-  if(!text) return [];
+function collectStats(obj){
+  const stats = [];
 
-  return String(text)
-    .split(/;|\n|\|/)
-    .map(v => v.trim())
-    .filter(Boolean);
+  const statColumns = [
+    "Schaden",
+    "Tempo",
+    "DPS",
+    "Stat1",
+    "Stat2",
+    "Stat3",
+    "Stat4",
+    "Stat5",
+    "Stat6",
+    "Benötigt",
+    "Eigenschaften",
+    "Stats",
+    "Werte",
+    "Effekt",
+    "Beschreibung"
+  ];
+
+  statColumns.forEach(col => {
+    if(obj[col] && String(obj[col]).trim()){
+      const raw = String(obj[col]).trim();
+      raw.split(/;|\n|\|/).forEach(part => {
+        const clean = part.trim();
+        if(clean) stats.push(clean);
+      });
+    }
+  });
+
+  if(obj.Kategorie){
+    stats.push("Kategorie: " + obj.Kategorie);
+  }
+
+  if(obj.Boss){
+    stats.push("Quelle: " + obj.Boss);
+  }
+
+  return stats;
 }
 
 async function loadLootFromSheet(){
@@ -716,38 +755,23 @@ async function loadLootFromSheet(){
           obj[header] = row[index] || "";
         });
 
-        const eigenschaften = getFirstFilled(obj, [
-          "Eigenschaften",
-          "Eigenschaft",
-          "Stats",
-          "Werte",
-          "Effekt",
-          "Beschreibung"
-        ]);
-
-        const stats = splitPropertyText(eigenschaften);
-
-        if(obj.Kategorie){
-          stats.push("Kategorie: " + obj.Kategorie);
-        }
-
-        if(obj.Boss){
-          stats.push("Quelle: " + obj.Boss);
-        }
-
         return {
           name: obj.Item || "",
           quality: normalizeQuality(obj["Qualität"]),
-          ilvl: obj.ItemID ? "ItemID: " + obj.ItemID : "Blackwing Lair",
-          bind: "Wird beim Aufheben gebunden",
+          ilvl: obj.ItemLevel || obj.Gegenstandsstufe || (obj.ItemID ? "ItemID: " + obj.ItemID : "Blackwing Lair"),
+          bind: obj.Bindung || "Wird beim Aufheben gebunden",
           slot: obj.Slot || "",
           type: obj.Typ || "",
+          damage: obj.Schaden || "",
+          speed: obj.Tempo || "",
+          dps: obj.DPS || "",
           boss: obj.Boss || "",
           category: obj.Kategorie || "",
           wowhead: obj.WowheadLink || "",
           p0: p0FromText(obj.P0Spieler),
-          stats: stats,
-          equip: getFirstFilled(obj, ["Anlegen", "Equip", "Benutzen", "Use"])
+          stats: collectStats(obj),
+          equip: getFirstFilled(obj, ["Anlegen", "Equip", "Benutzen", "Use"]),
+          price: getFirstFilled(obj, ["Verkaufspreis", "Preis", "SellPrice"])
         };
       })
       .filter(item => item.name);
@@ -1027,14 +1051,12 @@ function openLeadPanel(){
 
 function refreshLeadStatus(){
   renderLeadPanel();
-
   document.getElementById("fullPrioBox").classList.add("hidden");
 }
 
 function showFullPrioList(){
   renderLeadPanel();
   renderFullPrioList();
-
   document.getElementById("fullPrioBox").classList.remove("hidden");
 }
 
@@ -1214,9 +1236,24 @@ function resetAllData(){
 function showTooltip(event, item){
   const tooltip = document.getElementById("tooltip");
 
-  const statsHtml = item.stats.length
-    ? item.stats.map(stat => `<div class="tooltip-stat">${stat}</div>`).join("")
-    : `<div class="tooltip-stat">Keine weiteren Eigenschaften im Sheet hinterlegt.</div>`;
+  const statLines = [];
+
+  if(item.damage || item.speed){
+    statLines.push(`
+      <div class="tooltip-row">
+        <span>${item.damage || ""}</span>
+        <span>${item.speed || ""}</span>
+      </div>
+    `);
+  }
+
+  if(item.dps){
+    statLines.push(`<div class="tooltip-stat">${item.dps}</div>`);
+  }
+
+  item.stats.forEach(stat => {
+    statLines.push(`<div class="tooltip-stat">${stat}</div>`);
+  });
 
   const p0Html = item.p0.length
     ? item.p0.map(player => `<li>${player}</li>`).join("")
@@ -1224,7 +1261,9 @@ function showTooltip(event, item){
 
   tooltip.innerHTML = `
     <div class="tooltip-title ${item.quality}">${item.name}</div>
+
     <div class="tooltip-ilvl">${item.ilvl}</div>
+
     <div class="tooltip-bind">${item.bind}</div>
 
     <div class="tooltip-row">
@@ -1232,9 +1271,11 @@ function showTooltip(event, item){
       <span>${item.type || ""}</span>
     </div>
 
-    ${statsHtml}
+    ${statLines.join("")}
 
-    ${item.equip ? `<div class="tooltip-equip">${item.equip}</div>` : ""}
+    ${item.equip ? `<div class="tooltip-equip">Anlegen: ${item.equip}</div>` : ""}
+
+    ${item.price ? `<div class="tooltip-price">Verkaufspreis: ${item.price}</div>` : ""}
 
     <div class="tooltip-p0">
       <strong>Gesetzte P0+</strong>
