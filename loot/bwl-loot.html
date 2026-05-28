@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -7,7 +6,6 @@
   <title>Lichtbringer – BWL Prio-Auswahl</title>
 
   <style>
-
     :root{
       --gold:#facc15;
       --blue:#60a5fa;
@@ -30,11 +28,9 @@
       min-height:100vh;
       font-family:Arial, Helvetica, sans-serif;
       color:var(--text);
-
       background:
         linear-gradient(rgba(8,17,31,.80), rgba(8,17,31,.94)),
         url('../images/bwl.jpg');
-
       background-size:cover;
       background-position:center;
       background-attachment:fixed;
@@ -49,7 +45,6 @@
     .topbar{
       width:min(1400px,100%);
       margin:0 auto 28px;
-
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -184,21 +179,58 @@
       padding-right:4px;
     }
 
-    .loot-item{
-      padding:10px 14px;
+    .loot-item-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
       border-radius:12px;
       background:rgba(2,6,23,.72);
       border:1px solid rgba(255,255,255,.10);
-      cursor:pointer;
       transition:.18s;
-      font-weight:700;
-      font-size:15px;
     }
 
-    .loot-item:hover{
+    .loot-item-row:hover{
       transform:translateX(4px);
       border-color:rgba(250,204,21,.45);
       background:rgba(15,23,42,.92);
+    }
+
+    .loot-name{
+      font-weight:800;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    .prio-buttons{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .mini-btn{
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(250,204,21,.24);
+      background:rgba(15,23,42,.9);
+      color:#f8fafc;
+      font-size:11px;
+      font-weight:900;
+      cursor:pointer;
+      transition:.15s;
+    }
+
+    .mini-btn:hover{
+      background:rgba(250,204,21,.22);
+      border-color:rgba(250,204,21,.55);
+      transform:translateY(-1px);
+    }
+
+    .mini-btn.plus{
+      color:#facc15;
+      border-color:rgba(250,204,21,.40);
     }
 
     .epic{
@@ -220,30 +252,25 @@
     .tooltip{
       position:fixed;
       z-index:9999;
-      width:320px;
-      padding:14px;
+      width:290px;
+      padding:12px;
       border-radius:8px;
-
       background:
         linear-gradient(rgba(7,12,31,.96), rgba(2,6,23,.98));
-
       border:1px solid rgba(148,163,184,.75);
-
       box-shadow:
         0 0 0 1px rgba(255,255,255,.10),
         0 0 28px rgba(0,0,0,.85);
-
       pointer-events:none;
-
       font-family:Arial, Helvetica, sans-serif;
-      font-size:13px;
-      line-height:1.35;
+      font-size:11px;
+      line-height:1.3;
     }
 
     .tooltip-title{
-      font-size:18px;
+      font-size:15px;
       font-weight:900;
-      margin-bottom:4px;
+      margin-bottom:3px;
     }
 
     .tooltip-title.epic{color:#a335ee;}
@@ -253,58 +280,58 @@
 
     .tooltip-ilvl{
       color:#ffd100;
-      font-size:14px;
+      font-size:11px;
       font-weight:900;
-      margin-bottom:8px;
+      margin-bottom:6px;
     }
 
     .tooltip-bind{
       color:#ffffff;
-      font-size:14px;
+      font-size:11px;
       font-weight:800;
     }
 
     .tooltip-row{
       display:flex;
       justify-content:space-between;
-      gap:18px;
+      gap:14px;
       color:#ffffff;
-      font-size:14px;
+      font-size:11px;
       font-weight:800;
       margin-top:2px;
     }
 
     .tooltip-stat{
       color:#ffffff;
-      font-size:14px;
+      font-size:11px;
       font-weight:800;
-      margin-top:4px;
+      margin-top:3px;
     }
 
     .tooltip-equip{
       color:#1eff00;
-      font-size:14px;
+      font-size:11px;
       font-weight:900;
-      margin-top:8px;
+      margin-top:6px;
     }
 
     .tooltip-p0{
-      margin-top:12px;
-      padding-top:10px;
+      margin-top:9px;
+      padding-top:8px;
       border-top:1px solid rgba(255,255,255,.18);
       color:#dbeafe;
     }
 
     .tooltip-p0 strong{
       color:#facc15;
-      font-size:14px;
+      font-size:11px;
     }
 
     .tooltip ul{
-      margin-top:6px;
-      padding-left:20px;
-      line-height:1.55;
-      font-size:13px;
+      margin-top:5px;
+      padding-left:18px;
+      line-height:1.45;
+      font-size:11px;
     }
 
     .hidden{
@@ -315,8 +342,15 @@
       .grid{
         grid-template-columns:1fr;
       }
-    }
 
+      .loot-item-row{
+        grid-template-columns:1fr;
+      }
+
+      .prio-buttons{
+        justify-content:flex-start;
+      }
+    }
   </style>
 </head>
 
@@ -342,7 +376,7 @@
 
     <div class="subtitle">
       Spieler können ihre P1-, P2- und P3-Prioritäten eintragen.
-      Beim Hover über ein Item werden Werte und gesetzte P0+ angezeigt.
+      Neben jedem Item kann direkt P1, P2, P3 oder P0+ gewählt werden.
     </div>
 
   </div>
@@ -385,6 +419,10 @@
 
       <button class="btn" onclick="savePrio()">
         Prios speichern
+      </button>
+
+      <button class="btn" onclick="downloadCSV()">
+        CSV Export
       </button>
 
       <div id="playerStatus" class="status">
@@ -526,19 +564,60 @@ function renderLootList(){
 
   bwlLoot.forEach(item => {
 
-    const div = document.createElement("div");
+    const row = document.createElement("div");
+    row.className = "loot-item-row";
 
-    div.className = `loot-item ${item.quality}`;
+    const name = document.createElement("div");
+    name.className = `loot-name ${item.quality}`;
+    name.textContent = item.name;
 
-    div.textContent = item.name;
+    name.addEventListener("mouseenter", event => showTooltip(event, item));
+    name.addEventListener("mousemove", event => moveTooltip(event));
+    name.addEventListener("mouseleave", hideTooltip);
 
-    div.addEventListener("mouseenter", event => showTooltip(event, item));
-    div.addEventListener("mousemove", event => moveTooltip(event));
-    div.addEventListener("mouseleave", hideTooltip);
+    const buttons = document.createElement("div");
+    buttons.className = "prio-buttons";
 
-    list.appendChild(div);
+    buttons.innerHTML = `
+      <button class="mini-btn" onclick="setPrio('p1','${escapeQuotes(item.name)}')">P1</button>
+      <button class="mini-btn" onclick="setPrio('p2','${escapeQuotes(item.name)}')">P2</button>
+      <button class="mini-btn" onclick="setPrio('p3','${escapeQuotes(item.name)}')">P3</button>
+      <button class="mini-btn plus" onclick="setP0Plus('${escapeQuotes(item.name)}')">P0+</button>
+    `;
+
+    row.appendChild(name);
+    row.appendChild(buttons);
+
+    list.appendChild(row);
 
   });
+
+}
+
+function escapeQuotes(text){
+  return text.replace(/'/g, "\\'");
+}
+
+function setPrio(slot, itemName){
+
+  document.getElementById(slot).value = itemName;
+
+  document.getElementById("playerStatus").innerHTML = `
+    <span class="ok">✓ ${itemName} wurde auf ${slot.toUpperCase()} gesetzt.</span>
+  `;
+
+}
+
+function setP0Plus(itemName){
+
+  document.getElementById("p1").value = itemName;
+  document.getElementById("p2").value = itemName;
+  document.getElementById("p3").value = itemName;
+
+  document.getElementById("playerStatus").innerHTML = `
+    <span class="ok">✓ ${itemName} wurde als P0+ gesetzt.</span><br>
+    Für den Export wird das Item automatisch als P1, P2 und P3 übernommen.
+  `;
 
 }
 
@@ -572,7 +651,49 @@ function savePrio(){
 
   }
 
+  const data = {
+    player,
+    class:playerClass,
+    p1,
+    p2,
+    p3
+  };
+
+  localStorage.setItem("bwl_prio_" + player.toLowerCase(), JSON.stringify(data));
+
   status.innerHTML = `<span class="ok">✓ Deine Prios wurden gespeichert.</span>`;
+
+}
+
+function downloadCSV(){
+
+  const player = document.getElementById("playerName").value.trim();
+  const playerClass = document.getElementById("playerClass").value;
+  const p1 = document.getElementById("p1").value;
+  const p2 = document.getElementById("p2").value;
+  const p3 = document.getElementById("p3").value;
+
+  if(!player || !playerClass || !p1 || !p2 || !p3){
+    alert("Bitte erst Charakter, Klasse und Prios vollständig ausfüllen.");
+    return;
+  }
+
+  const csv = [
+    ["Player","Class","Raid","P1","P2","P3"],
+    [player,playerClass,"BWL",p1,p2,p3]
+  ]
+  .map(row => row.map(value => `"${value}"`).join(","))
+  .join("\n");
+
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "bwl-prio-" + player + ".csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
 
 }
 
@@ -666,6 +787,5 @@ renderLootList();
 
 </body>
 </html>
-```
 
 
