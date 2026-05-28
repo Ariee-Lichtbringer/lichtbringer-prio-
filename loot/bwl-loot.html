@@ -6,6 +6,7 @@
   <title>Lichtbringer – BWL Prio-Auswahl</title>
 
   <style>
+
     :root{
       --gold:#facc15;
       --blue:#60a5fa;
@@ -18,15 +19,21 @@
       --green:#22c55e;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
 
     body{
       min-height:100vh;
       font-family:Arial, Helvetica, sans-serif;
       color:var(--text);
+
       background:
         linear-gradient(rgba(8,17,31,.80), rgba(8,17,31,.94)),
         url('../images/bwl.jpg');
+
       background-size:cover;
       background-position:center;
       background-attachment:fixed;
@@ -41,10 +48,11 @@
     .topbar{
       width:min(1200px,100%);
       margin:0 auto 28px;
+
       display:flex;
       justify-content:space-between;
-      gap:16px;
       align-items:center;
+      gap:16px;
       flex-wrap:wrap;
     }
 
@@ -52,9 +60,13 @@
       color:var(--text);
       text-decoration:none;
       font-weight:800;
+
       border:1px solid var(--line);
+
       padding:12px 16px;
+
       border-radius:14px;
+
       background:rgba(12,18,32,.72);
     }
 
@@ -65,10 +77,15 @@
     .header{
       width:min(1200px,100%);
       margin:0 auto 28px;
+
       padding:30px;
+
       border-radius:24px;
+
       background:var(--panel);
+
       border:1px solid rgba(250,204,21,.22);
+
       box-shadow:0 20px 45px rgba(0,0,0,.45);
     }
 
@@ -87,6 +104,7 @@
     .grid{
       width:min(1200px,100%);
       margin:auto;
+
       display:grid;
       grid-template-columns:1.1fr .9fr;
       gap:22px;
@@ -94,9 +112,13 @@
 
     .card{
       background:var(--panel);
+
       border:1px solid var(--line);
+
       border-radius:22px;
+
       padding:24px;
+
       box-shadow:0 18px 40px rgba(0,0,0,.38);
     }
 
@@ -108,34 +130,59 @@
 
     label{
       display:block;
+
       color:var(--muted);
+
       font-size:13px;
       font-weight:800;
+
       margin:14px 0 7px;
+
       text-transform:uppercase;
       letter-spacing:.08em;
     }
 
-    input, select{
+    input,
+    select{
       width:100%;
+
       padding:13px 14px;
+
       border-radius:12px;
+
       border:1px solid rgba(255,255,255,.16);
+
       background:rgba(2,6,23,.82);
+
       color:var(--text);
+
       font-size:15px;
     }
 
     .btn{
       width:100%;
+
       margin-top:16px;
+
       padding:14px 18px;
+
       border-radius:14px;
+
       border:1px solid rgba(250,204,21,.25);
-      background:linear-gradient(135deg,rgba(250,204,21,.28),rgba(96,165,250,.18));
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(250,204,21,.28),
+          rgba(96,165,250,.18)
+        );
+
       color:var(--text);
+
       font-weight:900;
+
       cursor:pointer;
+
       transition:.18s;
     }
 
@@ -144,29 +191,32 @@
       border-color:rgba(250,204,21,.55);
     }
 
-    .btn.secondary{
-      background:linear-gradient(135deg,rgba(96,165,250,.22),rgba(250,204,21,.12));
-    }
-
-    .btn.danger{
-      background:linear-gradient(135deg,rgba(239,68,68,.35),rgba(250,204,21,.10));
-      border-color:rgba(239,68,68,.35);
-    }
-
     .status{
       margin-top:16px;
+
       padding:14px;
+
       border-radius:14px;
+
       border:1px solid var(--line);
+
       background:rgba(2,6,23,.55);
+
       color:#dbeafe;
+
       line-height:1.6;
       font-size:14px;
     }
 
-    .ok{color:var(--green);font-weight:900}
-    .warn{color:var(--gold);font-weight:900}
-    .bad{color:var(--danger);font-weight:900}
+    .ok{
+      color:var(--green);
+      font-weight:900;
+    }
+
+    .bad{
+      color:var(--danger);
+      font-weight:900;
+    }
 
     .hidden{
       display:none;
@@ -179,7 +229,8 @@
       font-size:14px;
     }
 
-    th,td{
+    th,
+    td{
       padding:10px;
       border-bottom:1px solid rgba(255,255,255,.10);
       text-align:left;
@@ -189,27 +240,46 @@
       color:var(--gold);
       font-size:12px;
       text-transform:uppercase;
-      letter-spacing:.08em;
     }
 
-    .export-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-      margin-top:14px;
-    }
+    .item-preview{
+      display:none;
 
-    .small{
-      font-size:13px;
-      color:var(--muted);
+      margin-top:10px;
+
+      padding:14px;
+
+      border-radius:14px;
+
+      background:rgba(2,6,23,.88);
+
+      border:1px solid rgba(250,204,21,.35);
+
+      box-shadow:0 0 22px rgba(250,204,21,.18);
+
+      color:#dbeafe;
+
       line-height:1.6;
+      font-size:14px;
+    }
+
+    .item-preview strong{
+      color:#facc15;
+    }
+
+    .item-preview ul{
+      margin-top:8px;
+      padding-left:18px;
     }
 
     @media(max-width:900px){
+
       .grid{
         grid-template-columns:1fr;
       }
+
     }
+
   </style>
 </head>
 
@@ -218,19 +288,31 @@
 <div class="overlay">
 
   <div class="topbar">
-    <a class="back" href="../index.html">← Zurück zur Startseite</a>
-    <a class="back" href="../bwl.html">P0+ Übersicht öffnen</a>
+
+    <a class="back" href="../index.html">
+      ← Zurück zur Startseite
+    </a>
+
+    <a class="back" href="../bwl.html">
+      P0+ Übersicht öffnen
+    </a>
+
   </div>
 
   <div class="header">
+
     <h1>Blackwing Lair – Prio-Auswahl</h1>
+
     <div class="subtitle">
-      Hier können Spieler ihre P1-, P2- und P3-Prioritäten für BWL eintragen.
-      Die Liste bleibt bis zur Freigabe durch den Raidlead verborgen.
+      Spieler können ihre P1-, P2- und P3-Prioritäten eintragen.
+      Die Liste bleibt bis zur Freigabe verborgen.
     </div>
+
   </div>
 
   <div class="grid">
+
+    <!-- SPIELER -->
 
     <div class="card">
 
@@ -243,6 +325,7 @@
       <input id="playerName" type="text" placeholder="z. B. Milkshake">
 
       <label>Klasse</label>
+
       <select id="playerClass">
         <option value="">Klasse auswählen</option>
         <option>Krieger</option>
@@ -256,16 +339,48 @@
         <option>Druide</option>
       </select>
 
+      <!-- P1 -->
+
       <label>P1</label>
-      <select id="p1"></select>
+
+      <select
+        id="p1"
+        onmouseenter="showItemInfo('p1','p1Info')"
+        onmouseleave="hideItemInfo('p1Info')"
+        onchange="showItemInfo('p1','p1Info')"
+      ></select>
+
+      <div id="p1Info" class="item-preview"></div>
+
+      <!-- P2 -->
 
       <label>P2</label>
-      <select id="p2"></select>
+
+      <select
+        id="p2"
+        onmouseenter="showItemInfo('p2','p2Info')"
+        onmouseleave="hideItemInfo('p2Info')"
+        onchange="showItemInfo('p2','p2Info')"
+      ></select>
+
+      <div id="p2Info" class="item-preview"></div>
+
+      <!-- P3 -->
 
       <label>P3</label>
-      <select id="p3"></select>
 
-      <button class="btn" onclick="savePrio()">Prios speichern</button>
+      <select
+        id="p3"
+        onmouseenter="showItemInfo('p3','p3Info')"
+        onmouseleave="hideItemInfo('p3Info')"
+        onchange="showItemInfo('p3','p3Info')"
+      ></select>
+
+      <div id="p3Info" class="item-preview"></div>
+
+      <button class="btn" onclick="savePrio()">
+        Prios speichern
+      </button>
 
       <div id="playerStatus" class="status">
         Status: Bitte Raid-PIN eingeben und Prios auswählen.
@@ -273,71 +388,38 @@
 
     </div>
 
+    <!-- RAIDLEAD -->
+
     <div class="card">
 
       <h2>Raidlead-Bereich</h2>
 
-      <p class="small">
-        Im späteren Live-System wird dieser Bereich durch einen echten Admin-Zugang geschützt.
-        Für diese erste Version dient er als Vorlage.
-      </p>
-
       <label>Raidlead-PIN</label>
-      <input id="leadPin" type="password" placeholder="Raidlead-PIN eingeben">
+      <input id="leadPin" type="password" placeholder="Raidlead-PIN">
 
-      <button class="btn secondary" onclick="openLeadPanel()">Raidlead-Panel öffnen</button>
+      <button class="btn" onclick="openLeadPanel()">
+        Raidlead-Panel öffnen
+      </button>
 
       <div id="leadPanel" class="hidden">
 
-        <div class="status">
-          <span class="warn">Prio-Liste ist zunächst verborgen.</span><br>
-          Der Raidlead sieht nur, ob Spieler ihre Prios vollständig eingetragen haben.
-        </div>
-
         <table>
+
           <thead>
+
             <tr>
               <th>Spieler</th>
               <th>Klasse</th>
               <th>P1</th>
               <th>P2</th>
               <th>P3</th>
-              <th>Status</th>
             </tr>
+
           </thead>
+
           <tbody id="leadTable"></tbody>
+
         </table>
-
-        <button class="btn" onclick="releaseList()">Prioliste veröffentlichen</button>
-        <button class="btn danger" onclick="resetData()">Testdaten löschen</button>
-
-        <div id="publicList" class="hidden">
-
-          <h2 style="margin-top:24px;">Veröffentlichte Prioliste</h2>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Spieler</th>
-                <th>Klasse</th>
-                <th>P1</th>
-                <th>P2</th>
-                <th>P3</th>
-              </tr>
-            </thead>
-            <tbody id="prioTable"></tbody>
-          </table>
-
-          <h2 style="margin-top:24px;">Export</h2>
-
-          <div class="export-grid">
-            <button class="btn secondary" onclick="downloadExport('csv')">CSV</button>
-            <button class="btn secondary" onclick="downloadExport('csvshort')">CSV SHORT</button>
-            <button class="btn secondary" onclick="downloadExport('txt')">TXT</button>
-            <button class="btn secondary" onclick="downloadExport('lua')">LUA</button>
-          </div>
-
-        </div>
 
       </div>
 
@@ -348,215 +430,239 @@
 </div>
 
 <script>
-  const RAID_PIN = "bwl";
-  const LEAD_PIN = "lead";
 
-  const bwlItems = [
-    "Neltharions Träne",
-    "Klaue von Chromaggus",
-    "Ashkandi, Großschwert der Bruderschaft",
-    "Drake Fang Talisman",
-    "Reißzahn der Gesichtslosen",
-    "Elementiumverstärkter Bulwark",
-    "Maladath, Runenverzierte Klinge des schwarzen Drachenschwarms",
-    "Lok'amir il Romathis",
-    "Chromatisch gehärtetes Schwert",
-    "Stab des Schattenflammenfokus",
-    "Mish'undare, Reif des Gedankenschinders",
-    "Prestor's Talisman der Verschwörung",
-    "Band des Peinigers",
-    "Ring der Schwarzen Brut",
-    "Mantel des Feuerfürsten",
-    "Schulterstücke des Zorn",
-    "Blutreißer"
-  ];
+const RAID_PIN = "bwl";
+const LEAD_PIN = "lead";
 
-  function fillItems(){
-    ["p1","p2","p3"].forEach(id => {
-      const select = document.getElementById(id);
-      select.innerHTML = `<option value="">Item auswählen</option>`;
-      bwlItems.forEach(item => {
-        const option = document.createElement("option");
-        option.value = item;
-        option.textContent = item;
-        select.appendChild(option);
-      });
-    });
-  }
+const bwlItems = [
 
-  function getData(){
-    return JSON.parse(localStorage.getItem("bwl_prios") || "[]");
-  }
+  "Neltharions Träne",
+  "Klaue von Chromaggus",
+  "Ashkandi, Großschwert der Bruderschaft",
+  "Drake Fang Talisman",
+  "Maladath, Runenverzierte Klinge des schwarzen Drachenschwarms",
+  "Mish'undare, Reif des Gedankenschinders",
+  "Lok'amir il Romathis",
+  "Band des Peinigers",
+  "Blutreißer"
 
-  function setData(data){
-    localStorage.setItem("bwl_prios", JSON.stringify(data));
-  }
+];
 
-  function savePrio(){
-    const pin = document.getElementById("raidPin").value.trim();
-    const player = document.getElementById("playerName").value.trim();
-    const playerClass = document.getElementById("playerClass").value;
-    const p1 = document.getElementById("p1").value;
-    const p2 = document.getElementById("p2").value;
-    const p3 = document.getElementById("p3").value;
-    const status = document.getElementById("playerStatus");
+const p0PlusData = {
 
-    if(pin !== RAID_PIN){
-      status.innerHTML = `<span class="bad">Falscher Raid-PIN.</span>`;
-      return;
-    }
+  "Neltharions Träne": [
+    { player:"Milkshake", points:6 },
+    { player:"Ariee", points:4 },
+    { player:"Burny", points:2 }
+  ],
 
-    if(!player || !playerClass || !p1 || !p2 || !p3){
-      status.innerHTML = `<span class="bad">Bitte Charakter, Klasse und P1–P3 vollständig ausfüllen.</span>`;
-      return;
-    }
+  "Drake Fang Talisman": [
+    { player:"Mala", points:8 },
+    { player:"Setsunai", points:5 },
+    { player:"Protekta", points:3 }
+  ],
 
-    let data = getData();
+  "Ashkandi, Großschwert der Bruderschaft": [
+    { player:"Bimmi", points:7 },
+    { player:"Enno", points:4 }
+  ]
 
-    data = data.filter(entry => entry.player.toLowerCase() !== player.toLowerCase());
+};
 
-    data.push({
-      player,
-      class: playerClass,
-      p1,
-      p2,
-      p3,
-      timestamp: new Date().toISOString()
+function fillItems(){
+
+  ["p1","p2","p3"].forEach(id => {
+
+    const select = document.getElementById(id);
+
+    select.innerHTML = `<option value="">Item auswählen</option>`;
+
+    bwlItems.forEach(item => {
+
+      const option = document.createElement("option");
+
+      option.value = item;
+      option.textContent = item;
+
+      select.appendChild(option);
+
     });
 
-    setData(data);
+  });
+
+}
+
+function showItemInfo(selectId, infoId){
+
+  const item = document.getElementById(selectId).value;
+
+  const box = document.getElementById(infoId);
+
+  if(!item){
+
+    box.style.display = "block";
+
+    box.innerHTML = "Bitte zuerst ein Item auswählen.";
+
+    return;
+
+  }
+
+  const entries = p0PlusData[item] || [];
+
+  if(entries.length === 0){
+
+    box.style.display = "block";
+
+    box.innerHTML = `
+      <strong>${item}</strong><br>
+      Keine P0+-Einträge vorhanden.
+    `;
+
+    return;
+
+  }
+
+  let html = `<strong>${item}</strong><br>P0+ Übersicht:<ul>`;
+
+  entries.forEach(entry => {
+
+    html += `
+      <li>${entry.player} – ${entry.points} Punkte</li>
+    `;
+
+  });
+
+  html += `</ul>`;
+
+  box.style.display = "block";
+
+  box.innerHTML = html;
+
+}
+
+function hideItemInfo(infoId){
+
+  document.getElementById(infoId).style.display = "none";
+
+}
+
+function getData(){
+
+  return JSON.parse(localStorage.getItem("bwl_prios") || "[]");
+
+}
+
+function setData(data){
+
+  localStorage.setItem("bwl_prios", JSON.stringify(data));
+
+}
+
+function savePrio(){
+
+  const pin = document.getElementById("raidPin").value.trim();
+
+  const player = document.getElementById("playerName").value.trim();
+
+  const playerClass = document.getElementById("playerClass").value;
+
+  const p1 = document.getElementById("p1").value;
+  const p2 = document.getElementById("p2").value;
+  const p3 = document.getElementById("p3").value;
+
+  const status = document.getElementById("playerStatus");
+
+  if(pin !== RAID_PIN){
 
     status.innerHTML = `
-      <span class="ok">✓ Deine Prios wurden gespeichert.</span><br>
-      Die vollständige Prioliste wird erst nach Freigabe durch den Raidlead sichtbar.
+      <span class="bad">Falscher Raid-PIN.</span>
     `;
+
+    return;
+
   }
 
-  function openLeadPanel(){
-    const pin = document.getElementById("leadPin").value.trim();
+  if(!player || !playerClass || !p1 || !p2 || !p3){
 
-    if(pin !== LEAD_PIN){
-      alert("Falscher Raidlead-PIN.");
-      return;
-    }
+    status.innerHTML = `
+      <span class="bad">
+        Bitte alles vollständig ausfüllen.
+      </span>
+    `;
 
-    document.getElementById("leadPanel").classList.remove("hidden");
-    renderLeadTable();
+    return;
+
   }
 
-  function renderLeadTable(){
-    const data = getData();
-    const tbody = document.getElementById("leadTable");
+  let data = getData();
 
-    tbody.innerHTML = "";
+  data = data.filter(
+    entry => entry.player.toLowerCase() !== player.toLowerCase()
+  );
 
-    data.forEach(entry => {
-      const complete = entry.p1 && entry.p2 && entry.p3;
+  data.push({
+    player,
+    class:playerClass,
+    p1,
+    p2,
+    p3
+  });
 
-      tbody.innerHTML += `
-        <tr>
-          <td>${entry.player}</td>
-          <td>${entry.class}</td>
-          <td>${entry.p1 ? "✓" : "–"}</td>
-          <td>${entry.p2 ? "✓" : "–"}</td>
-          <td>${entry.p3 ? "✓" : "–"}</td>
-          <td>${complete ? '<span class="ok">fertig</span>' : '<span class="bad">offen</span>'}</td>
-        </tr>
-      `;
-    });
+  setData(data);
+
+  status.innerHTML = `
+    <span class="ok">
+      ✓ Deine Prios wurden gespeichert.
+    </span>
+  `;
+
+}
+
+function openLeadPanel(){
+
+  const pin = document.getElementById("leadPin").value.trim();
+
+  if(pin !== LEAD_PIN){
+
+    alert("Falscher Raidlead-PIN.");
+
+    return;
+
   }
 
-  function releaseList(){
-    localStorage.setItem("bwl_released", "true");
-    renderPublicList();
-    document.getElementById("publicList").classList.remove("hidden");
-  }
+  document.getElementById("leadPanel").classList.remove("hidden");
 
-  function renderPublicList(){
-    const data = getData();
-    const tbody = document.getElementById("prioTable");
+  renderLeadTable();
 
-    tbody.innerHTML = "";
+}
 
-    data.forEach(entry => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${entry.player}</td>
-          <td>${entry.class}</td>
-          <td>${entry.p1}</td>
-          <td>${entry.p2}</td>
-          <td>${entry.p3}</td>
-        </tr>
-      `;
-    });
-  }
+function renderLeadTable(){
 
-  function downloadExport(type){
-    const data = getData();
-    let content = "";
-    let filename = "bwl-prios";
-    let mime = "text/plain";
+  const data = getData();
 
-    if(type === "csv"){
-      filename += ".csv";
-      mime = "text/csv";
-      content = "Player,Class,P1,P2,P3\n";
-      data.forEach(e => {
-        content += `"${e.player}","${e.class}","${e.p1}","${e.p2}","${e.p3}"\n`;
-      });
-    }
+  const tbody = document.getElementById("leadTable");
 
-    if(type === "csvshort"){
-      filename += "-short.csv";
-      mime = "text/csv";
-      content = "Player,P1,P2,P3\n";
-      data.forEach(e => {
-        content += `"${e.player}","${e.p1}","${e.p2}","${e.p3}"\n`;
-      });
-    }
+  tbody.innerHTML = "";
 
-    if(type === "txt"){
-      filename += ".txt";
-      data.forEach(e => {
-        content += `${e.player} (${e.class})\nP1: ${e.p1}\nP2: ${e.p2}\nP3: ${e.p3}\n\n`;
-      });
-    }
+  data.forEach(entry => {
 
-    if(type === "lua"){
-      filename += ".lua";
-      content = "LichtbringerBWL = {\n";
-      data.forEach(e => {
-        content += `  ["${e.player}"] = { class = "${e.class}", p1 = "${e.p1}", p2 = "${e.p2}", p3 = "${e.p3}" },\n`;
-      });
-      content += "}\n";
-    }
+    tbody.innerHTML += `
+      <tr>
+        <td>${entry.player}</td>
+        <td>${entry.class}</td>
+        <td>${entry.p1}</td>
+        <td>${entry.p2}</td>
+        <td>${entry.p3}</td>
+      </tr>
+    `;
 
-    const blob = new Blob([content], {type:mime});
-    const url = URL.createObjectURL(blob);
+  });
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
+}
 
-    URL.revokeObjectURL(url);
-  }
+fillItems();
 
-  function resetData(){
-    if(confirm("Alle Testdaten löschen?")){
-      localStorage.removeItem("bwl_prios");
-      localStorage.removeItem("bwl_released");
-      renderLeadTable();
-      renderPublicList();
-    }
-  }
-
-  fillItems();
-
-  if(localStorage.getItem("bwl_released") === "true"){
-    document.getElementById("publicList").classList.remove("hidden");
-    renderPublicList();
-  }
 </script>
 
 </body>
