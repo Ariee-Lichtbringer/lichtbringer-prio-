@@ -1,366 +1,413 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lichtbringer – BWL Prio-Auswahl</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lichtbringer – BWL Prio-Auswahl</title>
 
-  <style>
-    :root{
-      --gold:#facc15;
-      --panel:rgba(12,18,32,.88);
-      --text:#f8fafc;
-      --muted:#cbd5e1;
-      --line:rgba(255,255,255,.12);
-      --danger:#ef4444;
-      --green:#22c55e;
-    }
+<style>
+:root{
+  --gold:#facc15;
+  --panel:rgba(12,18,32,.88);
+  --text:#f8fafc;
+  --muted:#cbd5e1;
+  --line:rgba(255,255,255,.12);
+  --danger:#ef4444;
+  --green:#22c55e;
+}
 
-    *{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0}
 
-    body{
-      min-height:100vh;
-      font-family:Arial, Helvetica, sans-serif;
-      color:var(--text);
-      background:
-        linear-gradient(rgba(8,17,31,.80), rgba(8,17,31,.94)),
-        url('../images/bwl.jpg');
-      background-size:cover;
-      background-position:center;
-      background-attachment:fixed;
-    }
+body{
+  min-height:100vh;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--text);
+  background:
+    linear-gradient(rgba(8,17,31,.80), rgba(8,17,31,.94)),
+    url('../images/bwl.jpg');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
 
-    .overlay{
-      min-height:100vh;
-      padding:36px 22px 60px;
-      backdrop-filter:blur(3px);
-    }
+.overlay{
+  min-height:100vh;
+  padding:36px 22px 60px;
+  backdrop-filter:blur(3px);
+}
 
-    .topbar{
-      width:min(1500px,100%);
-      margin:0 auto 28px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:16px;
-      flex-wrap:wrap;
-    }
+.topbar{
+  width:min(1600px,100%);
+  margin:0 auto 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
 
-    .back{
-      color:var(--text);
-      text-decoration:none;
-      font-weight:800;
-      border:1px solid var(--line);
-      padding:12px 16px;
-      border-radius:14px;
-      background:rgba(12,18,32,.72);
-    }
+.back{
+  color:var(--text);
+  text-decoration:none;
+  font-weight:800;
+  border:1px solid var(--line);
+  padding:12px 16px;
+  border-radius:14px;
+  background:rgba(12,18,32,.72);
+}
 
-    .back:hover{border-color:rgba(250,204,21,.45)}
+.back:hover{border-color:rgba(250,204,21,.45)}
 
-    .header{
-      width:min(1500px,100%);
-      margin:0 auto 28px;
-      padding:30px;
-      border-radius:24px;
-      background:var(--panel);
-      border:1px solid rgba(250,204,21,.22);
-      box-shadow:0 20px 45px rgba(0,0,0,.45);
-    }
+.header{
+  width:min(1600px,100%);
+  margin:0 auto 28px;
+  padding:30px;
+  border-radius:24px;
+  background:var(--panel);
+  border:1px solid rgba(250,204,21,.22);
+  box-shadow:0 20px 45px rgba(0,0,0,.45);
+}
 
-    h1{
-      color:var(--gold);
-      font-size:clamp(34px,5vw,58px);
-      margin-bottom:8px;
-    }
+h1{
+  color:var(--gold);
+  font-size:clamp(34px,5vw,58px);
+  margin-bottom:8px;
+}
 
-    .subtitle{
-      color:#dbeafe;
-      line-height:1.7;
-      font-size:15px;
-    }
+.subtitle{
+  color:#dbeafe;
+  line-height:1.7;
+  font-size:15px;
+}
 
-    .grid{
-      width:min(1500px,100%);
-      margin:auto;
-      display:grid;
-      grid-template-columns:390px 1fr 420px;
-      gap:22px;
-    }
+.grid{
+  width:min(1600px,100%);
+  margin:auto;
+  display:grid;
+  grid-template-columns:390px 1fr 520px;
+  gap:22px;
+}
 
-    .card{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:22px;
-      box-shadow:0 18px 40px rgba(0,0,0,.38);
-    }
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 18px 40px rgba(0,0,0,.38);
+}
 
-    h2{
-      color:var(--gold);
-      margin-bottom:16px;
-      font-size:22px;
-    }
+h2{
+  color:var(--gold);
+  margin-bottom:16px;
+  font-size:22px;
+}
 
-    label{
-      display:block;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:800;
-      margin:14px 0 7px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-    }
+h3{
+  color:var(--gold);
+  margin:22px 0 10px;
+  font-size:18px;
+}
 
-    input, select{
-      width:100%;
-      padding:12px 13px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(2,6,23,.82);
-      color:var(--text);
-      font-size:14px;
-    }
+label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+  margin:14px 0 7px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
 
-    .search-box{
-      margin-bottom:14px;
-      position:relative;
-    }
+input, select{
+  width:100%;
+  padding:12px 13px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(2,6,23,.82);
+  color:var(--text);
+  font-size:14px;
+}
 
-    .search-box input{
-      padding-left:38px;
-      border-color:rgba(250,204,21,.25);
-      background:rgba(2,6,23,.88);
-    }
+.search-box{
+  margin-bottom:14px;
+  position:relative;
+}
 
-    .search-icon{
-      position:absolute;
-      left:13px;
-      top:50%;
-      transform:translateY(-50%);
-      color:#facc15;
-      font-size:15px;
-      pointer-events:none;
-    }
+.search-box input{
+  padding-left:38px;
+  border-color:rgba(250,204,21,.25);
+  background:rgba(2,6,23,.88);
+}
 
-    .search-hint{
-      color:var(--muted);
-      font-size:12px;
-      margin:-6px 0 12px;
-      line-height:1.4;
-    }
+.search-icon{
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#facc15;
+  font-size:15px;
+  pointer-events:none;
+}
 
-    .btn{
-      width:100%;
-      margin-top:14px;
-      padding:13px 16px;
-      border-radius:14px;
-      border:1px solid rgba(250,204,21,.25);
-      background:linear-gradient(135deg,rgba(250,204,21,.28),rgba(96,165,250,.18));
-      color:var(--text);
-      font-weight:900;
-      cursor:pointer;
-      transition:.18s;
-    }
+.search-hint{
+  color:var(--muted);
+  font-size:12px;
+  margin:-6px 0 12px;
+  line-height:1.4;
+}
 
-    .btn:hover{
-      transform:translateY(-2px);
-      border-color:rgba(250,204,21,.55);
-    }
+.btn{
+  width:100%;
+  margin-top:14px;
+  padding:13px 16px;
+  border-radius:14px;
+  border:1px solid rgba(250,204,21,.25);
+  background:linear-gradient(135deg,rgba(250,204,21,.28),rgba(96,165,250,.18));
+  color:var(--text);
+  font-weight:900;
+  cursor:pointer;
+  transition:.18s;
+}
 
-    .status{
-      margin-top:14px;
-      padding:13px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(2,6,23,.55);
-      color:#dbeafe;
-      line-height:1.6;
-      font-size:13px;
-    }
+.btn:hover{
+  transform:translateY(-2px);
+  border-color:rgba(250,204,21,.55);
+}
 
-    .ok{color:var(--green);font-weight:900}
-    .bad{color:var(--danger);font-weight:900}
-    .warn{color:var(--gold);font-weight:900}
+.status{
+  margin-top:14px;
+  padding:13px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(2,6,23,.55);
+  color:#dbeafe;
+  line-height:1.6;
+  font-size:13px;
+}
 
-    .loot-list{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      max-height:700px;
-      overflow:auto;
-      padding-right:4px;
-    }
+.ok{color:var(--green);font-weight:900}
+.bad{color:var(--danger);font-weight:900}
+.warn{color:var(--gold);font-weight:900}
 
-    .loot-item-row{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:10px;
-      align-items:center;
-      padding:10px 12px;
-      border-radius:12px;
-      background:rgba(2,6,23,.72);
-      border:1px solid rgba(255,255,255,.10);
-      transition:.18s;
-    }
+.loot-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:700px;
+  overflow:auto;
+  padding-right:4px;
+}
 
-    .loot-item-row:hover{
-      transform:translateX(4px);
-      border-color:rgba(250,204,21,.45);
-      background:rgba(15,23,42,.92);
-    }
+.loot-item-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  border-radius:12px;
+  background:rgba(2,6,23,.72);
+  border:1px solid rgba(255,255,255,.10);
+  transition:.18s;
+}
 
-    .loot-name{
-      font-weight:800;
-      font-size:14px;
-      cursor:pointer;
-    }
+.loot-item-row:hover{
+  transform:translateX(4px);
+  border-color:rgba(250,204,21,.45);
+  background:rgba(15,23,42,.92);
+}
 
-    .prio-buttons{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
+.loot-name{
+  font-weight:800;
+  font-size:14px;
+  cursor:pointer;
+}
 
-    .mini-btn{
-      padding:6px 8px;
-      border-radius:8px;
-      border:1px solid rgba(250,204,21,.24);
-      background:rgba(15,23,42,.9);
-      color:#f8fafc;
-      font-size:10px;
-      font-weight:900;
-      cursor:pointer;
-      transition:.15s;
-    }
+.prio-buttons{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
 
-    .mini-btn:hover{
-      background:rgba(250,204,21,.22);
-      border-color:rgba(250,204,21,.55);
-      transform:translateY(-1px);
-    }
+.mini-btn{
+  padding:6px 8px;
+  border-radius:8px;
+  border:1px solid rgba(250,204,21,.24);
+  background:rgba(15,23,42,.9);
+  color:#f8fafc;
+  font-size:10px;
+  font-weight:900;
+  cursor:pointer;
+  transition:.15s;
+}
 
-    .mini-btn.plus{
-      color:#facc15;
-      border-color:rgba(250,204,21,.40);
-    }
+.mini-btn:hover{
+  background:rgba(250,204,21,.22);
+  border-color:rgba(250,204,21,.55);
+  transform:translateY(-1px);
+}
 
-    .mini-btn.active{
-      background:linear-gradient(135deg,rgba(250,204,21,.65),rgba(180,83,9,.75));
-      color:#111827;
-      border-color:#facc15;
-      box-shadow:0 0 14px rgba(250,204,21,.45);
-    }
+.mini-btn.plus{
+  color:#facc15;
+  border-color:rgba(250,204,21,.40);
+}
 
-    .mini-btn.p0active{
-      background:linear-gradient(135deg,rgba(168,85,247,.70),rgba(250,204,21,.55));
-      color:white;
-      border-color:#facc15;
-      box-shadow:0 0 16px rgba(168,85,247,.55);
-    }
+.mini-btn.active{
+  background:linear-gradient(135deg,rgba(250,204,21,.65),rgba(180,83,9,.75));
+  color:#111827;
+  border-color:#facc15;
+  box-shadow:0 0 14px rgba(250,204,21,.45);
+}
 
-    .epic{color:#c084fc}
-    .rare{color:#60a5fa}
-    .uncommon{color:#4ade80}
-    .legendary{color:#fb923c}
+.mini-btn.p0active{
+  background:linear-gradient(135deg,rgba(168,85,247,.70),rgba(250,204,21,.55));
+  color:white;
+  border-color:#facc15;
+  box-shadow:0 0 16px rgba(168,85,247,.55);
+}
 
-    .tooltip{
-      position:fixed;
-      z-index:9999;
-      width:330px;
-      padding:12px;
-      border-radius:8px;
-      background:linear-gradient(rgba(7,12,31,.96), rgba(2,6,23,.98));
-      border:1px solid rgba(148,163,184,.75);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.10),
-        0 0 28px rgba(0,0,0,.85);
-      pointer-events:none;
-      font-family:Arial, Helvetica, sans-serif;
-      font-size:11px;
-      line-height:1.3;
-    }
+.epic{color:#c084fc}
+.rare{color:#60a5fa}
+.uncommon{color:#4ade80}
+.legendary{color:#fb923c}
 
-    .tooltip-title{
-      font-size:16px;
-      font-weight:900;
-      margin-bottom:3px;
-    }
+.tooltip{
+  position:fixed;
+  z-index:9999;
+  width:330px;
+  padding:12px;
+  border-radius:8px;
+  background:linear-gradient(rgba(7,12,31,.96), rgba(2,6,23,.98));
+  border:1px solid rgba(148,163,184,.75);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.10),
+    0 0 28px rgba(0,0,0,.85);
+  pointer-events:none;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:11px;
+  line-height:1.3;
+}
 
-    .tooltip-title.epic{color:#a335ee}
-    .tooltip-title.rare{color:#0070dd}
-    .tooltip-title.uncommon{color:#1eff00}
-    .tooltip-title.legendary{color:#ff8000}
+.tooltip-title{
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:3px;
+}
 
-    .tooltip-ilvl{
-      color:#ffd100;
-      font-size:12px;
-      font-weight:900;
-      margin-bottom:6px;
-    }
+.tooltip-title.epic{color:#a335ee}
+.tooltip-title.rare{color:#0070dd}
+.tooltip-title.uncommon{color:#1eff00}
+.tooltip-title.legendary{color:#ff8000}
 
-    .tooltip-bind,
-    .tooltip-row,
-    .tooltip-stat{
-      color:#ffffff;
-      font-size:11px;
-      font-weight:800;
-      margin-top:3px;
-    }
+.tooltip-ilvl{
+  color:#ffd100;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:6px;
+}
 
-    .tooltip-row{
-      display:flex;
-      justify-content:space-between;
-      gap:14px;
-    }
+.tooltip-bind,
+.tooltip-row,
+.tooltip-stat{
+  color:#ffffff;
+  font-size:11px;
+  font-weight:800;
+  margin-top:3px;
+}
 
-    .tooltip-equip{
-      color:#1eff00;
-      font-size:11px;
-      font-weight:900;
-      margin-top:6px;
-    }
+.tooltip-row{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+}
 
-    .tooltip-price{
-      color:#ffffff;
-      font-size:11px;
-      font-weight:800;
-      margin-top:6px;
-    }
+.tooltip-equip{
+  color:#1eff00;
+  font-size:11px;
+  font-weight:900;
+  margin-top:6px;
+}
 
-    .tooltip-p0{
-      margin-top:9px;
-      padding-top:8px;
-      border-top:1px solid rgba(255,255,255,.18);
-      color:#dbeafe;
-    }
+.tooltip-price{
+  color:#ffffff;
+  font-size:11px;
+  font-weight:800;
+  margin-top:6px;
+}
 
-    .tooltip-p0 strong{
-      color:#facc15;
-      font-size:11px;
-    }
+.tooltip-p0{
+  margin-top:9px;
+  padding-top:8px;
+  border-top:1px solid rgba(255,255,255,.18);
+  color:#dbeafe;
+}
 
-    .tooltip ul{
-      margin-top:5px;
-      padding-left:18px;
-      line-height:1.45;
-      font-size:11px;
-    }
+.tooltip-p0 strong{
+  color:#facc15;
+  font-size:11px;
+}
 
-    .hidden{display:none}
+.tooltip ul{
+  margin-top:5px;
+  padding-left:18px;
+  line-height:1.45;
+  font-size:11px;
+}
 
-    @media(max-width:1250px){
-      .grid{grid-template-columns:390px 1fr}
-      .info-card{grid-column:1 / -1}
-    }
+.hidden{display:none}
 
-    @media(max-width:900px){
-      .grid{grid-template-columns:1fr}
-      .loot-item-row{grid-template-columns:1fr}
-      .prio-buttons{justify-content:flex-start}
-    }
-  </style>
+.table-scroll{
+  max-height:520px;
+  overflow:auto;
+  padding-right:4px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:12px;
+  font-size:12px;
+}
+
+th,td{
+  padding:8px 6px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  text-align:left;
+  vertical-align:top;
+}
+
+th{
+  color:#facc15;
+  text-transform:uppercase;
+  font-size:10px;
+  letter-spacing:.06em;
+}
+
+.check{color:#22c55e;font-weight:900;font-size:16px}
+.cross{color:#ef4444;font-weight:900;font-size:16px}
+
+.class-druide{color:#ff7c0a;font-weight:900}
+.class-hexenmeister{color:#8788ee;font-weight:900}
+.class-jaeger{color:#aad372;font-weight:900}
+.class-jäger{color:#aad372;font-weight:900}
+.class-krieger{color:#c69b6d;font-weight:900}
+.class-magier{color:#3fc7eb;font-weight:900}
+.class-paladin{color:#f48cba;font-weight:900}
+.class-priester{color:#ffffff;font-weight:900}
+.class-schurke{color:#fff468;font-weight:900}
+.class-schamane{color:#0070dd;font-weight:900}
+
+@media(max-width:1250px){
+  .grid{grid-template-columns:390px 1fr}
+  .info-card{grid-column:1 / -1}
+}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .loot-item-row{grid-template-columns:1fr}
+  .prio-buttons{justify-content:flex-start}
+}
+</style>
 </head>
 
 <body>
@@ -454,6 +501,32 @@
         Mit dem gültigen LeadPIN wird direkt das Raidlead-Panel geöffnet.
       </div>
 
+      <h3>Aktuelle Prioliste</h3>
+
+      <div id="publishedStatus" class="status">
+        Lade Prioliste …
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Spieler</th>
+              <th>Klasse</th>
+              <th>P1</th>
+              <th>P2</th>
+              <th>P3</th>
+              <th>P0+</th>
+            </tr>
+          </thead>
+          <tbody id="publishedTable">
+            <tr>
+              <td colspan="6">Noch keine Daten geladen.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
 
   </div>
@@ -463,7 +536,6 @@
 <div id="tooltip" class="tooltip hidden"></div>
 
 <script>
-
 const RAID_NAME = "BWL";
 
 const APPS_SCRIPT_URL =
@@ -473,6 +545,18 @@ const LOOT_CSV_URL =
 "https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_BWL";
 
 let bwlLoot = [];
+
+const classOrder = [
+  "Krieger",
+  "Paladin",
+  "Jäger",
+  "Schurke",
+  "Priester",
+  "Schamane",
+  "Magier",
+  "Hexenmeister",
+  "Druide"
+];
 
 function parseCSV(text){
   const rows = [];
@@ -594,7 +678,7 @@ async function loadLootFromSheet(){
   const list = document.getElementById("lootList");
 
   try{
-    const response = await fetch(LOOT_CSV_URL);
+    const response = await fetch(LOOT_CSV_URL + "&t=" + Date.now());
     const csvText = await response.text();
     const rows = parseCSV(csvText);
 
@@ -610,6 +694,7 @@ async function loadLootFromSheet(){
 
         return {
           name: obj.Item || "",
+          itemId: obj.ItemID || "",
           quality: normalizeQuality(obj["Qualität"]),
           ilvl: obj.ItemLevel || obj.Gegenstandsstufe || (obj.ItemID ? "ItemID: " + obj.ItemID : "Blackwing Lair"),
           bind: obj.Bindung || "Wird beim Aufheben gebunden",
@@ -633,6 +718,8 @@ async function loadLootFromSheet(){
     renderLootList();
 
     status.innerHTML = `<span class="ok">✓ Lootdaten aus dem Google Sheet geladen.</span>`;
+
+    await loadPublishedPrios();
 
   }catch(error){
     console.error(error);
@@ -909,7 +996,8 @@ async function savePrio(){
     "&className=" + encodeURIComponent(playerClass) +
     "&p1=" + encodeURIComponent(p1) +
     "&p2=" + encodeURIComponent(p2) +
-    "&p3=" + encodeURIComponent(p3);
+    "&p3=" + encodeURIComponent(p3) +
+    "&t=" + Date.now();
 
   try{
     const response = await fetch(url);
@@ -926,6 +1014,8 @@ async function savePrio(){
       <span class="ok">✓ Deine Prios wurden gespeichert.</span><br>
       Der Eintrag wurde in den Tab PRIOS geschrieben.
     `;
+
+    await loadPublishedPrios();
 
   }catch(error){
     console.error(error);
@@ -947,6 +1037,123 @@ function openRaidleadPage(){
 
   window.location.href =
     `raidlead.html?raid=BWL&leadPin=${encodeURIComponent(leadPin)}`;
+}
+
+async function loadPublishedPrios(){
+  const table = document.getElementById("publishedTable");
+  const status = document.getElementById("publishedStatus");
+  const pin = document.getElementById("raidPin").value.trim();
+
+  if(!pin){
+    status.innerHTML = `<span class="warn">Kein Raid-PIN vorhanden. Nutze den Raidlink oder gib den Raid-PIN ein.</span>`;
+    table.innerHTML = `<tr><td colspan="6">Noch keine Prioliste geladen.</td></tr>`;
+    return;
+  }
+
+  try{
+    const url =
+      APPS_SCRIPT_URL +
+      "?action=getPublishedPrios" +
+      "&raid=" + encodeURIComponent(RAID_NAME) +
+      "&playerPin=" + encodeURIComponent(pin) +
+      "&t=" + Date.now();
+
+    const response = await fetch(url);
+    const result = await response.json();
+
+    if(result.error){
+      status.innerHTML = `<span class="bad">${result.error}</span>`;
+      table.innerHTML = `<tr><td colspan="6">Keine Daten verfügbar.</td></tr>`;
+      return;
+    }
+
+    const prios = sortPrios(result.prios || []);
+
+    if(prios.length === 0){
+      status.innerHTML = result.published
+        ? `<span class="ok">✓ Prios veröffentlicht, aber noch keine Einträge vorhanden.</span>`
+        : `<span class="warn">Prios noch nicht veröffentlicht.</span>`;
+
+      table.innerHTML = `<tr><td colspan="6">Noch keine Einträge vorhanden.</td></tr>`;
+      return;
+    }
+
+    if(result.published){
+      status.innerHTML = `<span class="ok">✓ Prios veröffentlicht. Items werden angezeigt.</span>`;
+      renderPublishedItems(prios);
+    }else{
+      status.innerHTML = `<span class="warn">Prios noch nicht veröffentlicht.</span><br>Es wird nur angezeigt, ob P1/P2/P3/P0+ eingetragen wurden.`;
+      renderPublishedChecks(prios);
+    }
+
+  }catch(error){
+    console.error(error);
+    status.innerHTML = `<span class="bad">Fehler beim Laden der Prioliste.</span>`;
+  }
+}
+
+function renderPublishedChecks(prios){
+  const table = document.getElementById("publishedTable");
+  table.innerHTML = "";
+
+  prios.forEach(prio => {
+    table.innerHTML += `
+      <tr>
+        <td>${safe(prio.Spieler)}</td>
+        <td><span class="${classColor(prio.Klasse)}">${safe(prio.Klasse)}</span></td>
+        <td>${prio.P1 ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
+        <td>${prio.P2 ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
+        <td>${prio.P3 ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
+        <td>${String(prio.P0Plus).toLowerCase() === "ja" ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
+      </tr>
+    `;
+  });
+}
+
+function renderPublishedItems(prios){
+  const table = document.getElementById("publishedTable");
+  table.innerHTML = "";
+
+  prios.forEach(prio => {
+    table.innerHTML += `
+      <tr>
+        <td>${safe(prio.Spieler)}</td>
+        <td><span class="${classColor(prio.Klasse)}">${safe(prio.Klasse)}</span></td>
+        <td>${safe(prio.P1)}</td>
+        <td>${safe(prio.P2)}</td>
+        <td>${safe(prio.P3)}</td>
+        <td>${String(prio.P0Plus).toLowerCase() === "ja" ? '<span class="warn">ja</span>' : 'nein'}</td>
+      </tr>
+    `;
+  });
+}
+
+function sortPrios(prios){
+  return [...prios].sort((a,b) => {
+    const classA = classOrder.indexOf(a.Klasse);
+    const classB = classOrder.indexOf(b.Klasse);
+
+    const orderA = classA === -1 ? 999 : classA;
+    const orderB = classB === -1 ? 999 : classB;
+
+    if(orderA !== orderB){
+      return orderA - orderB;
+    }
+
+    return String(a.Spieler || "").localeCompare(String(b.Spieler || ""), "de");
+  });
+}
+
+function classColor(className){
+  const key = String(className || "")
+    .toLowerCase()
+    .replace("ä","ae")
+    .replace("ö","oe")
+    .replace("ü","ue");
+
+  if(key === "jaeger") return "class-jäger";
+
+  return "class-" + String(className || "").toLowerCase();
 }
 
 function showTooltip(event, item){
@@ -1037,8 +1244,22 @@ function hideTooltip(){
   document.getElementById("tooltip").classList.add("hidden");
 }
 
-loadLootFromSheet();
+function safe(value){
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
 
+const params = new URLSearchParams(window.location.search);
+const pinFromUrl = params.get("pin");
+
+if(pinFromUrl){
+  document.getElementById("raidPin").value = pinFromUrl;
+}
+
+loadLootFromSheet();
 </script>
 
 </body>
