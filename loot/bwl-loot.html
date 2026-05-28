@@ -586,15 +586,11 @@
         id="playerName"
         type="text"
         placeholder="z. B. Milkshake"
-        oninput="loadPlayerData()"
       >
 
       <label>Klasse</label>
 
-      <select
-        id="playerClass"
-        onchange="autoSaveDraft()"
-      >
+      <select id="playerClass">
 
         <option value="">Klasse auswählen</option>
 
@@ -611,13 +607,13 @@
       </select>
 
       <label>P1</label>
-      <select id="p1" onchange="manualSelectChanged()"></select>
+      <select id="p1"></select>
 
       <label>P2</label>
-      <select id="p2" onchange="manualSelectChanged()"></select>
+      <select id="p2"></select>
 
       <label>P3</label>
-      <select id="p3" onchange="manualSelectChanged()"></select>
+      <select id="p3"></select>
 
       <button
         class="btn"
@@ -703,23 +699,6 @@ const APPS_SCRIPT_URL =
 
 const LOOT_CSV_URL =
 "https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_BWL";
-
-let bwlLoot = [];
-
-/* HIER KOMMT DEIN BISHERIGER JAVASCRIPT CODE HIN */
-/* parseCSV */
-/* normalizeQuality */
-/* p0FromText */
-/* getFirstFilled */
-/* collectStats */
-/* loadLootFromSheet */
-/* fillItems */
-/* renderLootList */
-/* savePrio */
-/* showTooltip */
-/* etc. */
-
-/* NEUE RAIDLEAD FUNKTION */
 
 function openRaidleadPage(){
 
