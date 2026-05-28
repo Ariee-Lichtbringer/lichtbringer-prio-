@@ -60,13 +60,9 @@
       color:var(--text);
       text-decoration:none;
       font-weight:800;
-
       border:1px solid var(--line);
-
       padding:12px 16px;
-
       border-radius:14px;
-
       background:rgba(12,18,32,.72);
     }
 
@@ -77,15 +73,10 @@
     .header{
       width:min(1400px,100%);
       margin:0 auto 28px;
-
       padding:30px;
-
       border-radius:24px;
-
       background:var(--panel);
-
       border:1px solid rgba(250,204,21,.22);
-
       box-shadow:0 20px 45px rgba(0,0,0,.45);
     }
 
@@ -104,7 +95,6 @@
     .grid{
       width:min(1400px,100%);
       margin:auto;
-
       display:grid;
       grid-template-columns:420px 1fr;
       gap:22px;
@@ -112,13 +102,9 @@
 
     .card{
       background:var(--panel);
-
       border:1px solid var(--line);
-
       border-radius:22px;
-
       padding:24px;
-
       box-shadow:0 18px 40px rgba(0,0,0,.38);
     }
 
@@ -130,14 +116,10 @@
 
     label{
       display:block;
-
       color:var(--muted);
-
       font-size:13px;
       font-weight:800;
-
       margin:14px 0 7px;
-
       text-transform:uppercase;
       letter-spacing:.08em;
     }
@@ -145,44 +127,24 @@
     input,
     select{
       width:100%;
-
       padding:13px 14px;
-
       border-radius:12px;
-
       border:1px solid rgba(255,255,255,.16);
-
       background:rgba(2,6,23,.82);
-
       color:var(--text);
-
       font-size:15px;
     }
 
     .btn{
       width:100%;
-
       margin-top:16px;
-
       padding:14px 18px;
-
       border-radius:14px;
-
       border:1px solid rgba(250,204,21,.25);
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(250,204,21,.28),
-          rgba(96,165,250,.18)
-        );
-
+      background:linear-gradient(135deg,rgba(250,204,21,.28),rgba(96,165,250,.18));
       color:var(--text);
-
       font-weight:900;
-
       cursor:pointer;
-
       transition:.18s;
     }
 
@@ -193,17 +155,11 @@
 
     .status{
       margin-top:16px;
-
       padding:14px;
-
       border-radius:14px;
-
       border:1px solid var(--line);
-
       background:rgba(2,6,23,.55);
-
       color:#dbeafe;
-
       line-height:1.6;
       font-size:14px;
     }
@@ -218,12 +174,24 @@
       font-weight:900;
     }
 
+    .bwl-hero{
+      width:100%;
+      height:310px;
+      object-fit:cover;
+      object-position:center;
+      border-radius:18px;
+      margin-bottom:20px;
+      border:1px solid rgba(250,204,21,.28);
+      box-shadow:
+        0 0 30px rgba(0,0,0,.45),
+        0 0 18px rgba(250,204,21,.12);
+    }
+
     .loot-list{
       display:flex;
       flex-direction:column;
       gap:8px;
-
-      max-height:900px;
+      max-height:620px;
       overflow:auto;
       padding-right:4px;
     }
@@ -264,57 +232,86 @@
     .tooltip{
       position:fixed;
       z-index:9999;
-
-      width:340px;
-
+      width:390px;
       padding:16px;
-
-      border-radius:14px;
-
-      background:rgba(5,10,20,.98);
-
-      border:1px solid rgba(250,204,21,.35);
-
+      border-radius:8px;
+      background:
+        linear-gradient(rgba(7,12,31,.96), rgba(2,6,23,.98));
+      border:1px solid rgba(148,163,184,.75);
       box-shadow:
-        0 0 25px rgba(0,0,0,.65),
-        0 0 18px rgba(250,204,21,.12);
-
+        0 0 0 1px rgba(255,255,255,.10),
+        0 0 28px rgba(0,0,0,.85);
       pointer-events:none;
+      font-family:Arial, Helvetica, sans-serif;
+      font-size:16px;
+      line-height:1.35;
     }
 
     .tooltip-title{
-      font-size:18px;
+      font-size:24px;
       font-weight:900;
-      margin-bottom:6px;
+      margin-bottom:4px;
     }
 
-    .tooltip-quality{
-      color:#facc15;
-      font-size:13px;
-      margin-bottom:10px;
-      text-transform:uppercase;
+    .tooltip-title.epic{color:#a335ee;}
+    .tooltip-title.rare{color:#0070dd;}
+    .tooltip-title.uncommon{color:#1eff00;}
+    .tooltip-title.legendary{color:#ff8000;}
+
+    .tooltip-ilvl{
+      color:#ffd100;
+      font-size:18px;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .tooltip-bind{
+      color:#ffffff;
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .tooltip-row{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      color:#ffffff;
+      font-size:18px;
+      font-weight:800;
+      margin-top:2px;
     }
 
     .tooltip-stat{
-      color:#dbeafe;
-      margin-bottom:12px;
-      line-height:1.5;
+      color:#ffffff;
+      font-size:18px;
+      font-weight:800;
+      margin-top:4px;
+    }
+
+    .tooltip-equip{
+      color:#1eff00;
+      font-size:17px;
+      font-weight:900;
+      margin-top:8px;
     }
 
     .tooltip-p0{
-      margin-top:10px;
+      margin-top:12px;
       padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.12);
+      border-top:1px solid rgba(255,255,255,.18);
+      color:#dbeafe;
     }
 
     .tooltip-p0 strong{
       color:#facc15;
+      font-size:17px;
     }
 
     .tooltip ul{
-      margin-top:8px;
-      padding-left:18px;
-      line-height:1.7;
+      margin-top:6px;
+      padding-left:20px;
+      line-height:1.55;
+      font-size:15px;
     }
 
     .hidden{
@@ -322,11 +319,13 @@
     }
 
     @media(max-width:1000px){
-
       .grid{
         grid-template-columns:1fr;
       }
 
+      .bwl-hero{
+        height:230px;
+      }
     }
 
   </style>
@@ -354,14 +353,12 @@
 
     <div class="subtitle">
       Spieler können ihre P1-, P2- und P3-Prioritäten eintragen.
-      Beim Hover über ein Item werden Werte und P0+-Spieler angezeigt.
+      Beim Hover über ein Item werden Werte und gesetzte P0+ angezeigt.
     </div>
 
   </div>
 
   <div class="grid">
-
-    <!-- LINKE SEITE -->
 
     <div class="card">
 
@@ -407,63 +404,13 @@
 
     </div>
 
-    <!-- RECHTE SEITE -->
-
     <div class="card">
+
+      <img class="bwl-hero" src="../images/bwl.jpg" alt="Blackwing Lair">
 
       <h2>Möglicher Loot</h2>
 
-      <div class="loot-list">
-
-        <div
-          class="loot-item epic"
-          onmouseenter="showTooltip(event,'Neltharions Träne','Episch','+44 Zauberschaden',['Milkshake – 6 Punkte','Ariee – 4 Punkte','Burny – 2 Punkte'])"
-          onmouseleave="hideTooltip()"
-        >
-          Neltharions Träne
-        </div>
-
-        <div
-          class="loot-item epic"
-          onmouseenter="showTooltip(event,'Drake Fang Talisman','Episch','+56 Angriffskraft',['Mala – 8 Punkte','Setsunai – 5 Punkte','Protekta – 3 Punkte'])"
-          onmouseleave="hideTooltip()"
-        >
-          Drake Fang Talisman
-        </div>
-
-        <div
-          class="loot-item rare"
-          onmouseenter="showTooltip(event,'Chromatisch gehärtetes Schwert','Selten','+20 Stärke',['Bimmi – 3 Punkte','Enno – 1 Punkt'])"
-          onmouseleave="hideTooltip()"
-        >
-          Chromatisch gehärtetes Schwert
-        </div>
-
-        <div
-          class="loot-item legendary"
-          onmouseenter="showTooltip(event,'Ashkandi, Großschwert der Bruderschaft','Legendär','Großschwert',['Bimmi – 7 Punkte','Enno – 4 Punkte'])"
-          onmouseleave="hideTooltip()"
-        >
-          Ashkandi, Großschwert der Bruderschaft
-        </div>
-
-        <div
-          class="loot-item epic"
-          onmouseenter="showTooltip(event,'Mish\'undare, Reif des Gedankenschinders','Episch','Kopf',['Ariee – 3 Punkte','Burny – 1 Punkt'])"
-          onmouseleave="hideTooltip()"
-        >
-          Mish'undare, Reif des Gedankenschinders
-        </div>
-
-        <div
-          class="loot-item epic"
-          onmouseenter="showTooltip(event,'Lok\'amir il Romathis','Episch','Streitkolben',['Mala – 6 Punkte'])"
-          onmouseleave="hideTooltip()"
-        >
-          Lok'amir il Romathis
-        </div>
-
-      </div>
+      <div id="lootList" class="loot-list"></div>
 
     </div>
 
@@ -471,144 +418,366 @@
 
 </div>
 
-<!-- TOOLTIP -->
-
 <div id="tooltip" class="tooltip hidden"></div>
 
 <script>
 
 const RAID_PIN = "bwl";
 
-const bwlItems = [
-
-  "Neltharions Träne",
-  "Drake Fang Talisman",
-  "Chromatisch gehärtetes Schwert",
-  "Ashkandi, Großschwert der Bruderschaft",
-  "Mish'undare, Reif des Gedankenschinders",
-  "Lok'amir il Romathis"
-
+const bwlLoot = [
+  {
+    name:"Neltharions Träne",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 83",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Schmuckstück",
+    type:"",
+    stats:[
+      "+44 Zauberschaden und Heilung"
+    ],
+    equip:"Anlegen: Erhöht Eure Chance, mit Zaubern kritisch zu treffen, um 2%.",
+    p0:[
+      "Milkshake – 6 Punkte",
+      "Ariee – 4 Punkte",
+      "Burny – 2 Punkte"
+    ]
+  },
+  {
+    name:"Drake Fang Talisman",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 75",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Schmuckstück",
+    type:"",
+    stats:[
+      "+56 Angriffskraft"
+    ],
+    equip:"Anlegen: Erhöht Eure Trefferchance um 2% und Eure Ausweichchance um 1%.",
+    p0:[
+      "Mala – 8 Punkte",
+      "Setsunai – 5 Punkte",
+      "Protekta – 3 Punkte"
+    ]
+  },
+  {
+    name:"Ashkandi, Großschwert der Bruderschaft",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 81",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Zweihand",
+    type:"Schwert",
+    damage:"229 - 344 Schaden",
+    speed:"Tempo 3.50",
+    dps:"(81.9 Schaden pro Sekunde)",
+    stats:[
+      "+33 Ausdauer"
+    ],
+    equip:"Anlegen: +86 Angriffskraft.",
+    p0:[
+      "Bimmi – 7 Punkte",
+      "Enno – 4 Punkte"
+    ]
+  },
+  {
+    name:"Armbrust der bevorstehenden Verdammnis",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 72",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Distanz",
+    type:"Armbrust",
+    damage:"103 - 155 Schaden",
+    speed:"Tempo 3.10",
+    dps:"(41.6 Schaden pro Sekunde)",
+    stats:[
+      "+5 Stärke",
+      "+7 Beweglichkeit",
+      "+5 Ausdauer",
+      "Haltbarkeit 90 / 90",
+      "Benötigt Stufe 60"
+    ],
+    equip:"Anlegen: Verbessert Eure Trefferchance um 1%.",
+    p0:[
+      "Crunchycat – 3 Punkte",
+      "Bergstolz – 2 Punkte"
+    ]
+  },
+  {
+    name:"Klaue von Chromaggus",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 77",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Waffenhand",
+    type:"Dolch",
+    damage:"37 - 90 Schaden",
+    speed:"Tempo 1.50",
+    dps:"(42.3 Schaden pro Sekunde)",
+    stats:[
+      "+17 Intelligenz",
+      "+7 Ausdauer"
+    ],
+    equip:"Anlegen: Erhöht durch Zauber und magische Effekte verursachten Schaden und Heilung um bis zu 64.",
+    p0:[
+      "Ariee – 5 Punkte"
+    ]
+  },
+  {
+    name:"Maladath, Runenverzierte Klinge des schwarzen Drachenschwarms",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 75",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Einhändig",
+    type:"Schwert",
+    damage:"86 - 162 Schaden",
+    speed:"Tempo 2.20",
+    dps:"(56.4 Schaden pro Sekunde)",
+    stats:[
+      "+9 Ausdauer"
+    ],
+    equip:"Anlegen: Erhöht Eure Parierchance um 1% und Schwertfertigkeit um 4.",
+    p0:[
+      "Setsunai – 4 Punkte"
+    ]
+  },
+  {
+    name:"Mish'undare, Reif des Gedankenschinders",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 83",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Kopf",
+    type:"Stoff",
+    stats:[
+      "+24 Ausdauer",
+      "+35 Intelligenz",
+      "+15 Willenskraft"
+    ],
+    equip:"Anlegen: Erhöht durch Zauber und magische Effekte verursachten Schaden und Heilung um bis zu 35.",
+    p0:[
+      "Ariee – 3 Punkte",
+      "Burny – 1 Punkt"
+    ]
+  },
+  {
+    name:"Lok'amir il Romathis",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 81",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Waffenhand",
+    type:"Streitkolben",
+    damage:"47 - 128 Schaden",
+    speed:"Tempo 2.10",
+    dps:"(41.7 Schaden pro Sekunde)",
+    stats:[
+      "+18 Intelligenz",
+      "+8 Willenskraft"
+    ],
+    equip:"Anlegen: Erhöht durch Zauber und magische Effekte verursachten Schaden und Heilung um bis zu 84.",
+    p0:[
+      "Mala – 6 Punkte"
+    ]
+  },
+  {
+    name:"Chromatisch gehärtetes Schwert",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 77",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Einhändig",
+    type:"Schwert",
+    damage:"106 - 198 Schaden",
+    speed:"Tempo 2.60",
+    dps:"(58.5 Schaden pro Sekunde)",
+    stats:[
+      "+14 Stärke",
+      "+14 Ausdauer"
+    ],
+    equip:"Anlegen: Erhöht Eure Chance, kritisch zu treffen, um 1%.",
+    p0:[
+      "Bimmi – 3 Punkte",
+      "Enno – 1 Punkt"
+    ]
+  },
+  {
+    name:"Prestor's Talisman der Verschwörung",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 83",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Hals",
+    type:"",
+    stats:[
+      "+30 Beweglichkeit",
+      "+10 Ausdauer"
+    ],
+    equip:"Anlegen: Erhöht Eure Trefferchance um 1%.",
+    p0:[
+      "Protekta – 5 Punkte"
+    ]
+  },
+  {
+    name:"Band des Peinigers",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 83",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Finger",
+    type:"",
+    stats:[
+      "+11 Ausdauer"
+    ],
+    equip:"Anlegen: Erhöht Eure Chance, kritisch zu treffen, um 1%.",
+    p0:[]
+  },
+  {
+    name:"Ring der Schwarzen Brut",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 83",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Finger",
+    type:"",
+    stats:[
+      "+13 Ausdauer",
+      "+9 Intelligenz"
+    ],
+    equip:"Anlegen: Erhöht durch Zauber und magische Effekte verursachten Schaden und Heilung.",
+    p0:[]
+  },
+  {
+    name:"Mantel des Feuerfürsten",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 77",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Rücken",
+    type:"",
+    stats:[
+      "+10 Ausdauer",
+      "+17 Feuerwiderstand"
+    ],
+    equip:"Anlegen: Erhöht Zauberschaden und Heilung.",
+    p0:[]
+  },
+  {
+    name:"Blutreißer",
+    quality:"epic",
+    ilvl:"Gegenstandsstufe 75",
+    bind:"Wird beim Aufheben gebunden",
+    slot:"Einhändig",
+    type:"Axt",
+    damage:"63 - 117 Schaden",
+    speed:"Tempo 1.80",
+    dps:"(50.0 Schaden pro Sekunde)",
+    stats:[
+      "+13 Stärke",
+      "+9 Ausdauer"
+    ],
+    equip:"Anlegen: Erhöht Eure Chance, kritisch zu treffen, um 1%.",
+    p0:[]
+  }
 ];
 
 function fillItems(){
-
   ["p1","p2","p3"].forEach(id => {
-
     const select = document.getElementById(id);
-
     select.innerHTML = `<option value="">Item auswählen</option>`;
 
-    bwlItems.forEach(item => {
-
+    bwlLoot.forEach(item => {
       const option = document.createElement("option");
-
-      option.value = item;
-      option.textContent = item;
-
+      option.value = item.name;
+      option.textContent = item.name;
       select.appendChild(option);
-
     });
-
   });
+}
 
+function renderLootList(){
+  const list = document.getElementById("lootList");
+  list.innerHTML = "";
+
+  bwlLoot.forEach(item => {
+    const div = document.createElement("div");
+    div.className = `loot-item ${item.quality}`;
+    div.textContent = item.name;
+
+    div.addEventListener("mouseenter", event => showTooltip(event, item));
+    div.addEventListener("mousemove", event => moveTooltip(event));
+    div.addEventListener("mouseleave", hideTooltip);
+
+    list.appendChild(div);
+  });
 }
 
 function savePrio(){
-
   const pin = document.getElementById("raidPin").value.trim();
-
   const player = document.getElementById("playerName").value.trim();
-
   const playerClass = document.getElementById("playerClass").value;
-
   const p1 = document.getElementById("p1").value;
   const p2 = document.getElementById("p2").value;
   const p3 = document.getElementById("p3").value;
-
   const status = document.getElementById("playerStatus");
 
   if(pin !== RAID_PIN){
-
-    status.innerHTML = `
-      <span class="bad">Falscher Raid-PIN.</span>
-    `;
-
+    status.innerHTML = `<span class="bad">Falscher Raid-PIN.</span>`;
     return;
-
   }
 
   if(!player || !playerClass || !p1 || !p2 || !p3){
-
-    status.innerHTML = `
-      <span class="bad">
-        Bitte alles vollständig ausfüllen.
-      </span>
-    `;
-
+    status.innerHTML = `<span class="bad">Bitte alles vollständig ausfüllen.</span>`;
     return;
-
   }
 
-  status.innerHTML = `
-    <span class="ok">
-      ✓ Deine Prios wurden gespeichert.
-    </span>
-  `;
-
+  status.innerHTML = `<span class="ok">✓ Deine Prios wurden gespeichert.</span>`;
 }
 
-function showTooltip(event, title, quality, stat, players){
-
+function showTooltip(event, item){
   const tooltip = document.getElementById("tooltip");
 
-  let playerHtml = "";
+  const statsHtml = item.stats.map(stat => `<div class="tooltip-stat">${stat}</div>`).join("");
 
-  players.forEach(player => {
-
-    playerHtml += `<li>${player}</li>`;
-
-  });
+  const p0Html = item.p0.length
+    ? item.p0.map(player => `<li>${player}</li>`).join("")
+    : `<li>Keine P0+ gesetzt</li>`;
 
   tooltip.innerHTML = `
+    <div class="tooltip-title ${item.quality}">${item.name}</div>
+    <div class="tooltip-ilvl">${item.ilvl}</div>
+    <div class="tooltip-bind">${item.bind}</div>
 
-    <div class="tooltip-title">
-      ${title}
+    <div class="tooltip-row">
+      <span>${item.slot}</span>
+      <span>${item.type || ""}</span>
     </div>
 
-    <div class="tooltip-quality">
-      ${quality}
-    </div>
+    ${item.damage ? `
+      <div class="tooltip-row">
+        <span>${item.damage}</span>
+        <span>${item.speed || ""}</span>
+      </div>
+    ` : ""}
 
-    <div class="tooltip-stat">
-      ${stat}
-    </div>
+    ${item.dps ? `<div class="tooltip-stat">${item.dps}</div>` : ""}
+
+    ${statsHtml}
+
+    ${item.equip ? `<div class="tooltip-equip">${item.equip}</div>` : ""}
 
     <div class="tooltip-p0">
-
-      <strong>P0+ Übersicht</strong>
-
-      <ul>
-        ${playerHtml}
-      </ul>
-
+      <strong>Gesetzte P0+</strong>
+      <ul>${p0Html}</ul>
     </div>
-
   `;
 
+  moveTooltip(event);
+  tooltip.classList.remove("hidden");
+}
+
+function moveTooltip(event){
+  const tooltip = document.getElementById("tooltip");
   tooltip.style.left = (event.clientX + 20) + "px";
   tooltip.style.top = (event.clientY + 20) + "px";
-
-  tooltip.classList.remove("hidden");
-
 }
 
 function hideTooltip(){
-
   document.getElementById("tooltip").classList.add("hidden");
-
 }
 
 fillItems();
+renderLootList();
 
 </script>
 
