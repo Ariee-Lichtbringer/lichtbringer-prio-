@@ -15,7 +15,6 @@
       --line:rgba(255,255,255,.10);
       --danger:#ef4444;
       --green:#22c55e;
-      --blue:#60a5fa;
     }
 
     *{
@@ -92,13 +91,17 @@
 
     h1{
       color:var(--gold);
+
       font-size:clamp(34px,5vw,56px);
+
       margin-bottom:8px;
     }
 
     .subtitle{
       color:#dbeafe;
+
       line-height:1.7;
+
       font-size:15px;
     }
 
@@ -108,6 +111,7 @@
 
       display:grid;
       grid-template-columns:420px 1fr;
+
       gap:22px;
     }
 
@@ -125,13 +129,17 @@
 
     h2{
       color:var(--gold);
+
       margin-bottom:16px;
+
       font-size:22px;
     }
 
     h3{
       color:var(--gold);
+
       margin:22px 0 10px;
+
       font-size:18px;
     }
 
@@ -204,17 +212,6 @@
           rgba(96,165,250,.24),
           rgba(250,204,21,.10)
         );
-    }
-
-    .btn.danger{
-      background:
-        linear-gradient(
-          135deg,
-          rgba(239,68,68,.32),
-          rgba(250,204,21,.08)
-        );
-
-      border-color:rgba(239,68,68,.35);
     }
 
     .delete-btn{
@@ -299,7 +296,9 @@
 
     .stat-label{
       color:var(--muted);
+
       font-size:12px;
+
       line-height:1.4;
     }
 
@@ -325,7 +324,7 @@
     }
 
     .table-scroll{
-      max-height:520px;
+      max-height:620px;
       overflow:auto;
       padding-right:4px;
     }
@@ -449,28 +448,6 @@
       </button>
 
       <div id="newRaidBox" class="raid-card hidden"></div>
-
-      <h3>Export</h3>
-
-      <div class="export-grid">
-
-        <button class="btn secondary" onclick="downloadExport('csv')">
-          CSV
-        </button>
-
-        <button class="btn secondary" onclick="downloadExport('csvshort')">
-          CSV SHORT
-        </button>
-
-        <button class="btn secondary" onclick="downloadExport('txt')">
-          TXT
-        </button>
-
-        <button class="btn secondary" onclick="downloadExport('lua')">
-          LUA
-        </button>
-
-      </div>
 
     </div>
 
@@ -614,7 +591,8 @@ function renderRaidData(){
 
   const p0 =
     currentPrios.filter(
-      p => String(p.P0Plus).toLowerCase() === "ja"
+      p =>
+        String(p.P0Plus).toLowerCase() === "ja"
     ).length;
 
   const classes =
@@ -634,15 +612,35 @@ function renderRaidData(){
   document.getElementById("statClasses").textContent =
     classes;
 
+  if(currentPrios.length === 0){
+
+    table.innerHTML = `
+      <tr>
+        <td colspan="7">
+          Keine Priolisten vorhanden.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
   currentPrios.forEach(prio => {
 
     table.innerHTML += `
       <tr>
+
         <td>${prio.Spieler || ""}</td>
+
         <td>${prio.Klasse || ""}</td>
+
         <td>${prio.P1 || ""}</td>
+
         <td>${prio.P2 || ""}</td>
+
         <td>${prio.P3 || ""}</td>
+
         <td>
           ${
             String(prio.P0Plus).toLowerCase() === "ja"
@@ -650,14 +648,18 @@ function renderRaidData(){
             : 'nein'
           }
         </td>
+
         <td>
+
           <button
             class="delete-btn"
             onclick="deletePrio('${escapeQuotes(prio.Spieler)}')"
           >
             Löschen
           </button>
+
         </td>
+
       </tr>
     `;
 
@@ -668,9 +670,7 @@ function renderRaidData(){
 async function refreshRaid(){
 
   if(!currentRaid){
-
     return;
-
   }
 
   await loadRaidData();
@@ -680,9 +680,7 @@ async function refreshRaid(){
 async function deletePrio(player){
 
   if(!currentRaid){
-
     return;
-
   }
 
   const confirmed =
@@ -691,9 +689,7 @@ async function deletePrio(player){
     );
 
   if(!confirmed){
-
     return;
-
   }
 
   try{
@@ -796,48 +792,30 @@ function escapeQuotes(text){
 
 }
 
-function downloadExport(type){
+const params =
+  new URLSearchParams(window.location.search);
 
-  if(!currentPrios.length){
+const autoRaid =
+  params.get("raid");
 
-    alert("Keine Priolisten geladen.");
+const autoLeadPin =
+  params.get("leadPin");
 
-    return;
+if(autoRaid){
+  document.getElementById("raidSelect").value =
+    autoRaid;
+}
 
-  }
+if(autoLeadPin){
 
-  let content = "";
-  let filename = "bwl-prios";
-  let mime = "text/plain;charset=utf-8;";
+  document.getElementById("leadPin").value =
+    autoLeadPin;
 
-  if(type === "csv"){
+  loadRaidData();
 
-    filename += ".csv";
-    mime = "text/csv;charset=utf-8;";
+}
 
-    content = [
-      ["Player","Class","Raid","P1","P2","P3","P0Plus"]
-    ]
-    .concat(
-      currentPrios.map(p => [
-        p.Spieler,
-        p.Klasse,
-        currentRaid.Raid,
-        p.P1,
-        p.P2,
-        p.P3,
-        p.P0Plus
-      ])
-    )
-    .map(
-      row =>
-        row.map(v => `"${v}"`).join(",")
-    )
-    .join("\n");
+</script>
 
-  }
-
-  if(type === "csvshort"){
-
-    filename += "-short.csv";
-    mime = "
+</body>
+</html>
