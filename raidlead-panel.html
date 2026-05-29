@@ -1,3 +1,4 @@
+<!-- TEIL 1/2 -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -121,22 +122,31 @@
       margin-bottom:10px;
     }
 
-    .small{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-      margin-bottom:16px;
-    }
-
-    .status{
+    .status,
+    .new-raid-box{
       margin:14px 0;
-      padding:12px;
-      border-radius:14px;
+      padding:14px;
+      border-radius:16px;
       border:1px solid var(--line);
       background:rgba(2,6,23,.55);
       color:#dbeafe;
       line-height:1.6;
       font-size:14px;
+    }
+
+    .new-raid-box{
+      border-color:rgba(250,204,21,.32);
+      box-shadow:0 0 0 1px rgba(250,204,21,.08);
+    }
+
+    .new-raid-box strong{
+      color:var(--gold);
+    }
+
+    .new-raid-box a{
+      color:#93c5fd;
+      font-weight:900;
+      word-break:break-all;
     }
 
     .ok{color:var(--green);font-weight:900}
@@ -214,7 +224,7 @@
   <div class="header">
     <h1>Raidlead Panel</h1>
     <div class="subtitle">
-      Zentrale Verwaltung der Priolisten. Neue Raids können gestartet, Priolisten geöffnet oder geschlossen und Exporte erstellt werden.
+      Zentrale Verwaltung der Priolisten. Neue Raids erzeugen eigene RaidIDs, Spieler-PINs und Lead-PINs. Bestehende Raids werden dabei nicht gelöscht.
     </div>
     <div id="roleInfo" class="status"></div>
   </div>
@@ -222,302 +232,3 @@
   <div id="raidGrid" class="grid"></div>
 
 </div>
-
-<script>
-const raids = {
-  mc:{
-    name:"Molten Core",
-    role:"mc-bwl",
-    dataKey:"mc_prios",
-    releaseKey:"mc_released",
-    raidKey:"mc_current_raid",
-    lootPage:"loot/mc-loot.html",
-    overviewPage:"molten-core.html"
-  },
-  bwl:{
-    name:"Blackwing Lair",
-    role:"mc-bwl",
-    dataKey:"bwl_prios",
-    releaseKey:"bwl_released",
-    raidKey:"bwl_current_raid",
-    lootPage:"loot/bwl-loot.html",
-    overviewPage:"bwl.html"
-  },
-  aq40:{
-    name:"Ahn'Qiraj 40",
-    role:"aq40",
-    dataKey:"aq40_prios",
-    releaseKey:"aq40_released",
-    raidKey:"aq40_current_raid",
-    lootPage:"loot/aq40-loot.html",
-    overviewPage:"aq.html"
-  },
-  naxx:{
-    name:"Naxxramas",
-    role:"naxx",
-    dataKey:"naxx_prios",
-    releaseKey:"naxx_released",
-    raidKey:"naxx_current_raid",
-    lootPage:"loot/naxx-loot.html",
-    overviewPage:"naxxramas.html"
-  },
-  zg:{
-    name:"ZG 20",
-    role:"zg-aq20",
-    dataKey:"zg_prios",
-    releaseKey:"zg_released",
-    raidKey:"zg_current_raid",
-    lootPage:"loot/zg-loot.html",
-    overviewPage:"zg.html"
-  },
-  aq20:{
-    name:"AQ 20",
-    role:"zg-aq20",
-    dataKey:"aq20_prios",
-    releaseKey:"aq20_released",
-    raidKey:"aq20_current_raid",
-    lootPage:"loot/aq20-loot.html",
-    overviewPage:"aq20.html"
-  },
-  ony:{
-    name:"Onyxia",
-    role:"ony",
-    dataKey:"ony_prios",
-    releaseKey:"ony_released",
-    raidKey:"ony_current_raid",
-    lootPage:"loot/ony-loot.html",
-    overviewPage:"ony.html"
-  }
-};
-
-function checkLogin(){
-  const isLoggedIn = sessionStorage.getItem("raidlead");
-  const role = sessionStorage.getItem("raidleadRole");
-
-  if(isLoggedIn !== "true" || !role){
-    alert("Bitte zuerst über die Startseite einloggen.");
-    window.location.href = "index.html";
-    return;
-  }
-
-  document.getElementById("roleInfo").innerHTML =
-    `<span class="ok">Login aktiv.</span> Rolle: <strong>${role}</strong>`;
-
-  renderRaids(role);
-}
-
-function canAccessRaid(role, raid){
-  return role === "master" || raids[raid].role === role;
-}
-
-function getData(raid){
-  return JSON.parse(localStorage.getItem(raids[raid].dataKey) || "[]");
-}
-
-function isReleased(raid){
-  return localStorage.getItem(raids[raid].releaseKey) === "true";
-}
-
-function getCurrentRaid(raid){
-  return localStorage.getItem(raids[raid].raidKey) || "Noch kein Raid erstellt";
-}
-
-function renderRaids(role){
-  const grid = document.getElementById("raidGrid");
-  grid.innerHTML = "";
-
-  Object.keys(raids).forEach(raid => {
-    if(!canAccessRaid(role, raid)) return;
-
-    const r = raids[raid];
-    const data = getData(raid);
-    const released = isReleased(raid);
-    const currentRaid = getCurrentRaid(raid);
-
-    grid.innerHTML += `
-      <div class="card">
-        <h2>${r.name}</h2>
-
-        <div class="status">
-          Aktueller Raid: <strong>${currentRaid}</strong><br>
-          Eingetragene Spieler: <strong>${data.length}</strong><br>
-          Prioliste: ${
-            released
-            ? '<span class="ok">geöffnet / veröffentlicht</span>'
-            : '<span class="warn">geschlossen / verborgen</span>'
-          }
-        </div>
-
-        <h3>Raidverwaltung</h3>
-        <div class="button-grid">
-          <button class="btn primary" onclick="createNewRaid('${raid}')">Neuen Raid erstellen</button>
-          <button class="btn neutral" onclick="openPrio('${raid}')">Prioseite öffnen</button>
-        </div>
-
-        <h3>Übersicht</h3>
-        <div class="button-grid">
-          <button class="btn neutral" onclick="openOverview('${raid}')">P0+ Übersicht öffnen</button>
-        </div>
-
-        <h3>Prioliste</h3>
-        <div class="button-grid">
-          <button class="btn success" onclick="releaseList('${raid}')">Prioliste öffnen</button>
-          <button class="btn warning" onclick="closeList('${raid}')">Prioliste schließen</button>
-        </div>
-
-        <h3>Export</h3>
-        <div class="button-grid">
-          <button class="btn neutral" onclick="downloadExport('${raid}','csv')">CSV Export</button>
-          <button class="btn neutral" onclick="downloadExport('${raid}','txt')">TXT Export</button>
-          <button class="btn neutral" onclick="downloadExport('${raid}','lua')">LUA Export</button>
-        </div>
-
-        <h3>Gefahrenzone</h3>
-        <div class="button-grid">
-          <button class="btn danger" onclick="resetRaid('${raid}')">Daten löschen</button>
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Spieler</th>
-              <th>Klasse</th>
-              <th>P1</th>
-              <th>P2</th>
-              <th>P3</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${renderRows(raid)}
-          </tbody>
-        </table>
-      </div>
-    `;
-  });
-}
-
-function renderRows(raid){
-  const data = getData(raid);
-
-  if(data.length === 0){
-    return `
-      <tr>
-        <td colspan="5">Noch keine Einträge vorhanden.</td>
-      </tr>
-    `;
-  }
-
-  return data.map(entry => `
-    <tr>
-      <td>${entry.player || "-"}</td>
-      <td>${entry.class || "-"}</td>
-      <td>${entry.p1 || "-"}</td>
-      <td>${entry.p2 || "-"}</td>
-      <td>${entry.p3 || "-"}</td>
-    </tr>
-  `).join("");
-}
-
-function createNewRaid(raid){
-  const r = raids[raid];
-
-  const raidName = prompt(
-    "Name oder Datum für den neuen Raid eingeben:",
-    r.name + " " + new Date().toLocaleDateString("de-DE")
-  );
-
-  if(!raidName){
-    return;
-  }
-
-  if(confirm("Neuen Raid erstellen? Die aktuelle Prioliste für " + r.name + " wird zurückgesetzt.")){
-    localStorage.setItem(r.raidKey, raidName);
-    localStorage.removeItem(r.dataKey);
-    localStorage.setItem(r.releaseKey, "false");
-
-    alert("Neuer Raid wurde erstellt: " + raidName);
-    renderRaids(sessionStorage.getItem("raidleadRole"));
-  }
-}
-
-function openPrio(raid){
-  window.location.href = raids[raid].lootPage;
-}
-
-function openOverview(raid){
-  window.location.href = raids[raid].overviewPage;
-}
-
-function releaseList(raid){
-  localStorage.setItem(raids[raid].releaseKey, "true");
-  alert(raids[raid].name + " Prioliste wurde geöffnet/veröffentlicht.");
-  renderRaids(sessionStorage.getItem("raidleadRole"));
-}
-
-function closeList(raid){
-  localStorage.setItem(raids[raid].releaseKey, "false");
-  alert(raids[raid].name + " Prioliste wurde geschlossen/verborgen.");
-  renderRaids(sessionStorage.getItem("raidleadRole"));
-}
-
-function resetRaid(raid){
-  if(confirm("Alle Priodaten für " + raids[raid].name + " wirklich löschen?")){
-    localStorage.removeItem(raids[raid].dataKey);
-    localStorage.removeItem(raids[raid].releaseKey);
-    renderRaids(sessionStorage.getItem("raidleadRole"));
-  }
-}
-
-function downloadExport(raid,type){
-  const data = getData(raid);
-  let content = "";
-  let filename = raid + "-prios";
-  let mime = "text/plain";
-
-  if(type === "csv"){
-    filename += ".csv";
-    mime = "text/csv";
-    content = "Player,Class,P1,P2,P3\n";
-    data.forEach(e => {
-      content += `"${e.player}","${e.class}","${e.p1}","${e.p2}","${e.p3}"\n`;
-    });
-  }
-
-  if(type === "txt"){
-    filename += ".txt";
-    data.forEach(e => {
-      content += `${e.player} (${e.class})\nP1: ${e.p1}\nP2: ${e.p2}\nP3: ${e.p3}\n\n`;
-    });
-  }
-
-  if(type === "lua"){
-    filename += ".lua";
-    content = "Lichtbringer_" + raid.toUpperCase() + " = {\n";
-    data.forEach(e => {
-      content += `  ["${e.player}"] = { class = "${e.class}", p1 = "${e.p1}", p2 = "${e.p2}", p3 = "${e.p3}" },\n`;
-    });
-    content += "}\n";
-  }
-
-  const blob = new Blob([content], {type:mime});
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-
-  URL.revokeObjectURL(url);
-}
-
-function logout(){
-  sessionStorage.removeItem("raidlead");
-  sessionStorage.removeItem("raidleadRole");
-  window.location.href = "index.html";
-}
-
-checkLogin();
-</script>
-
-</body>
-</html>
