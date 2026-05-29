@@ -418,12 +418,12 @@ function loadPlayerData(){
   document.getElementById("playerStatus").innerHTML=`<span class="warn">Gespeicherte Auswahl für ${data.player} wurde geladen.</span>`;
   updateActiveButtons();
 }
-
 function updateLocalRaidleadData(player,playerClass,p1,p2,p3){
   let data=JSON.parse(localStorage.getItem("bwl_prios")||"[]");
 
-  data=data.filter(entry=>
-    String(entry.player||"").toLowerCase()!==String(player||"").toLowerCase()
+  data=data.filter(entry =>
+    String(entry.player||"").toLowerCase() !==
+    String(player||"").toLowerCase()
   );
 
   data.push({
@@ -436,7 +436,9 @@ function updateLocalRaidleadData(player,playerClass,p1,p2,p3){
   });
 
   localStorage.setItem("bwl_prios",JSON.stringify(data));
-}async function savePrio(){
+}
+
+async function savePrio(){
   const pin=document.getElementById("raidPin").value.trim();
   const player=document.getElementById("playerName").value.trim();
   const playerClass=document.getElementById("playerClass").value;
