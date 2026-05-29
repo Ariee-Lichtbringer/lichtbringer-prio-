@@ -41,6 +41,38 @@
       height:auto;
       filter:drop-shadow(0 0 20px rgba(250,204,21,.35));
 }
+    .raidlead-login{
+  position:absolute;
+  top:25px;
+  right:25px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  z-index:1000;
+}
+
+.raidlead-login input{
+  width:160px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(250,204,21,.35);
+  background:rgba(2,6,23,.85);
+  color:white;
+}
+
+.raidlead-login button{
+  padding:10px 16px;
+  border-radius:10px;
+  border:1px solid rgba(250,204,21,.35);
+  background:linear-gradient(
+    135deg,
+    rgba(250,204,21,.30),
+    rgba(96,165,250,.20)
+  );
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
     .overlay{
       min-height:100vh;
       backdrop-filter:blur(3px);
@@ -298,6 +330,20 @@
 <body>
 
 <div class="overlay">
+  <div class="raidlead-login">
+
+  <input
+    type="password"
+    id="raidleadPin"
+    placeholder="Raidlead PIN"
+    onkeydown="raidleadEnter(event)"
+  >
+
+  <button onclick="raidleadLogin()">
+    Raidlead Login
+  </button>
+
+</div>
 
   <div class="header">
   <img
@@ -432,6 +478,30 @@ function handlePinEnter(event, raid){
   }
 }
 </script>
+<script>
 
+function raidleadLogin(){
+
+  const pin =
+    document.getElementById("raidleadPin")
+    .value
+    .trim();
+
+  if(pin !== "lead"){
+    alert("Falsche Raidlead PIN");
+    return;
+  }
+
+  window.location.href =
+    "raidlead-panel.html";
+}
+
+function raidleadEnter(event){
+  if(event.key === "Enter"){
+    raidleadLogin();
+  }
+}
+
+</script>
 </body>
 </html>
