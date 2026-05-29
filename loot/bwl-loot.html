@@ -103,6 +103,13 @@ th{color:#facc15;text-transform:uppercase;font-size:10px}
 <label>Charaktername</label>
 <input id="playerName" type="text" placeholder="z. B. Milkshake" oninput="loadPlayerData()">
 
+<label>Server</label>
+<select id="playerServer" onchange="autoSaveDraft()">
+<option value="">Server auswählen</option>
+<option>Lakeshire</option>
+<option>Everlook</option>
+</select>
+
 <label>Klasse</label>
 <select id="playerClass" onchange="autoSaveDraft()">
 <option value="">Klasse auswählen</option>
@@ -135,6 +142,8 @@ th{color:#facc15;text-transform:uppercase;font-size:10px}
 
 <div id="prioCard" class="card info-card">
 <h2>Aktuelle Prioliste</h2>
+
+<button class="btn" onclick="refreshPrios()">Prioliste aktualisieren</button>
 
 <div id="publishedStatus" class="status">Lade Prioliste …</div>
 
@@ -221,6 +230,30 @@ function collectStats(obj){
   if(obj.Kategorie) stats.push("Kategorie: "+obj.Kategorie);
   if(obj.Boss) stats.push("Quelle: "+obj.Boss);
   return stats;
+}
+
+function findLootItem(itemName){
+  return bwlLoot.find(item =>
+    String(item.name || "").toLowerCase() === String(itemName || "").toLowerCase()
+  ) || null;
+}
+
+function itemHtml(itemName){
+  const item=findLootItem(itemName);
+
+  if(!item){
+    return safe(itemName);
+  }
+
+  return `
+    <span
+      class="${item.quality}"
+      style="font-weight:900;cursor:pointer"
+      onmouseenter="showTooltip(event, findLootItem('${escapeQuotes(item.name)}'))"
+      onmousemove="moveTooltip(event)"
+      onmouseleave="hideTooltip()"
+    >${safe(item.name)}</span>
+  `;
 }
 
 async function loadLootFromSheet(){
@@ -385,46 +418,58 @@ function updateActiveButtons(){
 }
     function getPlayerKey(){
   const player=document.getElementById("playerName").value.trim().toLowerCase();
-  return player ? "bwl_prio_"+player : null;
+  const server=document.getElementById("playerServer").value.trim().toLowerCase();
+  return player ? "bwl_prio_"+server+"_"+player : null;
 }
 
 function autoSaveDraft(){
   const key=getPlayerKey();
   if(!key) return;
+
   const data={
     player:document.getElementById("playerName").value.trim(),
+    server:document.getElementById("playerServer").value,
     class:document.getElementById("playerClass").value,
     p1:document.getElementById("p1").value,
     p2:document.getElementById("p2").value,
     p3:document.getElementById("p3").value,
     timestamp:new Date().toLocaleString("de-DE")
   };
+
   localStorage.setItem(key,JSON.stringify(data));
 }
 
 function loadPlayerData(){
   const key=getPlayerKey();
   if(!key) return;
+
   const saved=localStorage.getItem(key);
   if(!saved){updateActiveButtons();return;}
+
   const data=JSON.parse(saved);
+  document.getElementById("playerServer").value=data.server||"";
   document.getElementById("playerClass").value=data.class||"";
   document.getElementById("p1").value=data.p1||"";
   document.getElementById("p2").value=data.p2||"";
   document.getElementById("p3").value=data.p3||"";
   document.getElementById("playerStatus").innerHTML=`<span class="warn">Gespeicherte Auswahl für ${data.player} wurde geladen.</span>`;
+
   updateActiveButtons();
 }
 
-function updateLocalRaidleadData(player,playerClass,p1,p2,p3){
+function updateLocalRaidleadData(player,server,playerClass,p1,p2,p3){
   let data=JSON.parse(localStorage.getItem("bwl_prios")||"[]");
 
   data=data.filter(entry=>
-    String(entry.player||"").toLowerCase()!==String(player||"").toLowerCase()
+    !(
+      String(entry.player||"").toLowerCase()===String(player||"").toLowerCase() &&
+      String(entry.server||"").toLowerCase()===String(server||"").toLowerCase()
+    )
   );
 
   data.push({
     player:player,
+    server:server,
     class:playerClass,
     p1:p1,
     p2:p2,
@@ -438,6 +483,7 @@ function updateLocalRaidleadData(player,playerClass,p1,p2,p3){
 async function savePrio(){
   const pin=document.getElementById("raidPin").value.trim();
   const player=document.getElementById("playerName").value.trim();
+  const server=document.getElementById("playerServer").value;
   const playerClass=document.getElementById("playerClass").value;
   const p1=document.getElementById("p1").value;
   const p2=document.getElementById("p2").value;
@@ -445,7 +491,7 @@ async function savePrio(){
   const status=document.getElementById("playerStatus");
 
   if(!pin){status.innerHTML=`<span class="bad">Bitte Raid-PIN eingeben.</span>`;return;}
-  if(!player||!playerClass||!p1||!p2||!p3){status.innerHTML=`<span class="bad">Bitte alles vollständig ausfüllen.</span>`;return;}
+  if(!player||!server||!playerClass||!p1||!p2||!p3){status.innerHTML=`<span class="bad">Bitte Charakter, Server, Klasse und Prios vollständig ausfüllen.</span>`;return;}
   if(!(p1===p2&&p2===p3)&&(p1===p2||p1===p3||p2===p3)){
     status.innerHTML=`<span class="bad">Bitte jedes Item nur einmal wählen. Ausnahme: P0+.</span>`;
     return;
@@ -458,6 +504,7 @@ async function savePrio(){
     "&raid="+encodeURIComponent(RAID_NAME)+
     "&playerPin="+encodeURIComponent(pin)+
     "&player="+encodeURIComponent(player)+
+    "&server="+encodeURIComponent(server)+
     "&className="+encodeURIComponent(playerClass)+
     "&p1="+encodeURIComponent(p1)+
     "&p2="+encodeURIComponent(p2)+
@@ -474,7 +521,7 @@ async function savePrio(){
     }
 
     autoSaveDraft();
-    updateLocalRaidleadData(player,playerClass,p1,p2,p3);
+    updateLocalRaidleadData(player,server,playerClass,p1,p2,p3);
     status.innerHTML=`<span class="ok">✓ Deine Prios wurden gespeichert.</span><br>Der Eintrag wurde in den Tab PRIOS geschrieben.`;
     await loadPublishedPrios();
 
@@ -526,6 +573,13 @@ function raidleadEnter(event){
   if(event.key === "Enter"){
     raidleadLogin();
   }
+}
+
+async function refreshPrios(){
+  await loadPublishedPrios();
+
+  const status=document.getElementById("publishedStatus");
+  status.innerHTML += `<br><span class="ok">✓ Aktualisiert. Deine Eingaben bleiben erhalten.</span>`;
 }
 
 async function loadPublishedPrios(){
@@ -604,10 +658,13 @@ function setPublishedMode(isPublished){
 function renderPublishedChecks(prios){
   const table=document.getElementById("publishedTable");
   table.innerHTML="";
+
   prios.forEach(prio=>{
+    const playerText=`${safe(prio.Spieler)}${prio.Server ? " – "+safe(prio.Server) : ""}`;
+
     table.innerHTML+=`
       <tr>
-        <td>${safe(prio.Spieler)}</td>
+        <td>${playerText}</td>
         <td><span class="${classColor(prio.Klasse)}">${safe(prio.Klasse)}</span></td>
         <td>${prio.P1?'<span class="check">✓</span>':'<span class="cross">✗</span>'}</td>
         <td>${prio.P2?'<span class="check">✓</span>':'<span class="cross">✗</span>'}</td>
@@ -621,14 +678,17 @@ function renderPublishedChecks(prios){
 function renderPublishedItems(prios){
   const table=document.getElementById("publishedTable");
   table.innerHTML="";
+
   prios.forEach(prio=>{
+    const playerText=`${safe(prio.Spieler)}${prio.Server ? " – "+safe(prio.Server) : ""}`;
+
     table.innerHTML+=`
       <tr>
-        <td>${safe(prio.Spieler)}</td>
+        <td>${playerText}</td>
         <td><span class="${classColor(prio.Klasse)}">${safe(prio.Klasse)}</span></td>
-        <td>${safe(prio.P1)}</td>
-        <td>${safe(prio.P2)}</td>
-        <td>${safe(prio.P3)}</td>
+        <td>${itemHtml(prio.P1)}</td>
+        <td>${itemHtml(prio.P2)}</td>
+        <td>${itemHtml(prio.P3)}</td>
         <td>${String(prio.P0Plus).toLowerCase()==="ja"?'<span class="warn">ja</span>':'nein'}</td>
       </tr>
     `;
@@ -653,6 +713,8 @@ function classColor(className){
 }
 
 function showTooltip(event,item){
+  if(!item) return;
+
   const tooltip=document.getElementById("tooltip");
   const statLines=[];
 
@@ -663,16 +725,16 @@ function showTooltip(event,item){
   if(item.dps) statLines.push(`<div class="tooltip-stat">${item.dps}</div>`);
   item.stats.forEach(stat=>statLines.push(`<div class="tooltip-stat">${stat}</div>`));
 
-  const p0Html=item.p0.length ? item.p0.map(player=>`<li>${player}</li>`).join("") : `<li>Keine P0+ gesetzt</li>`;
+  const p0Html=item.p0.length ? item.p0.map(player=>`<li>${safe(player)}</li>`).join("") : `<li>Keine P0+ gesetzt</li>`;
 
   tooltip.innerHTML=`
-    <div class="tooltip-title ${item.quality}">${item.name}</div>
-    <div class="tooltip-ilvl">${item.ilvl}</div>
-    <div class="tooltip-bind">${item.bind}</div>
-    <div class="tooltip-row"><span>${item.slot}</span><span>${item.type||""}</span></div>
+    <div class="tooltip-title ${item.quality}">${safe(item.name)}</div>
+    <div class="tooltip-ilvl">${safe(item.ilvl)}</div>
+    <div class="tooltip-bind">${safe(item.bind)}</div>
+    <div class="tooltip-row"><span>${safe(item.slot)}</span><span>${safe(item.type||"")}</span></div>
     ${statLines.join("")}
-    ${item.equip?`<div class="tooltip-equip">Anlegen: ${item.equip}</div>`:""}
-    ${item.price?`<div class="tooltip-price">Verkaufspreis: ${item.price}</div>`:""}
+    ${item.equip?`<div class="tooltip-equip">Anlegen: ${safe(item.equip)}</div>`:""}
+    ${item.price?`<div class="tooltip-price">Verkaufspreis: ${safe(item.price)}</div>`:""}
     <div class="tooltip-p0"><strong>Gesetzte P0+</strong><ul>${p0Html}</ul></div>
   `;
 
