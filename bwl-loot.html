@@ -63,30 +63,11 @@
       padding:12px 16px;
       border-radius:14px;
       background:rgba(12,18,32,.72);
+      cursor:pointer;
     }
 
     .back:hover{
       border-color:rgba(250,204,21,.45);
-    }
-
-    .lead-login-input{
-      width:180px;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid rgba(250,204,21,.35);
-      background:rgba(12,18,32,.75);
-      color:white;
-      font-weight:700;
-      outline:none;
-    }
-
-    .lead-login-input:focus{
-      border-color:rgba(250,204,21,.75);
-      box-shadow:0 0 0 2px rgba(250,204,21,.16);
-    }
-
-    .lead-login-btn{
-      cursor:pointer;
     }
 
     .header{
@@ -171,15 +152,6 @@
       border-color:rgba(250,204,21,.55);
     }
 
-    .btn.secondary{
-      background:linear-gradient(135deg,rgba(96,165,250,.22),rgba(250,204,21,.12));
-    }
-
-    .btn.danger{
-      background:linear-gradient(135deg,rgba(239,68,68,.35),rgba(250,204,21,.10));
-      border-color:rgba(239,68,68,.35);
-    }
-
     .status{
       margin-top:16px;
       padding:14px;
@@ -219,19 +191,6 @@
       letter-spacing:.08em;
     }
 
-    .export-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-      margin-top:14px;
-    }
-
-    .small{
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.6;
-    }
-
     @media(max-width:900px){
       .grid{
         grid-template-columns:1fr;
@@ -245,8 +204,7 @@
         width:100%;
       }
 
-      .topbar-right .back,
-      .topbar-right .lead-login-input{
+      .topbar-right .back{
         flex:1;
       }
     }
@@ -262,16 +220,7 @@
 
     <div class="topbar-right">
       <a class="back" href="../bwl.html">P0+ Übersicht öffnen</a>
-
-      <input
-        id="leadPin"
-        class="lead-login-input"
-        type="password"
-        placeholder="Raidlead-PIN"
-        onkeydown="handleLeadEnter(event)"
-      >
-
-      <button class="back lead-login-btn" onclick="openLeadPanel()">Login</button>
+      <button class="back" onclick="openRaidleadPanel()">Raidlead Login</button>
     </div>
   </div>
 
@@ -335,36 +284,7 @@
         Sobald der Raidlead die Liste freigibt, erscheint sie hier.
       </div>
 
-      <div id="leadPanel" class="hidden">
-
-        <div class="status">
-          <span class="warn">Raidlead-Ansicht aktiv.</span><br>
-          Du siehst hier zunächst nur, ob Spieler ihre Prios vollständig eingetragen haben.
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Spieler</th>
-              <th>Klasse</th>
-              <th>P1</th>
-              <th>P2</th>
-              <th>P3</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="leadTable"></tbody>
-        </table>
-
-        <button class="btn" onclick="releaseList()">Prioliste veröffentlichen</button>
-        <button class="btn danger" onclick="resetData()">Testdaten löschen</button>
-
-      </div>
-
       <div id="publicList" class="hidden">
-
-        <h2 style="margin-top:24px;">Veröffentlichte Prioliste</h2>
-
         <table>
           <thead>
             <tr>
@@ -377,29 +297,18 @@
           </thead>
           <tbody id="prioTable"></tbody>
         </table>
-
-        <div id="exportArea" class="hidden">
-          <h2 style="margin-top:24px;">Export</h2>
-
-          <div class="export-grid">
-            <button class="btn secondary" onclick="downloadExport('csv')">CSV</button>
-            <button class="btn secondary" onclick="downloadExport('csvshort')">CSV SHORT</button>
-            <button class="btn secondary" onclick="downloadExport('txt')">TXT</button>
-            <button class="btn secondary" onclick="downloadExport('lua')">LUA</button>
-          </div>
-        </div>
-
       </div>
 
     </div>
 
   </div>
 
-</div>
+</div><script>
+  const RAID_API_URL =
+    "https://script.google.com/macros/s/AKfycbzwRZ1908IawmEh3WdROu_TBwfu8Yr1YXJ1VicqEIf15eZ2zzRE3Yw9OaaeJ0ZADbye2g/exec";
 
-<script>
-  const RAID_PIN = "bwl";
-  const LEAD_PIN = "lead";
+  const urlParams = new URLSearchParams(window.location.search);
+  const VALID_RAID_PIN = urlParams.get("pin") || "";
 
   const bwlItems = [
     "Neltharions Träne",
@@ -425,6 +334,7 @@
     ["p1","p2","p3"].forEach(id => {
       const select = document.getElementById(id);
       select.innerHTML = `<option value="">Item auswählen</option>`;
+
       bwlItems.forEach(item => {
         const option = document.createElement("option");
         option.value = item;
@@ -442,7 +352,15 @@
     localStorage.setItem("bwl_prios", JSON.stringify(data));
   }
 
-  function savePrio(){
+  function openRaidleadPanel(){
+    if(sessionStorage.getItem("raidlead") === "true"){
+      window.location.href = "../raidlead-panel.html";
+    } else {
+      window.location.href = "../index.html";
+    }
+  }
+
+  async function savePrio(){
     const pin = document.getElementById("raidPin").value.trim();
     const player = document.getElementById("playerName").value.trim();
     const playerClass = document.getElementById("playerClass").value;
@@ -451,7 +369,15 @@
     const p3 = document.getElementById("p3").value;
     const status = document.getElementById("playerStatus");
 
-    if(pin !== RAID_PIN){
+    if(!VALID_RAID_PIN){
+      status.innerHTML = `
+        <span class="bad">Kein gültiger Raid-Link vorhanden.</span><br>
+        Bitte nutze den Spielerlink aus dem Raidlead-Panel.
+      `;
+      return;
+    }
+
+    if(pin !== VALID_RAID_PIN){
       status.innerHTML = `<span class="bad">Falscher Raid-PIN.</span>`;
       return;
     }
@@ -463,96 +389,63 @@
 
     let data = getData();
 
-    data = data.filter(entry => entry.player.toLowerCase() !== player.toLowerCase());
+    data = data.filter(entry =>
+      entry.player.toLowerCase() !== player.toLowerCase()
+    );
 
     data.push({
-      player,
-      class: playerClass,
-      p1,
-      p2,
-      p3,
-      timestamp: new Date().toISOString()
+      player:player,
+      class:playerClass,
+      p1:p1,
+      p2:p2,
+      p3:p3,
+      timestamp:new Date().toISOString()
     });
 
     setData(data);
 
+    await fetch(RAID_API_URL,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        action:"savePrio",
+        raid:"bwl",
+        playerPin:VALID_RAID_PIN,
+        player:player,
+        className:playerClass,
+        p1:p1,
+        p2:p2,
+        p3:p3,
+        createdAt:new Date().toISOString()
+      })
+    });
+
     status.innerHTML = `
       <span class="ok">✓ Deine Prios wurden gespeichert.</span><br>
-      Die vollständige Prioliste wird erst nach Freigabe durch den Raidlead sichtbar.
+      Die Eingabe wurde an das Raid-System übertragen.
     `;
 
-    if(!document.getElementById("leadPanel").classList.contains("hidden")){
-      renderLeadTable();
-    }
-  }
-
-  function handleLeadEnter(event){
-    if(event.key === "Enter"){
-      openLeadPanel();
-    }
-  }
-
-  function openLeadPanel(){
-    const pin = document.getElementById("leadPin").value.trim();
-
-    if(pin !== LEAD_PIN){
-      alert("Falscher Raidlead-PIN.");
-      return;
-    }
-
-    document.getElementById("leadPanel").classList.remove("hidden");
-    document.getElementById("exportArea").classList.remove("hidden");
-    renderLeadTable();
-
-    if(localStorage.getItem("bwl_released") === "true"){
-      renderPublicList();
-      document.getElementById("publicList").classList.remove("hidden");
-      document.getElementById("notReleasedInfo").classList.add("hidden");
-    }
-  }
-
-  function renderLeadTable(){
-    const data = getData();
-    const tbody = document.getElementById("leadTable");
-
-    tbody.innerHTML = "";
-
-    if(data.length === 0){
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6">Noch keine Einträge vorhanden.</td>
-        </tr>
-      `;
-      return;
-    }
-
-    data.forEach(entry => {
-      const complete = entry.p1 && entry.p2 && entry.p3;
-
-      tbody.innerHTML += `
-        <tr>
-          <td>${entry.player}</td>
-          <td>${entry.class}</td>
-          <td>${entry.p1 ? "✓" : "–"}</td>
-          <td>${entry.p2 ? "✓" : "–"}</td>
-          <td>${entry.p3 ? "✓" : "–"}</td>
-          <td>${complete ? '<span class="ok">fertig</span>' : '<span class="bad">offen</span>'}</td>
-        </tr>
-      `;
-    });
-  }
-
-  function releaseList(){
-    localStorage.setItem("bwl_released", "true");
     renderPublicList();
-
-    document.getElementById("publicList").classList.remove("hidden");
-    document.getElementById("notReleasedInfo").classList.add("hidden");
   }
 
   function renderPublicList(){
+    const released =
+      localStorage.getItem("bwl_released") === "true";
+
+    if(!released){
+      document.getElementById("publicList").classList.add("hidden");
+      document.getElementById("notReleasedInfo").classList.remove("hidden");
+      return;
+    }
+
     const data = getData();
     const tbody = document.getElementById("prioTable");
+
+    document.getElementById("publicList").classList.remove("hidden");
+    document.getElementById("notReleasedInfo").classList.add("hidden");
 
     tbody.innerHTML = "";
 
@@ -578,77 +471,8 @@
     });
   }
 
-  function downloadExport(type){
-    const data = getData();
-    let content = "";
-    let filename = "bwl-prios";
-    let mime = "text/plain";
-
-    if(type === "csv"){
-      filename += ".csv";
-      mime = "text/csv";
-      content = "Player,Class,P1,P2,P3\n";
-      data.forEach(e => {
-        content += `"${e.player}","${e.class}","${e.p1}","${e.p2}","${e.p3}"\n`;
-      });
-    }
-
-    if(type === "csvshort"){
-      filename += "-short.csv";
-      mime = "text/csv";
-      content = "Player,P1,P2,P3\n";
-      data.forEach(e => {
-        content += `"${e.player}","${e.p1}","${e.p2}","${e.p3}"\n`;
-      });
-    }
-
-    if(type === "txt"){
-      filename += ".txt";
-      data.forEach(e => {
-        content += `${e.player} (${e.class})\nP1: ${e.p1}\nP2: ${e.p2}\nP3: ${e.p3}\n\n`;
-      });
-    }
-
-    if(type === "lua"){
-      filename += ".lua";
-      content = "LichtbringerBWL = {\n";
-      data.forEach(e => {
-        content += `  ["${e.player}"] = { class = "${e.class}", p1 = "${e.p1}", p2 = "${e.p2}", p3 = "${e.p3}" },\n`;
-      });
-      content += "}\n";
-    }
-
-    const blob = new Blob([content], {type:mime});
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-
-    URL.revokeObjectURL(url);
-  }
-
-  function resetData(){
-    if(confirm("Alle Testdaten löschen?")){
-      localStorage.removeItem("bwl_prios");
-      localStorage.removeItem("bwl_released");
-
-      renderLeadTable();
-      renderPublicList();
-
-      document.getElementById("publicList").classList.add("hidden");
-      document.getElementById("notReleasedInfo").classList.remove("hidden");
-    }
-  }
-
   fillItems();
-
-  if(localStorage.getItem("bwl_released") === "true"){
-    document.getElementById("publicList").classList.remove("hidden");
-    document.getElementById("notReleasedInfo").classList.add("hidden");
-    renderPublicList();
-  }
+  renderPublicList();
 </script>
 
 </body>
