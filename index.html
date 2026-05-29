@@ -529,28 +529,5 @@ function handlePinEnter(event, raid){
 </script>
 <script>
 
-function raidleadLogin(){
-
-  const pin =
-    document.getElementById("raidleadPin")
-    .value
-    .trim();
-
-  if(pin !== "lead"){
-    alert("Falsche Raidlead PIN");
-    return;
-  }
-
-  window.location.href =
-    "raidlead-panel.html";
-}
-
-function raidleadEnter(event){
-  if(event.key === "Enter"){
-    raidleadLogin();
-  }
-}
-
-</script>
 </body>
 </html>
