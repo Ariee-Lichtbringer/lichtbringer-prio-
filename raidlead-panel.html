@@ -182,6 +182,14 @@
       border-color:rgba(239,68,68,.40);
     }
 
+    .btn.small-btn{
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:12px;
+      margin-top:0;
+      width:auto;
+    }
+
     table{
       width:100%;
       border-collapse:collapse;
@@ -234,7 +242,7 @@
   <div class="header">
     <h1>Raidlead Panel</h1>
     <div class="subtitle">
-      Zentrale Verwaltung der Priolisten. Bei geschlossener Liste sieht der Raidlead nur, ob P1/P2/P3 gesetzt wurden. Erst nach Öffnung werden die Items sichtbar.
+      Zentrale Verwaltung der Priolisten. Bei geschlossener Liste sieht der Raidlead nur Haken/Kreuze. Nach Öffnung werden die Items sichtbar.
     </div>
     <div id="roleInfo" class="status"></div>
   </div>
@@ -451,7 +459,7 @@ function renderRaids(role){
           ${
             released
             ? "Die Prioliste ist geöffnet. Die Itemnamen sind sichtbar."
-            : "Die Prioliste ist geschlossen. Es wird nur angezeigt, ob P1/P2/P3 gesetzt wurden."
+            : "Die Prioliste ist geschlossen. Es wird nur angezeigt, ob P1/P2/P3/P0+ gesetzt wurden."
           }
         </div>
 
@@ -463,6 +471,8 @@ function renderRaids(role){
               <th>P1</th>
               <th>P2</th>
               <th>P3</th>
+              <th>P0+</th>
+              <th>Aktion</th>
             </tr>
           </thead>
           <tbody>
@@ -496,12 +506,17 @@ function renderRows(raid, released){
   if(data.length === 0){
     return `
       <tr>
-        <td colspan="5">Noch keine Einträge vorhanden.</td>
+        <td colspan="7">Noch keine Einträge vorhanden.</td>
       </tr>
     `;
   }
 
   return data.map(entry => {
+    const isP0Plus =
+      entry.p1 &&
+      entry.p1 === entry.p2 &&
+      entry.p2 === entry.p3;
+
     if(!released){
       return `
         <tr>
@@ -510,6 +525,12 @@ function renderRows(raid, released){
           <td>${entry.p1 ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
           <td>${entry.p2 ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
           <td>${entry.p3 ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
+          <td>${isP0Plus ? '<span class="check">✓</span>' : '<span class="cross">✗</span>'}</td>
+          <td>
+            <button class="btn danger small-btn" onclick="deleteSinglePrio('${raid}','${String(entry.player || "").replace(/'/g,"\\'")}')">
+              Löschen
+            </button>
+          </td>
         </tr>
       `;
     }
@@ -521,6 +542,12 @@ function renderRows(raid, released){
         <td>${entry.p1 || "-"}</td>
         <td>${entry.p2 || "-"}</td>
         <td>${entry.p3 || "-"}</td>
+        <td>${isP0Plus ? '<span class="warn">ja</span>' : 'nein'}</td>
+        <td>
+          <button class="btn danger small-btn" onclick="deleteSinglePrio('${raid}','${String(entry.player || "").replace(/'/g,"\\'")}')">
+            Löschen
+          </button>
+        </td>
       </tr>
     `;
   }).join("");
@@ -642,6 +669,38 @@ async function closeList(raid){
   await fetch(url);
 
   alert("Prioliste wurde geschlossen.");
+
+  renderRaids(sessionStorage.getItem("raidleadRole"));
+}
+
+async function deleteSinglePrio(raid, player){
+  const activeRaid = getActiveRaid(raid);
+
+  if(!activeRaid){
+    alert("Kein aktiver Raid gefunden.");
+    return;
+  }
+
+  if(!confirm("Prio von " + player + " wirklich löschen?")){
+    return;
+  }
+
+  let data = getData(raid);
+
+  data = data.filter(entry =>
+    String(entry.player || "").toLowerCase() !==
+    String(player || "").toLowerCase()
+  );
+
+  localStorage.setItem(raids[raid].dataKey, JSON.stringify(data));
+
+  await fetch(
+    RAID_API_URL +
+    "?action=deletePrio" +
+    "&raidId=" + encodeURIComponent(activeRaid.raidId) +
+    "&player=" + encodeURIComponent(player) +
+    "&t=" + Date.now()
+  );
 
   renderRaids(sessionStorage.getItem("raidleadRole"));
 }
