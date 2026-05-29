@@ -48,6 +48,13 @@
       flex-wrap:wrap;
     }
 
+    .topbar-right{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
     .back{
       color:var(--text);
       text-decoration:none;
@@ -60,6 +67,26 @@
 
     .back:hover{
       border-color:rgba(250,204,21,.45);
+    }
+
+    .lead-login-input{
+      width:180px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(250,204,21,.35);
+      background:rgba(12,18,32,.75);
+      color:white;
+      font-weight:700;
+      outline:none;
+    }
+
+    .lead-login-input:focus{
+      border-color:rgba(250,204,21,.75);
+      box-shadow:0 0 0 2px rgba(250,204,21,.16);
+    }
+
+    .lead-login-btn{
+      cursor:pointer;
     }
 
     .header{
@@ -209,6 +236,19 @@
       .grid{
         grid-template-columns:1fr;
       }
+
+      .topbar{
+        align-items:stretch;
+      }
+
+      .topbar-right{
+        width:100%;
+      }
+
+      .topbar-right .back,
+      .topbar-right .lead-login-input{
+        flex:1;
+      }
     }
   </style>
 </head>
@@ -219,14 +259,27 @@
 
   <div class="topbar">
     <a class="back" href="../index.html">← Zurück zur Startseite</a>
-    <a class="back" href="../bwl.html">P0+ Übersicht öffnen</a>
+
+    <div class="topbar-right">
+      <a class="back" href="../bwl.html">P0+ Übersicht öffnen</a>
+
+      <input
+        id="leadPin"
+        class="lead-login-input"
+        type="password"
+        placeholder="Raidlead-PIN"
+        onkeydown="handleLeadEnter(event)"
+      >
+
+      <button class="back lead-login-btn" onclick="openLeadPanel()">Login</button>
+    </div>
   </div>
 
   <div class="header">
     <h1>Blackwing Lair – Prio-Auswahl</h1>
     <div class="subtitle">
       Hier können Spieler ihre P1-, P2- und P3-Prioritäten für BWL eintragen.
-      Die Liste bleibt bis zur Freigabe durch den Raidlead verborgen.
+      Die vollständige Prioliste wird erst nach Freigabe durch den Raidlead sichtbar.
     </div>
   </div>
 
@@ -275,23 +328,18 @@
 
     <div class="card">
 
-      <h2>Raidlead-Bereich</h2>
+      <h2>Prioliste</h2>
 
-      <p class="small">
-        Im späteren Live-System wird dieser Bereich durch einen echten Admin-Zugang geschützt.
-        Für diese erste Version dient er als Vorlage.
-      </p>
-
-      <label>Raidlead-PIN</label>
-      <input id="leadPin" type="password" placeholder="Raidlead-PIN eingeben">
-
-      <button class="btn secondary" onclick="openLeadPanel()">Raidlead-Panel öffnen</button>
+      <div id="notReleasedInfo" class="status">
+        <span class="warn">Die Prioliste ist noch nicht veröffentlicht.</span><br>
+        Sobald der Raidlead die Liste freigibt, erscheint sie hier.
+      </div>
 
       <div id="leadPanel" class="hidden">
 
         <div class="status">
-          <span class="warn">Prio-Liste ist zunächst verborgen.</span><br>
-          Der Raidlead sieht nur, ob Spieler ihre Prios vollständig eingetragen haben.
+          <span class="warn">Raidlead-Ansicht aktiv.</span><br>
+          Du siehst hier zunächst nur, ob Spieler ihre Prios vollständig eingetragen haben.
         </div>
 
         <table>
@@ -311,23 +359,26 @@
         <button class="btn" onclick="releaseList()">Prioliste veröffentlichen</button>
         <button class="btn danger" onclick="resetData()">Testdaten löschen</button>
 
-        <div id="publicList" class="hidden">
+      </div>
 
-          <h2 style="margin-top:24px;">Veröffentlichte Prioliste</h2>
+      <div id="publicList" class="hidden">
 
-          <table>
-            <thead>
-              <tr>
-                <th>Spieler</th>
-                <th>Klasse</th>
-                <th>P1</th>
-                <th>P2</th>
-                <th>P3</th>
-              </tr>
-            </thead>
-            <tbody id="prioTable"></tbody>
-          </table>
+        <h2 style="margin-top:24px;">Veröffentlichte Prioliste</h2>
 
+        <table>
+          <thead>
+            <tr>
+              <th>Spieler</th>
+              <th>Klasse</th>
+              <th>P1</th>
+              <th>P2</th>
+              <th>P3</th>
+            </tr>
+          </thead>
+          <tbody id="prioTable"></tbody>
+        </table>
+
+        <div id="exportArea" class="hidden">
           <h2 style="margin-top:24px;">Export</h2>
 
           <div class="export-grid">
@@ -336,7 +387,6 @@
             <button class="btn secondary" onclick="downloadExport('txt')">TXT</button>
             <button class="btn secondary" onclick="downloadExport('lua')">LUA</button>
           </div>
-
         </div>
 
       </div>
@@ -430,6 +480,16 @@
       <span class="ok">✓ Deine Prios wurden gespeichert.</span><br>
       Die vollständige Prioliste wird erst nach Freigabe durch den Raidlead sichtbar.
     `;
+
+    if(!document.getElementById("leadPanel").classList.contains("hidden")){
+      renderLeadTable();
+    }
+  }
+
+  function handleLeadEnter(event){
+    if(event.key === "Enter"){
+      openLeadPanel();
+    }
   }
 
   function openLeadPanel(){
@@ -441,7 +501,14 @@
     }
 
     document.getElementById("leadPanel").classList.remove("hidden");
+    document.getElementById("exportArea").classList.remove("hidden");
     renderLeadTable();
+
+    if(localStorage.getItem("bwl_released") === "true"){
+      renderPublicList();
+      document.getElementById("publicList").classList.remove("hidden");
+      document.getElementById("notReleasedInfo").classList.add("hidden");
+    }
   }
 
   function renderLeadTable(){
@@ -449,6 +516,15 @@
     const tbody = document.getElementById("leadTable");
 
     tbody.innerHTML = "";
+
+    if(data.length === 0){
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6">Noch keine Einträge vorhanden.</td>
+        </tr>
+      `;
+      return;
+    }
 
     data.forEach(entry => {
       const complete = entry.p1 && entry.p2 && entry.p3;
@@ -469,7 +545,9 @@
   function releaseList(){
     localStorage.setItem("bwl_released", "true");
     renderPublicList();
+
     document.getElementById("publicList").classList.remove("hidden");
+    document.getElementById("notReleasedInfo").classList.add("hidden");
   }
 
   function renderPublicList(){
@@ -477,6 +555,15 @@
     const tbody = document.getElementById("prioTable");
 
     tbody.innerHTML = "";
+
+    if(data.length === 0){
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5">Noch keine Prios eingetragen.</td>
+        </tr>
+      `;
+      return;
+    }
 
     data.forEach(entry => {
       tbody.innerHTML += `
@@ -546,8 +633,12 @@
     if(confirm("Alle Testdaten löschen?")){
       localStorage.removeItem("bwl_prios");
       localStorage.removeItem("bwl_released");
+
       renderLeadTable();
       renderPublicList();
+
+      document.getElementById("publicList").classList.add("hidden");
+      document.getElementById("notReleasedInfo").classList.remove("hidden");
     }
   }
 
@@ -555,6 +646,7 @@
 
   if(localStorage.getItem("bwl_released") === "true"){
     document.getElementById("publicList").classList.remove("hidden");
+    document.getElementById("notReleasedInfo").classList.add("hidden");
     renderPublicList();
   }
 </script>
