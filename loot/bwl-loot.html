@@ -493,13 +493,43 @@ const raidleadAccounts = {
   "LB-AQ40-Lead":"aq40"
 };
 
-function raidleadLogin(){
+async function raidleadLogin(){
   const pin = document.getElementById("raidleadPin").value.trim();
 
-  if(!raidleadAccounts[pin]){
-    alert("Falsche Raidlead-PIN.");
+  const raidleadAccounts = {
+    "Lichtbringer-master":"master",
+    "LB-S7XK29":"mc-bwl",
+    "LB-Q4PM18":"naxx",
+    "LB-T9DN52":"zg-aq20",
+    "LB-AQ40-Lead":"aq40"
+  };
+
+  if(raidleadAccounts[pin]){
+    sessionStorage.setItem("raidlead","true");
+    sessionStorage.setItem("raidleadRole",raidleadAccounts[pin]);
+    window.location.href = "../raidlead-panel.html";
     return;
   }
+
+  const url =
+    APPS_SCRIPT_URL +
+    "?action=validateLeadPin" +
+    "&leadPin=" + encodeURIComponent(pin) +
+    "&t=" + Date.now();
+
+  const response = await fetch(url);
+  const result = await response.json();
+
+  if(result.success){
+    sessionStorage.setItem("raidlead","true");
+    sessionStorage.setItem("raidleadRole","master");
+    sessionStorage.setItem("raidleadRaidId",result.raidId);
+    window.location.href = "../raidlead-panel.html";
+    return;
+  }
+
+  alert("Falsche Raidlead-PIN.");
+}
 
   sessionStorage.setItem("raidlead","true");
   sessionStorage.setItem("raidleadRole",raidleadAccounts[pin]);
