@@ -496,14 +496,6 @@ const raidleadAccounts = {
 async function raidleadLogin(){
   const pin = document.getElementById("raidleadPin").value.trim();
 
-  const raidleadAccounts = {
-    "Lichtbringer-master":"master",
-    "LB-S7XK29":"mc-bwl",
-    "LB-Q4PM18":"naxx",
-    "LB-T9DN52":"zg-aq20",
-    "LB-AQ40-Lead":"aq40"
-  };
-
   if(raidleadAccounts[pin]){
     sessionStorage.setItem("raidlead","true");
     sessionStorage.setItem("raidleadRole",raidleadAccounts[pin]);
@@ -529,12 +521,6 @@ async function raidleadLogin(){
   }
 
   alert("Falsche Raidlead-PIN.");
-}
-
-  sessionStorage.setItem("raidlead","true");
-  sessionStorage.setItem("raidleadRole",raidleadAccounts[pin]);
-
-  window.location.href = "../raidlead-panel.html";
 }
 
 function raidleadEnter(event){
