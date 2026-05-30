@@ -261,7 +261,21 @@ function isReleased(raid){
 }
 
 function randomCode(length){
-  return Math.random().toString(36).substring(2,2+length);
+
+  const chars =
+    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  let result = "";
+
+  for(let i = 0; i < length; i++){
+
+    result += chars.charAt(
+      Math.floor(Math.random() * chars.length)
+    );
+
+  }
+
+  return result;
 }
 
 function createRaidId(raid){
@@ -299,8 +313,8 @@ async function createNewRaid(raid){
   const r=raids[raid];
 
   const raidId=createRaidId(raid);
-  const playerPin=raid+"-"+randomCode(5);
-  const leadPin="lead-"+randomCode(5);
+  const playerPin=raid+"-"+randomCode(3);
+  const leadPin="lead-"+randomCode(4);
 
   const playerLink=
     getBaseUrl()+
