@@ -350,6 +350,18 @@ const leadPin = randomCode(4);
     status:"geschlossen"
   };
 
+  const LOOT_CSV_URLS = {
+  mc:"https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_MC",
+  bwl:"https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_BWL",
+  aq40:"https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_AQ40",
+  naxx:"https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_NAXX",
+  zg:"https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_ZG",
+  aq20:"https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_AQ20",
+  ony:"https://docs.google.com/spreadsheets/d/10_Rkl1biYanx7rEbiSzjd4q3LqPBa-OxH7hFSMMBNGQ/gviz/tq?tqx=out:csv&sheet=LOOT_ONY"
+};
+
+let itemIdMap = {};
+  
   const history=getHistory(raid);
   history.push(raidData);
 
@@ -497,6 +509,13 @@ async function loadPriosFromSheet(playerPin){
         : "Die Prioliste ist geschlossen. Es wird nur angezeigt, ob P1/P2/P3/P0+ gesetzt wurden."
       }
     </div>
+
+    <h3>Export</h3>
+<div class="button-grid">
+  <button class="btn neutral" onclick="downloadPrio3ReforgedExport()">
+    Prio3 Reforged Export
+  </button>
+</div>
 
     <table>
       <thead>
@@ -657,28 +676,151 @@ async function deleteSinglePrio(player,server){
 
   await reloadCurrentRaid();
 }
+function parseCSV(text){
+  const rows=[];
+  let row=[];
+  let value="";
+  let insideQuotes=false;
 
-function downloadExport(type){
-  let content="";
-  let filename=(currentRaidData.raidId || currentRaidKey)+"-prios";
-  let mime="text/plain";
+  for(let i=0;i<text.length;i++){
+    const char=text[i];
+    const next=text[i+1];
 
-  if(type==="csv"){
-    filename+=".csv";
-    mime="text/csv";
-    content="RaidID,Player,Server,Class,P1,P2,P3,P0Plus\n";
-    currentPrios.forEach(e=>{
-      content+=`"${currentRaidData.raidId||""}","${e.player}","${e.server}","${e.class}","${e.p1}","${e.p2}","${e.p3}","${e.p0Plus}"\n`;
-    });
+    if(char === '"' && insideQuotes && next === '"'){
+      value+='"';
+      i++;
+    }else if(char === '"'){
+      insideQuotes=!insideQuotes;
+    }else if(char === "," && !insideQuotes){
+      row.push(value);
+      value="";
+    }else if((char === "\n" || char === "\r") && !insideQuotes){
+      if(value || row.length){
+        row.push(value);
+        rows.push(row);
+        row=[];
+        value="";
+      }
+      if(char === "\r" && next === "\n") i++;
+    }else{
+      value+=char;
+    }
   }
 
-  if(type==="txt"){
-    filename+=".txt";
-    content+=`RaidID: ${currentRaidData.raidId}\nRaid: ${currentRaidData.raidName}\n\n`;
-    currentPrios.forEach(e=>{
-      content+=`${e.player} - ${e.server} (${e.class})\nP1: ${e.p1}\nP2: ${e.p2}\nP3: ${e.p3}\nP0+: ${e.p0Plus}\n\n`;
-    });
+  if(value || row.length){
+    row.push(value);
+    rows.push(row);
   }
+
+  return rows;
+}
+
+function itemKey(value){
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+}
+
+async function loadItemIdsForExport(){
+  itemIdMap = {};
+
+  const url = LOOT_CSV_URLS[currentRaidKey];
+
+  if(!url){
+    return;
+  }
+
+  const response = await fetch(url + "&t=" + Date.now());
+  const csvText = await response.text();
+  const rows = parseCSV(csvText);
+
+  const headers = rows.shift().map(h => h.trim());
+
+  rows.forEach(row => {
+    const obj = {};
+
+    headers.forEach((header,index) => {
+      obj[header] = row[index] || "";
+    });
+
+    const item = String(obj.Item || "").trim();
+    const itemId = String(obj.ItemID || "").trim();
+
+    if(!item || !itemId) return;
+
+    itemIdMap[itemKey(item)] = itemId;
+  });
+}
+
+function formatItemForPrio3(itemName){
+  const name = String(itemName || "").trim();
+
+  if(!name){
+    return "";
+  }
+
+  if(name.includes("-")){
+    return name;
+  }
+
+  const id = itemIdMap[itemKey(name)];
+
+  if(!id){
+    return name;
+  }
+
+  return name + "-" + id;
+}
+
+async function downloadPrio3ReforgedExport(){
+  if(!currentRaidData){
+    alert("Kein Raid geladen.");
+    return;
+  }
+
+  if(!currentPrios || currentPrios.length === 0){
+    alert("Keine Prios vorhanden.");
+    return;
+  }
+
+  await loadItemIdsForExport();
+
+  let content = "";
+
+  currentPrios.forEach(entry => {
+    const player = entry.player || "";
+    const playerClass = entry.class || "";
+
+    const p1 = formatItemForPrio3(entry.p1);
+    const p2 = formatItemForPrio3(entry.p2);
+    const p3 = formatItemForPrio3(entry.p3);
+
+    content +=
+      player + "\t\t" +
+      playerClass + "\t\t" +
+      p1 + "\t" +
+      p2 + "\t" +
+      p3 + "\n";
+  });
+
+  const filename =
+    (currentRaidData.raidId || currentRaidKey || "raid") +
+    "-prio3-reforged.txt";
+
+  const blob = new Blob([content], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = filename;
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
 
   const blob=new Blob([content],{type:mime});
   const url=URL.createObjectURL(blob);
