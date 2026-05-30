@@ -188,17 +188,17 @@ const RAID_API_URL =
   "https://script.google.com/macros/s/AKfycbzwRZ1908IawmEh3WdROu_TBwfu8Yr1YXJ1VicqEIf15eZ2zzRE3Yw9OaaeJ0ZADbye2g/exec";
 
 const raids = {
-  mc:{name:"Molten Core",short:"MC",role:"mc-bwl",dataKey:"mc_prios",releaseKey:"mc_released",historyKey:"mc_raid_history",activeKey:"mc_active_raid",lootPage:"loot/mc-loot.html",overviewPage:"molten-core.html"},
-  bwl:{name:"Blackwing Lair",short:"BWL",role:"mc-bwl",dataKey:"bwl_prios",releaseKey:"bwl_released",historyKey:"bwl_raid_history",activeKey:"bwl_active_raid",lootPage:"loot/bwl-loot.html",overviewPage:"bwl.html"},
-  aq40:{name:"Ahn'Qiraj 40",short:"AQ40",role:"aq40",dataKey:"aq40_prios",releaseKey:"aq40_released",historyKey:"aq40_raid_history",activeKey:"aq40_active_raid",lootPage:"loot/aq40-loot.html",overviewPage:"aq.html"},
-  naxx:{name:"Naxxramas",short:"NAXX",role:"naxx",dataKey:"naxx_prios",releaseKey:"naxx_released",historyKey:"naxx_raid_history",activeKey:"naxx_active_raid",lootPage:"loot/naxx-loot.html",overviewPage:"naxxramas.html"},
-  zg:{name:"ZG 20",short:"ZG",role:"zg-aq20",dataKey:"zg_prios",releaseKey:"zg_released",historyKey:"zg_raid_history",activeKey:"zg_active_raid",lootPage:"loot/zg-loot.html",overviewPage:"zg.html"},
-  aq20:{name:"AQ 20",short:"AQ20",role:"zg-aq20",dataKey:"aq20_prios",releaseKey:"aq20_released",historyKey:"aq20_raid_history",activeKey:"aq20_active_raid",lootPage:"loot/aq20-loot.html",overviewPage:"aq20.html"},
-  ony:{name:"Onyxia",short:"ONY",role:"ony",dataKey:"ony_prios",releaseKey:"ony_released",historyKey:"ony_raid_history",activeKey:"ony_active_raid",lootPage:"loot/ony-loot.html",overviewPage:"ony.html"}
+  mc:{name:"Molten Core",short:"MC",role:"mc-bwl",Key:"mc_prios",releaseKey:"mc_released",historyKey:"mc_raid_history",activeKey:"mc_active_raid",lootPage:"loot/mc-loot.html",overviewPage:"molten-core.html"},
+  bwl:{name:"Blackwing Lair",short:"BWL",role:"mc-bwl",Key:"bwl_prios",releaseKey:"bwl_released",historyKey:"bwl_raid_history",activeKey:"bwl_active_raid",lootPage:"loot/bwl-loot.html",overviewPage:"bwl.html"},
+  aq40:{name:"Ahn'Qiraj 40",short:"AQ40",role:"aq40",Key:"aq40_prios",releaseKey:"aq40_released",historyKey:"aq40_raid_history",activeKey:"aq40_active_raid",lootPage:"loot/aq40-loot.html",overviewPage:"aq.html"},
+  naxx:{name:"Naxxramas",short:"NAXX",role:"naxx",Key:"naxx_prios",releaseKey:"naxx_released",historyKey:"naxx_raid_history",activeKey:"naxx_active_raid",lootPage:"loot/naxx-loot.html",overviewPage:"naxxramas.html"},
+  zg:{name:"ZG 20",short:"ZG",role:"zg-aq20",Key:"zg_prios",releaseKey:"zg_released",historyKey:"zg_raid_history",activeKey:"zg_active_raid",lootPage:"loot/zg-loot.html",overviewPage:"zg.html"},
+  aq20:{name:"AQ 20",short:"AQ20",role:"zg-aq20",Key:"aq20_prios",releaseKey:"aq20_released",historyKey:"aq20_raid_history",activeKey:"aq20_active_raid",lootPage:"loot/aq20-loot.html",overviewPage:"aq20.html"},
+  ony:{name:"Onyxia",short:"ONY",role:"ony",Key:"ony_prios",releaseKey:"ony_released",historyKey:"ony_raid_history",activeKey:"ony_active_raid",lootPage:"loot/ony-loot.html",overviewPage:"ony.html"}
 };
 
 let currentRaidKey = null;
-let currentRaidData = null;
+let currentRaid = null;
 let currentPrios = [];
 let currentReleased = false;
 
@@ -240,7 +240,7 @@ function fillRaidSelect(role){
   }
 }
 
-function getData(raid){
+function get(raid){
   return JSON.parse(localStorage.getItem(raids[raid].dataKey)||"[]");
 }
 
@@ -632,9 +632,54 @@ async function deleteSinglePrio(player,server){
   await reloadCurrentRaid();
 }
 
+function p0Key(value){
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
+}
+
+async function loadP0PlusFromSheet(){
+  p0PlusData = {};
+
+  try{
+    const response = await fetch(P0PLUS_CSV_URL + "&t=" + Date.now());
+    const csvText = await response.text();
+    const rows = parseCSV(csvText);
+
+    rows.shift(); // Kopfzeile entfernen
+
+    rows.forEach(row => {
+      const raid = String(row[0] || "").trim().toUpperCase();
+      const item = String(row[1] || "").trim();
+      const player = String(row[3] || "").trim();
+      const count = String(row[4] || "").trim();
+
+      if(raid !== "BWL") return;
+      if(!item || !player || !count) return;
+
+      const key = p0Key(item);
+
+      if(!p0PlusData[key]){
+        p0PlusData[key] = [];
+      }
+
+      p0PlusData[key].push({
+        player: player,
+        count: count
+      });
+    });
+
+    console.log("P0+ geladen:", p0PlusData);
+
+  }catch(error){
+    console.error("P0+ Punkte konnten nicht geladen werden:", error);
+  }
+}
+    
 function downloadExport(type){
   let content="";
-  let filename=(currentRaidData.raidId || currentRaidKey)+"-prios";
+  let filename=(currentRaid.raidId || currentRaidKey)+"-prios";
   let mime="text/plain";
 
   if(type==="csv"){
@@ -642,13 +687,13 @@ function downloadExport(type){
     mime="text/csv";
     content="RaidID,Player,Server,Class,P1,P2,P3,P0Plus\n";
     currentPrios.forEach(e=>{
-      content+=`"${currentRaidData.raidId||""}","${e.player}","${e.server}","${e.class}","${e.p1}","${e.p2}","${e.p3}","${e.p0Plus}"\n`;
+      content+=`"${currentRaid.raidId||""}","${e.player}","${e.server}","${e.class}","${e.p1}","${e.p2}","${e.p3}","${e.p0Plus}"\n`;
     });
   }
 
   if(type==="txt"){
     filename+=".txt";
-    content+=`RaidID: ${currentRaidData.raidId}\nRaid: ${currentRaidData.raidName}\n\n`;
+    content+=`RaidID: ${currentRaid.raidId}\nRaid: ${currentRaid.raidName}\n\n`;
     currentPrios.forEach(e=>{
       content+=`${e.player} - ${e.server} (${e.class})\nP1: ${e.p1}\nP2: ${e.p2}\nP3: ${e.p3}\nP0+: ${e.p0Plus}\n\n`;
     });
