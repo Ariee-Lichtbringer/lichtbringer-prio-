@@ -63,6 +63,59 @@ th{color:#facc15;text-transform:uppercase;font-size:10px}
 .hidden{display:none!important}
 @media(max-width:1250px){.grid{grid-template-columns:390px 1fr}.info-card{grid-column:1 / -1}.grid.published-mode{grid-template-columns:1fr}}
 @media(max-width:900px){.grid{grid-template-columns:1fr}.loot-item-row{grid-template-columns:1fr}.prio-buttons{justify-content:flex-start}}
+  .character-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.character-btn{
+  border:none;
+  border-radius:12px;
+  padding:8px 12px;
+  font-weight:900;
+  cursor:pointer;
+  color:white;
+}
+
+.character-priester{
+  background:#ffffff;
+  color:#111827;
+}
+
+.character-paladin{
+  background:#f48cba;
+}
+
+.character-krieger{
+  background:#c69b6d;
+}
+
+.character-jaeger{
+  background:#aad372;
+}
+
+.character-schurke{
+  background:#fff468;
+  color:#111827;
+}
+
+.character-magier{
+  background:#3fc7eb;
+}
+
+.character-hexenmeister{
+  background:#8788ee;
+}
+
+.character-schamane{
+  background:#0070dd;
+}
+
+.character-druide{
+  background:#ff7c0a;
+}
 </style>
 </head>
 
@@ -102,6 +155,9 @@ th{color:#facc15;text-transform:uppercase;font-size:10px}
 
 <label>Charaktername</label>
 <input id="playerName" type="text" placeholder="z. B. Milkshake" oninput="loadPlayerData()">
+  <h3>Gespeicherte Charaktere</h3>
+
+<div id="characterButtons"></div>
 
 <label>Server</label>
 <select id="playerServer" onchange="autoSaveDraft()">
@@ -521,6 +577,7 @@ async function savePrio(){
     }
 
     autoSaveDraft();
+    saveCharacterProfile();
     updateLocalRaidleadData(player,server,playerClass,p1,p2,p3);
     status.innerHTML=`<span class="ok">✓ Deine Prios wurden gespeichert.</span><br>Der Eintrag wurde in den Tab PRIOS geschrieben.`;
     await loadPublishedPrios();
@@ -782,7 +839,98 @@ if(pinFromUrl){
   document.getElementById("raidPin").value=pinFromUrl;
 }
 
+function saveCharacterProfile(){
+
+  const player =
+    document.getElementById("playerName").value.trim();
+
+  const playerClass =
+    document.getElementById("playerClass").value;
+
+  const server =
+    document.getElementById("playerServer").value;
+
+  if(!player || !playerClass || !server){
+    return;
+  }
+
+  let chars =
+    JSON.parse(
+      localStorage.getItem("bwl_characters") || "[]"
+    );
+
+  chars =
+    chars.filter(c =>
+      c.player.toLowerCase() !== player.toLowerCase()
+    );
+
+  chars.push({
+    player,
+    playerClass,
+    server
+  });
+
+  localStorage.setItem(
+    "bwl_characters",
+    JSON.stringify(chars)
+  );
+
+  renderCharacterButtons();
+}
+
+function renderCharacterButtons(){
+
+  const container =
+    document.getElementById("characterButtons");
+
+  if(!container) return;
+
+  const chars =
+    JSON.parse(
+      localStorage.getItem("bwl_characters") || "[]"
+    );
+
+  container.className =
+    "character-list";
+
+  container.innerHTML = "";
+
+  chars.forEach(char => {
+
+    const btn =
+      document.createElement("button");
+
+    btn.className =
+      "character-btn character-" +
+      char.playerClass.toLowerCase()
+        .replace("ä","ae")
+        .replace("ö","oe")
+        .replace("ü","ue");
+
+    btn.textContent =
+      `${char.player} (${char.server})`;
+
+    btn.onclick = () => {
+
+      document.getElementById("playerName").value =
+        char.player;
+
+      document.getElementById("playerClass").value =
+        char.playerClass;
+
+      document.getElementById("playerServer").value =
+        char.server;
+
+      loadPlayerData();
+    };
+
+    container.appendChild(btn);
+
+  });
+
+}
 loadLootFromSheet();
+renderCharacterButtons();
 
 autoRefreshTimer=setInterval(()=>{
   const pin=document.getElementById("raidPin").value.trim();
