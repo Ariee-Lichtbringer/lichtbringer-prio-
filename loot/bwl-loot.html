@@ -827,7 +827,7 @@ const p0Html =
     <div class="tooltip-bind">${safe(item.bind)}</div>
     <div class="tooltip-row"><span>${safe(item.slot)}</span><span>${safe(item.type||"")}</span></div>
     ${statLines.join("")}
-    ${item.equip?`<div class="tooltip-equip">Anlegen: ${safe(item.equip)}</div>`:""}
+    ${item.equip?`<div class="tooltip-equip">${safe(item.equip)}</div>`:""}
     ${item.price?`<div class="tooltip-price">Verkaufspreis: ${safe(item.price)}</div>`:""}
     <div class="tooltip-p0"><strong>P0+ Punkte</strong><ul>${p0Html}</ul></div>
   `;
