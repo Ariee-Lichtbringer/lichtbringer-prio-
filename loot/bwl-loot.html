@@ -895,7 +895,20 @@ function renderCharacterButtons(){
 
   container.innerHTML = "";
 
+  if(chars.length === 0){
+    container.innerHTML =
+      `<div class="status">Noch keine Charaktere gespeichert.</div>`;
+    return;
+  }
+
   chars.forEach(char => {
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.style.display = "flex";
+    wrapper.style.gap = "4px";
+    wrapper.style.alignItems = "center";
 
     const btn =
       document.createElement("button");
@@ -924,9 +937,65 @@ function renderCharacterButtons(){
       loadPlayerData();
     };
 
-    container.appendChild(btn);
+    const deleteBtn =
+      document.createElement("button");
+
+    deleteBtn.textContent = "✕";
+
+    deleteBtn.style.border = "1px solid rgba(239,68,68,.55)";
+    deleteBtn.style.background = "rgba(239,68,68,.25)";
+    deleteBtn.style.color = "white";
+    deleteBtn.style.borderRadius = "10px";
+    deleteBtn.style.padding = "8px 10px";
+    deleteBtn.style.fontWeight = "900";
+    deleteBtn.style.cursor = "pointer";
+
+    deleteBtn.onclick = (event) => {
+
+      event.stopPropagation();
+
+      deleteCharacterProfile(
+        char.player,
+        char.server
+      );
+
+    };
+
+    wrapper.appendChild(btn);
+    wrapper.appendChild(deleteBtn);
+    container.appendChild(wrapper);
 
   });
+
+}
+function deleteCharacterProfile(player, server){
+
+  if(!confirm("Charakter " + player + " wirklich löschen?")){
+    return;
+  }
+
+  let chars =
+    JSON.parse(
+      localStorage.getItem("bwl_characters") || "[]"
+    );
+
+  chars =
+    chars.filter(c =>
+      !(
+        String(c.player || "").toLowerCase() ===
+        String(player || "").toLowerCase()
+        &&
+        String(c.server || "").toLowerCase() ===
+        String(server || "").toLowerCase()
+      )
+    );
+
+  localStorage.setItem(
+    "bwl_characters",
+    JSON.stringify(chars)
+  );
+
+  renderCharacterButtons();
 
 }
 loadLootFromSheet();
