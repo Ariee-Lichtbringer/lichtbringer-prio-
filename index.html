@@ -1,59 +1,45 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lichtbringer – Raid Übersicht</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lichtbringer – Raid Übersicht</title>
 
-  <style>
-    :root{
-      --gold:#facc15;
-      --panel:rgba(12,18,32,.82);
-      --text:#f8fafc;
-      --muted:#cbd5e1;
-      --line:rgba(255,255,255,.10);
-      --shadow:0 20px 45px rgba(0,0,0,.45);
-    }
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
-    body{
-      min-height:100vh;
-      font-family:Arial, Helvetica, sans-serif;
-      color:var(--text);
-      background:
-        linear-gradient(rgba(8,17,31,.78), rgba(8,17,31,.90)),
-        url('./images/back.jpeg');
-      background-size:cover;
-      background-position:center top;
-      background-repeat:no-repeat;
-      background-attachment:fixed;
-    }
-    .logo-banner{
-      display:block;
-      margin:0 auto;
-      max-width:700px;
-      width:100%;
-      height:auto;
-      filter:drop-shadow(0 0 20px rgba(250,204,21,.35));
+<style>
+:root{
+  --gold:#facc15;
+  --panel:rgba(12,18,32,.82);
+  --text:#f8fafc;
+  --muted:#cbd5e1;
+  --line:rgba(255,255,255,.10);
+  --shadow:0 20px 45px rgba(0,0,0,.45);
+  --danger:#ef4444;
+  --green:#22c55e;
 }
-   
-.raidlead-login{
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  min-height:100vh;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--text);
+  background:linear-gradient(rgba(8,17,31,.78), rgba(8,17,31,.90)),url('./images/back.jpeg');
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
+.overlay{min-height:100vh;backdrop-filter:blur(3px);padding:40px 24px 70px}
+.logo-banner{display:block;margin:0 auto;max-width:700px;width:100%;height:auto;filter:drop-shadow(0 0 20px rgba(250,204,21,.35))}
+.top-tools{
   position:absolute;
   top:25px;
   right:25px;
   display:flex;
   gap:10px;
   align-items:center;
+  flex-wrap:wrap;
   z-index:1000;
 }
-
-.raidlead-login input{
-  width:180px;
+.top-tools input,.raid-create-box input,.raid-create-box select{
   padding:10px 12px;
   border-radius:12px;
   border:1px solid rgba(250,204,21,.35);
@@ -61,135 +47,132 @@
   color:white;
   font-weight:700;
 }
-
-.raidlead-login button{
+.top-tools input{width:180px}
+.tool-btn,.copy-btn{
   padding:10px 16px;
   border-radius:12px;
   border:1px solid rgba(250,204,21,.35);
-  background:linear-gradient(
-    135deg,
-    rgba(250,204,21,.30),
-    rgba(96,165,250,.20)
-  );
+  background:linear-gradient(135deg,rgba(250,204,21,.30),rgba(96,165,250,.20));
   color:white;
   font-weight:800;
   cursor:pointer;
 }
-
-.raidlead-login button:hover{
-  border-color:rgba(250,204,21,.70);
+.tool-btn:hover,.copy-btn:hover{border-color:rgba(250,204,21,.70)}
+.raid-create-box{
+  position:absolute;
+  top:78px;
+  right:25px;
+  width:390px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(12,18,32,.94);
+  border:1px solid rgba(250,204,21,.28);
+  box-shadow:0 20px 45px rgba(0,0,0,.55);
+  z-index:999;
 }
-    .overlay{
-      min-height:100vh;
-      backdrop-filter:blur(3px);
-      padding:40px 24px 70px;
-    }
-
-    .header{
-      text-align:center;
-      margin-bottom:40px;
-    }
-
-    h1{
-      font-size:clamp(38px,5vw,72px);
-      font-weight:900;
-      letter-spacing:1px;
-      text-shadow:0 0 18px rgba(250,204,21,.22);
-    }
-
-    .subtitle{
-      margin-top:12px;
-      color:#dbeafe;
-      font-size:14px;
-      letter-spacing:.24em;
-      text-transform:uppercase;
-    }
-
-    .section-title{
-      width:min(1500px,100%);
-      margin:0 auto 18px;
-      color:#facc15;
-      font-size:22px;
-      font-weight:900;
-      text-align:center;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .raid-grid{
-      width:min(1500px,100%);
-      margin:auto;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:20px;
-      margin-bottom:34px;
-    }
-
-    .small-raid-grid{
-      width:min(1100px,100%);
-      margin:0 auto 50px;
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;
-    }
-
-    .raid-card{
-      position:relative;
-      overflow:hidden;
-      min-height:460px;
-      border-radius:24px;
-      border:1px solid var(--line);
-      background-size:cover;
-      background-position:center top;
-      background-repeat:no-repeat;
-      box-shadow:var(--shadow);
-      transition:
-        transform .22s ease,
-        box-shadow .22s ease,
-        border .22s ease;
-    }
-
-    .raid-card.small{
-      min-height:340px;
-      border-radius:20px;
-    }
-
-    .raid-card::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(
-          rgba(8,17,31,.28),
-          rgba(8,17,31,.78)
-        );
-      z-index:1;
-    }
-
-    .raid-card:hover{
-      transform:translateY(-6px);
-      border-color:rgba(250,204,21,.45);
-      box-shadow:
-        0 0 0 2px rgba(250,204,21,.14),
-        0 20px 45px rgba(0,0,0,.52);
-    }
-
-    .raid-content{
-      min-height:460px;
-      padding:28px 20px 20px;
-      position:relative;
-      z-index:2;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-end;
-    }
-
-    .raid-card.small .raid-content{
-      min-height:340px;
-      padding:22px 16px 16px;
-    }
-
- .raid-title{
+.hidden{display:none!important}
+.raid-create-box h2{color:var(--gold);font-size:20px;margin-bottom:12px}
+.raid-create-box label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin:12px 0 6px;
+}
+.raid-create-box input,.raid-create-box select{width:100%}
+.result-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  align-items:center;
+  margin-top:10px;
+}
+.pin-output{
+  padding:11px 12px;
+  border-radius:12px;
+  background:rgba(2,6,23,.72);
+  border:1px solid rgba(255,255,255,.12);
+  font-weight:900;
+  color:#facc15;
+  letter-spacing:.12em;
+}
+.status{
+  margin-top:12px;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(2,6,23,.55);
+  color:#dbeafe;
+  line-height:1.5;
+  font-size:13px;
+}
+.ok{color:var(--green);font-weight:900}
+.bad{color:var(--danger);font-weight:900}
+.warn{color:var(--gold);font-weight:900}
+.header{text-align:center;margin-bottom:40px}
+.section-title{
+  width:min(1500px,100%);
+  margin:0 auto 18px;
+  color:#facc15;
+  font-size:22px;
+  font-weight:900;
+  text-align:center;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.raid-grid{
+  width:min(1500px,100%);
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  margin-bottom:34px;
+}
+.small-raid-grid{
+  width:min(1100px,100%);
+  margin:0 auto 50px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.raid-card{
+  position:relative;
+  overflow:hidden;
+  min-height:460px;
+  border-radius:24px;
+  border:1px solid var(--line);
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+  box-shadow:var(--shadow);
+  transition:transform .22s ease,box-shadow .22s ease,border .22s ease;
+}
+.raid-card.small{min-height:340px;border-radius:20px}
+.raid-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(rgba(8,17,31,.28),rgba(8,17,31,.78));
+  z-index:1;
+}
+.raid-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(250,204,21,.45);
+  box-shadow:0 0 0 2px rgba(250,204,21,.14),0 20px 45px rgba(0,0,0,.52);
+}
+.raid-content{
+  min-height:460px;
+  padding:28px 20px 20px;
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+.raid-card.small .raid-content{min-height:340px;padding:22px 16px 16px}
+.raid-title{
   font-size:24px;
   font-weight:900;
   margin-bottom:22px;
@@ -201,333 +184,367 @@
   display:inline-block;
   width:fit-content;
 }
-
-    .raid-card.small .raid-title{
-      font-size:20px;
-    }
-
-    .raid-description{
-      color:#e5eefc;
-      line-height:1.6;
-      font-size:14px;
-      margin-bottom:18px;
-      text-shadow:0 2px 10px rgba(0,0,0,.95);
-      background:rgba(2,6,23,.36);
-      padding:9px 10px;
-      border-radius:10px;
-    }
-
-    .raid-card.small .raid-description{
-      font-size:13px;
-      margin-bottom:14px;
-    }
-
-    .raid-buttons{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .raid-btn{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px 16px;
-      border-radius:12px;
-      background:
-        linear-gradient(
-          135deg,
-          rgba(250,204,21,.30),
-          rgba(96,165,250,.22)
-        );
-      border:1px solid rgba(250,204,21,.30);
-      color:var(--text);
-      text-decoration:none;
-      font-weight:800;
-      font-size:14px;
-      letter-spacing:.02em;
-      transition:all .18s ease;
-      cursor:pointer;
-      backdrop-filter:blur(5px);
-      text-shadow:0 2px 8px rgba(0,0,0,.8);
-    }
-
-    .raid-card.small .raid-btn{
-      padding:10px 14px;
-      font-size:13px;
-    }
-
-    .raid-btn:hover{
-      transform:translateY(-2px);
-      background:
-        linear-gradient(
-          135deg,
-          rgba(250,204,21,.48),
-          rgba(96,165,250,.32)
-        );
-      border-color:rgba(250,204,21,.58);
-    }
-
-    .loot-btn{
-      background:
-        linear-gradient(
-          135deg,
-          rgba(96,165,250,.34),
-          rgba(250,204,21,.20)
-        );
-    }
-
-    .pin-input{
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:1px solid rgba(250,204,21,.38);
-      background:rgba(2,6,23,.68);
-      color:white;
-      font-size:14px;
-      outline:none;
-      backdrop-filter:blur(5px);
-    }
-
-    .raid-card.small .pin-input{
-      padding:10px;
-      font-size:13px;
-    }
-
-    .pin-input:focus{
-      border-color:rgba(250,204,21,.75);
-      box-shadow:0 0 0 2px rgba(250,204,21,.16);
-    }
-
-    .pin-input::placeholder{
-      color:#dbeafe;
-    }
-
-    .footer{
-      text-align:center;
-      margin-top:60px;
-      color:#cbd5e1;
-      font-size:12px;
-      opacity:.7;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    @media(max-width:1200px){
-      .raid-grid{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .small-raid-grid{
-        grid-template-columns:repeat(3,1fr);
-      }
-    }
-
-    @media(max-width:800px){
-      .raid-grid,
-      .small-raid-grid{
-        grid-template-columns:1fr;
-      }
-    }
-  </style>
+.raid-card.small .raid-title{font-size:20px}
+.raid-description{
+  color:#e5eefc;
+  line-height:1.6;
+  font-size:14px;
+  margin-bottom:18px;
+  text-shadow:0 2px 10px rgba(0,0,0,.95);
+  background:rgba(2,6,23,.36);
+  padding:9px 10px;
+  border-radius:10px;
+}
+.raid-buttons{display:flex;flex-direction:column;gap:10px}
+.raid-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(250,204,21,.30),rgba(96,165,250,.22));
+  border:1px solid rgba(250,204,21,.30);
+  color:var(--text);
+  text-decoration:none;
+  font-weight:800;
+  font-size:14px;
+  cursor:pointer;
+  backdrop-filter:blur(5px);
+  text-shadow:0 2px 8px rgba(0,0,0,.8);
+}
+.raid-btn:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(135deg,rgba(250,204,21,.48),rgba(96,165,250,.32));
+  border-color:rgba(250,204,21,.58);
+}
+.loot-btn{background:linear-gradient(135deg,rgba(96,165,250,.34),rgba(250,204,21,.20))}
+.pin-input{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(250,204,21,.38);
+  background:rgba(2,6,23,.68);
+  color:white;
+  font-size:14px;
+  outline:none;
+  backdrop-filter:blur(5px);
+}
+.pin-input:focus{border-color:rgba(250,204,21,.75);box-shadow:0 0 0 2px rgba(250,204,21,.16)}
+.pin-input::placeholder{color:#dbeafe}
+.footer{text-align:center;margin-top:60px;color:#cbd5e1;font-size:12px;opacity:.7;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:1200px){
+  .raid-grid{grid-template-columns:repeat(2,1fr)}
+  .small-raid-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:800px){
+  .raid-grid,.small-raid-grid{grid-template-columns:1fr}
+  .top-tools,.raid-create-box{position:static;width:100%;margin-bottom:18px}
+}
+</style>
 </head>
+
+<body>
+<div class="overlay">
+
+<div class="top-tools">
+  <input type="text" id="raidleadPin" placeholder="Raidlead PIN" onkeydown="raidleadEnter(event)">
+  <button class="tool-btn" onclick="raidleadLogin()">Raidlead Login</button>
+  <button class="tool-btn" onclick="toggleRaidCreate()">Raid erstellen</button>
+</div>
+
+<div id="raidCreateBox" class="raid-create-box hidden">
+  <h2>Neuen Raid erstellen</h2>
+
+  <label>Raid auswählen</label>
+  <select id="createRaidSelect">
+    <option value="mc">Molten Core</option>
+    <option value="bwl">Blackwing Lair</option>
+    <option value="aq40">Ahn'Qiraj 40</option>
+    <option value="naxx">Naxxramas</option>
+    <option value="zg">ZG 20</option>
+    <option value="aq20">AQ 20</option>
+    <option value="ony">Onyxia</option>
+  </select>
+
+  <button class="tool-btn" style="width:100%;margin-top:14px" onclick="createRaidFromStart()">Raid jetzt erstellen</button>
+
+  <div id="createRaidResult" class="status">
+    SpielerPIN und LeadPIN werden nach dem Erstellen angezeigt.
+  </div>
+</div>
+
+<div class="header">
+  <img src="images/content.png" alt="Lichtbringer Lootsystem" class="logo-banner">
+</div>
+
+<div class="section-title">40er Raids</div>
+
+<div class="raid-grid">
+    <div class="raid-card" style="background-image:url('./images/mc.jpg')">
+    <div class="raid-content">
+      <div class="raid-title">Molten Core</div>
+      <div class="raid-buttons">
+        <a class="raid-btn" href="molten-core.html">P0+ Übersicht öffnen</a>
+        <input class="pin-input" id="pin-mc" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'mc')">
+        <button class="raid-btn loot-btn" onclick="openLootWithPin('mc')">Prio öffnen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="raid-card" style="background-image:url('./images/bwl.jpg')">
+    <div class="raid-content">
+      <div class="raid-title">Blackwing Lair</div>
+      <div class="raid-buttons">
+        <a class="raid-btn" href="bwl.html">P0+ Übersicht öffnen</a>
+        <input class="pin-input" id="pin-bwl" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'bwl')">
+        <button class="raid-btn loot-btn" onclick="openLootWithPin('bwl')">Prio öffnen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="raid-card" style="background-image:url('./images/aq40.jpg')">
+    <div class="raid-content">
+      <div class="raid-title">Ahn'Qiraj 40</div>
+      <div class="raid-buttons">
+        <a class="raid-btn" href="aq.html">P0+ Übersicht öffnen</a>
+        <input class="pin-input" id="pin-aq40" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'aq40')">
+        <button class="raid-btn loot-btn" onclick="openLootWithPin('aq40')">Prio öffnen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="raid-card" style="background-image:url('./images/naxx.jpg')">
+    <div class="raid-content">
+      <div class="raid-title">Naxxramas</div>
+      <div class="raid-buttons">
+        <a class="raid-btn" href="naxxramas.html">P0+ Übersicht öffnen</a>
+        <input class="pin-input" id="pin-naxx" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'naxx')">
+        <button class="raid-btn loot-btn" onclick="openLootWithPin('naxx')">Prio öffnen</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section-title">20er & Onyxia</div>
+
+<div class="small-raid-grid">
+
+  <div class="raid-card small" style="background-image:url('./images/zg.jpg')">
+    <div class="raid-content">
+      <div class="raid-title">ZG 20</div>
+      <div class="raid-description">Prio-Auswahl für Zul'Gurub.</div>
+      <div class="raid-buttons">
+        <input class="pin-input" id="pin-zg" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'zg')">
+        <button class="raid-btn loot-btn" onclick="openLootWithPin('zg')">Prio öffnen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="raid-card small" style="background-image:url('./images/aq20.jpg')">
+    <div class="raid-content">
+      <div class="raid-title">AQ 20</div>
+      <div class="raid-description">Prio-Auswahl für AQ20.</div>
+      <div class="raid-buttons">
+        <input class="pin-input" id="pin-aq20" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'aq20')">
+        <button class="raid-btn loot-btn" onclick="openLootWithPin('aq20')">Prio öffnen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="raid-card small" style="background-image:url('./images/ony.jpg')">
+    <div class="raid-content">
+      <div class="raid-title">Onyxia</div>
+      <div class="raid-description">Prio-Auswahl für Onyxias Hort.</div>
+      <div class="raid-buttons">
+        <input class="pin-input" id="pin-ony" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'ony')">
+        <button class="raid-btn loot-btn" onclick="openLootWithPin('ony')">Prio öffnen</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Lichtbringer • Classic WoW • Prio 0 Plus
+</div>
+
+</div>
+
 <script>
+const RAID_API_URL =
+  "https://script.google.com/macros/s/AKfycbzwRZ1908IawmEh3WdROu_TBwfu8Yr1YXJ1VicqEIf15eZ2zzRE3Yw9OaaeJ0ZADbye2g/exec";
 
 const raidleadAccounts = {
   "Lichtbringer-master":"master",
-
   "LB-S7XK29":"mc-bwl",
   "LB-Q4PM18":"naxx",
   "LB-T9DN52":"zg-aq20",
   "LB-AQ40-Lead":"aq40"
 };
 
-function raidleadLogin(){
+const raids = {
+  mc:{name:"Molten Core",short:"MC",lootPage:"loot/mc-loot.html"},
+  bwl:{name:"Blackwing Lair",short:"BWL",lootPage:"loot/bwl-loot.html"},
+  aq40:{name:"Ahn'Qiraj 40",short:"AQ40",lootPage:"loot/aq40-loot.html"},
+  naxx:{name:"Naxxramas",short:"NAXX",lootPage:"loot/naxx-loot.html"},
+  zg:{name:"ZG 20",short:"ZG",lootPage:"loot/zg-loot.html"},
+  aq20:{name:"AQ 20",short:"AQ20",lootPage:"loot/aq20-loot.html"},
+  ony:{name:"Onyxia",short:"ONY",lootPage:"loot/ony-loot.html"}
+};
 
-  const pin =
-    document.getElementById("raidleadPin")
-    .value
-    .trim();
+function randomCode(length){
+  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let result="";
+  for(let i=0;i<length;i++){
+    result+=chars.charAt(Math.floor(Math.random()*chars.length));
+  }
+  return result;
+}
 
-  if(!raidleadAccounts[pin]){
-    alert("Falsche Raidlead-PIN.");
+function createRaidId(raid){
+  const now=new Date();
+  const date=
+    now.getFullYear()+"-"+
+    String(now.getMonth()+1).padStart(2,"0")+"-"+
+    String(now.getDate()).padStart(2,"0")+"-"+
+    String(now.getHours()).padStart(2,"0")+
+    String(now.getMinutes()).padStart(2,"0")+
+    String(now.getSeconds()).padStart(2,"0");
+
+  return raids[raid].short+"-"+date;
+}
+
+function toggleRaidCreate(){
+  document.getElementById("raidCreateBox").classList.toggle("hidden");
+}
+
+async function createRaidFromStart(){
+  const raid=document.getElementById("createRaidSelect").value;
+  const r=raids[raid];
+
+  const raidId=createRaidId(raid);
+  const playerPin=randomCode(3);
+  const leadPin=randomCode(4);
+
+  const raidData={
+    action:"createRaid",
+    raidId:raidId,
+    raid:raid,
+    raidName:r.name,
+    playerPin:playerPin,
+    leadPin:leadPin,
+    playerLink:"",
+    createdAt:new Date().toISOString(),
+    status:"geschlossen"
+  };
+
+  const resultBox=document.getElementById("createRaidResult");
+  resultBox.innerHTML=`<span class="warn">Raid wird erstellt …</span>`;
+
+  try{
+    await fetch(RAID_API_URL,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(raidData)
+    });
+
+    resultBox.innerHTML=`
+      <span class="ok">✓ Raid wurde erstellt.</span><br><br>
+
+      <strong>Raid:</strong><br>
+      ${r.name}<br><br>
+
+      <strong>SpielerPIN:</strong>
+      <div class="result-row">
+        <div class="pin-output" id="newPlayerPin">${playerPin}</div>
+        <button class="copy-btn" onclick="copyText('newPlayerPin')">Kopieren</button>
+      </div>
+
+      <strong style="display:block;margin-top:12px">LeadPIN:</strong>
+      <div class="result-row">
+        <div class="pin-output" id="newLeadPin">${leadPin}</div>
+        <button class="copy-btn" onclick="copyText('newLeadPin')">Kopieren</button>
+      </div>
+
+      <br>
+      <span class="warn">Mit dem LeadPIN kann sich der Raidlead oben direkt einloggen.</span>
+    `;
+
+    document.getElementById("raidleadPin").value=leadPin;
+
+  }catch(error){
+    console.error(error);
+    resultBox.innerHTML=`<span class="bad">Fehler beim Erstellen des Raids.</span>`;
+  }
+}
+
+function copyText(id){
+  const text=document.getElementById(id).textContent.trim();
+  navigator.clipboard.writeText(text);
+}
+
+async function raidleadLogin(){
+  const pin=document.getElementById("raidleadPin").value.trim();
+
+  if(raidleadAccounts[pin]){
+    sessionStorage.setItem("raidlead","true");
+    sessionStorage.setItem("raidleadRole",raidleadAccounts[pin]);
+    window.location.href="raidlead-panel.html";
     return;
   }
 
-  sessionStorage.setItem(
-    "raidlead",
-    "true"
-  );
+  const url =
+    RAID_API_URL +
+    "?action=validateLeadPin" +
+    "&leadPin=" + encodeURIComponent(pin) +
+    "&t=" + Date.now();
 
-  sessionStorage.setItem(
-    "raidleadRole",
-    raidleadAccounts[pin]
-  );
+  try{
+    const response=await fetch(url);
+    const result=await response.json();
 
-  window.location.href =
-    "raidlead-panel.html";
+    if(result.success){
+      sessionStorage.setItem("raidlead","true");
+      sessionStorage.setItem("raidleadRole","master");
+      sessionStorage.setItem("raidleadRaidId",result.raidId);
+      window.location.href="raidlead-panel.html";
+      return;
+    }
+
+    alert("Falsche Raidlead-PIN.");
+  }catch(error){
+    console.error(error);
+    alert("Raidlead-Login konnte nicht geprüft werden.");
+  }
 }
 
 function raidleadEnter(event){
-  if(event.key === "Enter"){
+  if(event.key==="Enter"){
     raidleadLogin();
   }
 }
 
-</script>
-<body>
-
-<div class="overlay">
-<div class="raidlead-login">
-
-  <input
-    type="password"
-    id="raidleadPin"
-    placeholder="Raidlead PIN"
-    onkeydown="raidleadEnter(event)"
-  >
-
-  <button onclick="raidleadLogin()">
-    Raidlead Login
-  </button>
-
-</div>
-
-  <div class="header">
-  <img
-    src="images/content.png"
-    alt="Lichtbringer Lootsystem"
-    class="logo-banner"
-  >
-</div>
-
-  <div class="section-title">40er Raids</div>
-
-  <div class="raid-grid">
-
-    <div class="raid-card" style="background-image:url('./images/mc.jpg')">
-      <div class="raid-content">
-        <div class="raid-title">Molten Core</div>
-        <div class="raid-buttons">
-          <a class="raid-btn" href="molten-core.html">P0+ Übersicht öffnen</a>
-          <input class="pin-input" id="pin-mc" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'mc')">
-          <button class="raid-btn loot-btn" onclick="openLootWithPin('mc')">Prio öffnen</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="raid-card" style="background-image:url('./images/bwl.jpg')">
-      <div class="raid-content">
-        <div class="raid-title">Blackwing Lair</div>
-        <div class="raid-buttons">
-          <a class="raid-btn" href="bwl.html">P0+ Übersicht öffnen</a>
-          <input class="pin-input" id="pin-bwl" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'bwl')">
-          <button class="raid-btn loot-btn" onclick="openLootWithPin('bwl')">Prio öffnen</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="raid-card" style="background-image:url('./images/aq40.jpg')">
-      <div class="raid-content">
-        <div class="raid-title">Ahn'Qiraj 40</div>
-        <div class="raid-buttons">
-          <a class="raid-btn" href="aq.html">P0+ Übersicht öffnen</a>
-          <input class="pin-input" id="pin-aq40" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'aq40')">
-          <button class="raid-btn loot-btn" onclick="openLootWithPin('aq40')">Prio öffnen</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="raid-card" style="background-image:url('./images/naxx.jpg')">
-      <div class="raid-content">
-        <div class="raid-title">Naxxramas</div>
-        <div class="raid-buttons">
-          <a class="raid-btn" href="naxxramas.html">P0+ Übersicht öffnen</a>
-          <input class="pin-input" id="pin-naxx" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'naxx')">
-          <button class="raid-btn loot-btn" onclick="openLootWithPin('naxx')">Prio öffnen</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="section-title">20er & Onyxia</div>
-
-  <div class="small-raid-grid">
-
-    <div class="raid-card small" style="background-image:url('./images/zg.jpg')">
-      <div class="raid-content">
-        <div class="raid-title">ZG 20</div>
-        <div class="raid-description">Prio-Auswahl für Zul'Gurub.</div>
-        <div class="raid-buttons">
-          <input class="pin-input" id="pin-zg" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'zg')">
-          <button class="raid-btn loot-btn" onclick="openLootWithPin('zg')">Prio öffnen</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="raid-card small" style="background-image:url('./images/aq20.jpg')">
-      <div class="raid-content">
-        <div class="raid-title">AQ 20</div>
-        <div class="raid-description">Prio-Auswahl für AQ20.</div>
-        <div class="raid-buttons">
-          <input class="pin-input" id="pin-aq20" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'aq20')">
-          <button class="raid-btn loot-btn" onclick="openLootWithPin('aq20')">Prio öffnen</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="raid-card small" style="background-image:url('./images/ony.jpg')">
-      <div class="raid-content">
-        <div class="raid-title">Onyxia</div>
-        <div class="raid-description">Prio-Auswahl für Onyxias Hort.</div>
-        <div class="raid-buttons">
-          <input class="pin-input" id="pin-ony" type="text" placeholder="Prio PIN eingeben" onkeydown="handlePinEnter(event,'ony')">
-          <button class="raid-btn loot-btn" onclick="openLootWithPin('ony')">Prio öffnen</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="footer">
-    Lichtbringer • Classic WoW • Prio 0 Plus
-  </div>
-
-</div>
-
-<script>
 function openLootWithPin(raid){
-  const input = document.getElementById("pin-" + raid);
-  const pin = input.value.trim();
+  const input=document.getElementById("pin-"+raid);
+  const pin=input.value.trim();
 
   if(!pin){
     alert("Bitte Prio PIN eingeben.");
     return;
   }
 
-  const pages = {
-    mc:"loot/mc-loot.html",
-    bwl:"loot/bwl-loot.html",
-    aq40:"loot/aq40-loot.html",
-    naxx:"loot/naxx-loot.html",
-    zg:"loot/zg-loot.html",
-    aq20:"loot/aq20-loot.html",
-    ony:"loot/ony-loot.html"
-  };
-
-  window.location.href =
-    pages[raid] + "?pin=" + encodeURIComponent(pin);
+  window.location.href=raids[raid].lootPage+"?pin="+encodeURIComponent(pin);
 }
 
-function handlePinEnter(event, raid){
-  if(event.key === "Enter"){
+function handlePinEnter(event,raid){
+  if(event.key==="Enter"){
     openLootWithPin(raid);
   }
 }
 </script>
-<script>
 
 </body>
 </html>
