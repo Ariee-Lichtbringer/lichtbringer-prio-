@@ -45,9 +45,19 @@ input,select{width:100%;padding:12px 13px;border-radius:12px;border:1px solid rg
 .tooltip-title{font-size:16px;font-weight:900;margin-bottom:3px}
 .tooltip-title.epic{color:#a335ee}.tooltip-title.rare{color:#0070dd}.tooltip-title.uncommon{color:#1eff00}.tooltip-title.legendary{color:#ff8000}
 .tooltip-ilvl{color:#ffd100;font-size:12px;font-weight:900;margin-bottom:6px}
-.tooltip-bind,.tooltip-row,.tooltip-stat{color:white;font-size:11px;font-weight:800;margin-top:3px}
+.tooltip-bind,.tooltip-row,.tooltip-stat{
+  color:white;
+  font-size:11px;
+  font-weight:400;
+  margin-top:3px;
+}
 .tooltip-row{display:flex;justify-content:space-between;gap:14px}
-.tooltip-equip{color:#1eff00;font-size:11px;font-weight:900;margin-top:6px}
+.tooltip-equip{
+  color:#1eff00;
+  font-size:11px;
+  font-weight:400;
+  margin-top:6px;
+}
 .tooltip-price{color:white;font-size:11px;font-weight:800;margin-top:6px}
 .tooltip-p0{margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.18);color:#dbeafe}
 .tooltip-p0 strong{color:#facc15;font-size:11px}
@@ -273,18 +283,31 @@ function getFirstFilled(obj,names){
   return "";
 }
 
+function formatStatLine(text){
+  const clean = String(text || "").trim();
+
+  if(!clean) return "";
+  if(clean.startsWith("+")) return clean;
+
+  const match = clean.match(/^([A-Za-zÄÖÜäöüß ]+)\s+(\d+)$/);
+
+  if(match){
+    return "+" + match[2] + " " + match[1].trim();
+  }
+
+  return clean;
+}
 function collectStats(obj){
   const stats=[];
   ["Schaden","Tempo","DPS","Stat1","Stat2","Stat3","Stat4","Stat5","Stat6","Benötigt","Eigenschaften","Stats","Werte","Effekt","Beschreibung"].forEach(col=>{
     if(obj[col] && String(obj[col]).trim()){
       String(obj[col]).trim().split(/;|\n|\|/).forEach(part=>{
         const clean=part.trim();
-        if(clean) stats.push(clean);
+        if(clean) stats.push(formatStatLine(clean));
       });
     }
   });
   if(obj.Kategorie) stats.push("Kategorie: "+obj.Kategorie);
-  if(obj.Boss) stats.push("Quelle: "+obj.Boss);
   return stats;
 }
 
