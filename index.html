@@ -6,6 +6,36 @@
 <title>Lichtbringer – Raid Übersicht</title>
 
 <style>
+.p0plus-search-box{
+  margin-bottom:14px;
+  position:relative;
+}
+
+.p0plus-search-box input{
+  width:100%;
+  padding:12px 13px 12px 38px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(2,6,23,.82);
+  color:white;
+  font-size:14px;
+  font-weight:700;
+}
+
+.p0plus-search-box input:focus{
+  outline:none;
+  border-color:rgba(250,204,21,.65);
+  box-shadow:0 0 0 2px rgba(250,204,21,.14);
+}
+
+.p0plus-search-icon{
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#facc15;
+  z-index:2;
+}
 .p0plus-open-btn{
   position:absolute;
   top:25px;
@@ -339,14 +369,15 @@ body{
       <h2>P0Plus Übersicht</h2>
       <button onclick="toggleP0PlusOverview()">✕</button>
     </div>
-
+<div class="p0plus-search-box">
+  <span class="p0plus-search-icon">🔎</span>
   <input
-  id="p0plusSearch"
-  type="text"
-  placeholder="Item suchen..."
-  oninput="renderP0PlusOverview(window.p0plusEntries || [])"
-  style="width:100%;margin-bottom:12px;"
->
+    id="p0plusSearch"
+    type="text"
+    placeholder="Item, Spieler, Raid oder Slot suchen..."
+    oninput="renderP0PlusOverview(window.p0plusEntries || [])"
+  >
+</div>
 
 <div id="p0plusContent" class="p0plus-content">
   Lade P0Plus Punkte …
